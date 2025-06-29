@@ -11,3 +11,7 @@
     display: none;
   }
 }
+
+#root {
+  width: '24.375 rem';
+}
