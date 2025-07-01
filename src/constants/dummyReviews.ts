@@ -1,0 +1,43 @@
+export interface Review {
+  id: number;
+  user: string;
+  date: string;
+  rating: number;
+  text: string;
+}
+
+const dummyReviews: Review[] = [
+  { id: 1, user: "카공족", date: "2025.05.23", rating: 5, text: "콘센트도 비치 되어 있고 전반적으로 분위기가 조용해서 혼자 공부하기에 좋았습니다. 공간이 쾌적하고 자리간 간격이 넓어 집중이 잘되네요ㅎㅎ" },
+  { id: 2, user: "카공족", date: "2025.05.22", rating: 4, text: "시설도 좋고 여러 공간이 있어서 취향껏 고르기 좋아요. 직원분들이 친절합니다." },
+  { id: 3, user: "학생", date: "2025.05.20", rating: 5, text: "책이 많고 공간이 넓어서 공부하기 좋아요." },
+  { id: 4, user: "주민", date: "2025.05.18", rating: 4, text: "조용하고 깔끔함. 주차는 조금 불편." },
+  { id: 5, user: "직장인", date: "2025.05.16", rating: 3, text: "커피가 약간 비쌈. 콘센트 많아서 좋음." },
+  { id: 6, user: "학생", date: "2025.05.17", rating: 4, text: "스터디하기에 좋은 분위기. 잡음이 좀 있음." },
+  { id: 7, user: "학생", date: "2025.05.16", rating: 4, text: "책상 간격 넓고 쾌적해요." },
+  { id: 8, user: "카공족", date: "2025.05.21", rating: 5, text: "커피도 맛있고, 자리도 많아요!" },
+  { id: 9, user: "직장인", date: "2025.05.22", rating: 4, text: "일하기 좋고 와이파이 빠름." },
+  { id: 10, user: "공유족", date: "2025.05.15", rating: 5, text: "모임하기 좋은 곳. 회의실 넓음." },
+  { id: 11, user: "공유족", date: "2025.05.14", rating: 4, text: "화장실이 조금 멀지만 전체적으로 만족." },
+  { id: 12, user: "주민", date: "2025.05.10", rating: 4, text: "작지만 조용해서 혼자 집중하기 좋아요." },
+  { id: 13, user: "학생", date: "2025.05.09", rating: 4, text: "책이 많고, 정돈이 잘 되어 있음." },
+  { id: 14, user: "카공족", date: "2025.05.11", rating: 5, text: "음료가 다양하고, 조용한 분위기!" },
+  { id: 15, user: "학생", date: "2025.05.08", rating: 4, text: "저녁에는 다소 시끄러울 때도 있음." },
+  { id: 16, user: "학생", date: "2025.05.07", rating: 5, text: "책 종류가 엄청 많아요!" },
+  { id: 17, user: "학생", date: "2025.05.06", rating: 4, text: "자리가 넓어서 좋아요." },
+  { id: 18, user: "스터디", date: "2025.05.05", rating: 4, text: "스터디룸 예약이 편리함. 자주 이용할 듯." },
+  { id: 19, user: "직장인", date: "2025.05.04", rating: 4, text: "프린트 사용 가능, 친절함." },
+  { id: 20, user: "스터디", date: "2025.05.03", rating: 3, text: "주차 공간이 조금 부족해요." },
+  { id: 21, user: "직장인", date: "2025.05.02", rating: 5, text: "분위기 좋고 청결합니다." },
+  { id: 22, user: "카공족", date: "2025.05.01", rating: 4, text: "커피가 정말 맛있어요!" },
+  { id: 23, user: "직장인", date: "2025.04.30", rating: 4, text: "카페 메뉴가 다양하고 조용함." },
+  { id: 24, user: "학생", date: "2025.04.29", rating: 4, text: "책이 많고 시설이 깔끔." },
+  { id: 25, user: "주민", date: "2025.04.28", rating: 5, text: "주차 편하고, 조용해서 자주 이용." },
+  { id: 26, user: "스터디", date: "2025.04.27", rating: 5, text: "시설이 정말 쾌적해요!" },
+  { id: 27, user: "학생", date: "2025.04.26", rating: 4, text: "음악이 약간 큼, 그 외는 만족." },
+  { id: 28, user: "카공족", date: "2025.04.25", rating: 5, text: "분위기 최고, 힐링되는 공간." },
+  { id: 29, user: "직장인", date: "2025.04.24", rating: 4, text: "커피가 조금 비싼 편." },
+  { id: 30, user: "공유족", date: "2025.04.23", rating: 4, text: "모임에 적합, 자리 넓음." },
+  { id: 31, user: "학생", date: "2025.04.22", rating: 4, text: "위치도 좋고 편의시설 많음." },
+];
+
+export default dummyReviews;
