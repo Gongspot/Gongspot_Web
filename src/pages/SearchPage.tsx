@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef  } from 'react';
 import { Search, Crosshair } from 'lucide-react';
 import type { RefObject } from 'react';
-import TopHeader from '/Gongspot_Web/src/components/TopHeader';
+import TopHeader from '../components/TopHeader';
 
 const SearchPage = () => {
   useEffect(() => {

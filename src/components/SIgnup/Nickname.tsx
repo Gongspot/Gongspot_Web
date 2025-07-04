@@ -1,6 +1,10 @@
 import NextButton from "./NextButton";
 
-const Nickname = ({ onNext }) => {
+interface NicknameProps {
+  onNext: () => void;
+}
+
+const Nickname = ({ onNext }: NicknameProps) => {
   return (
     <div className="min-h-screen text-center text-[#4CB1F1]"
     style={{
