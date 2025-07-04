@@ -1,6 +1,6 @@
 import NextButton from "./NextButton";
 
-const Nickname = () => {
+const Nickname = ({ onNext }) => {
   return (
     <div className="min-h-screen text-center text-[#4CB1F1]"
     style={{
@@ -18,7 +18,7 @@ const Nickname = () => {
         />
       </div>
       <div className="fixed bottom-0 w-full px-[1.75rem] pb-[1.875rem] bg-transparent">
-        <NextButton text={"다음"} />
+        <NextButton text={"다음"} onClick={onNext} />
       </div>
     </div>
   );
