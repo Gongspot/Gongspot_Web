@@ -10,6 +10,11 @@ import {
 const BottomNavBar = () => {
   const location = useLocation();
 
+  // "/signup" 경로에서는 렌더링 생략
+  if (location.pathname === "/signup") {
+    return null;
+  }
+
   const navItems = [
     { path: "/", label: "홈", icon: HomeIcon },
     { path: "/recommendations", label: "추천", icon: FireIcon },
