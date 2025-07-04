@@ -24,7 +24,8 @@ const BottomNavBar = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t">
+    <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t z-40"> 
+    {/* z-40: BottonmNavBar가 모든 페이지 상에서 레이어 상단에 위치. */}
       <div className="w-full h-full flex items-center justify-around">
         {navItems.map((item) => (
           <Link
