@@ -10,8 +10,11 @@ import {
 const BottomNavBar = () => {
   const location = useLocation();
 
-  // "/signup" 경로에서는 렌더링 생략
-  if (location.pathname === "/signup") {
+  // 렌더링 생략 경로
+  if (
+    location.pathname === "/signup" ||
+    location.pathname.startsWith("/mypage/")
+  ) {
     return null;
   }
 
