@@ -7,7 +7,7 @@ const NoticePage = () => {
     <div className="flex flex-col h-screen w-full">
       <TopHeader title="공지사항" backButton={true} />
       <TitleSection />
-      <div className="h-[0.063rem] w-full border-b border-[#CCCCCC]" />
+      <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
       <ContentSection />
     </div>
   );
