@@ -9,6 +9,7 @@ import MyPage from "./pages/MyPage";
 import SignupPage from "./pages/SignupPage";
 import NoticePage from "./pages/NoticePage";
 import NoticeDetailPage from "./pages/NoticeDetailPage";
+import PointPage from "./pages/PointPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/mypage/notice" element={<NoticePage />} />
           <Route path="/mypage/notice/:id" element={<NoticeDetailPage />} />
+          <Route path="/mypage/point" element={<PointPage />} />
         </Routes>
       </main>
       
