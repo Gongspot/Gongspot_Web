@@ -14,7 +14,7 @@ const ChargeItem = ({ point, price }: ChargeItemProps) => {
                     {price}
                 </button>
                 </div>
-            <div className="w-full border-b-[0.031rem] border-[#CCCCCC]" />
+            <div className="w-full border-b-[0.031rem] border-[#B1B8C154]" />
         </>
     );
 };

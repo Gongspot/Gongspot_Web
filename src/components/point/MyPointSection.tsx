@@ -13,7 +13,7 @@ const MyPointSection = ({ point }: MyPointSectionProps) => {
             </h1>
             <button
                 className="mt-[1.75rem] px-[1.125rem] py-[0.625rem] bg-white 
-                border border-[#B1B8C1] rounded-[1.875rem] text-[0.938rem]"
+                border border-[#B1B8C180] rounded-[1.875rem] text-[0.938rem]"
                 onClick={() => alert("포인트 충전 기능은 추후 구현 예정입니다.")}
             >
                 광고 보고 포인트 획득하기

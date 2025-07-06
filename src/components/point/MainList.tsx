@@ -13,7 +13,7 @@ const MainList = () => {
                     <img src={next} alt="다음" />
                 </Link>
             </div>
-            <div className="h-[0.063rem] w-full border-b border-[#CCCCCC]" />
+            <div className="h-[0.063rem] w-full border-b border-[#B1B8C154]" />
             <div
             className="flex items-center justify-between px-[1.75rem] my-[1.125rem] 
             text-[0.938rem]"
@@ -23,7 +23,7 @@ const MainList = () => {
                 <img src={next} alt="다음" />
                 </Link>
             </div>
-            <div className="h-[0.063rem] w-full border-b border-[#CCCCCC]" />
+            <div className="h-[0.063rem] w-full border-b border-[#B1B8C154]" />
         </>
     );
 };

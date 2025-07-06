@@ -16,7 +16,7 @@ const TitleSection = ({ title }: TitleSectionProps) => {
                 </Link>
                 <h1 className="mx-auto text-[0.938rem]">{title}</h1>
             </div>
-            <div className="h-[0.063rem] w-full border-[0.063rem] border-[#B1B8C154]" />
+            <div className="w-full border-[0.063rem] border-[#B1B8C154]" />
         </>
     );
 };

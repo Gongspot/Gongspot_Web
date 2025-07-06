@@ -14,7 +14,7 @@ const DetailItem = ({ point, text, date }: DetailItemProps) => {
                 <p className="pl-[5rem] absolute left-0">{text}</p>
                 <p className="text-[#8F9098]">{date}</p>
                 </div>
-            <div className="w-full border-b-[0.031rem] border-[#CCCCCC]" />
+            <div className="w-full border-b-[0.031rem] border-[#B1B8C154]" />
         </>
     );
 };
