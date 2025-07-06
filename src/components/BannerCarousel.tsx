@@ -18,7 +18,7 @@ const BannerCarousel: React.FC = () => {
         navigation
         pagination={{ clickable: true }}
         modules={[Navigation, Pagination, Autoplay]}
-        autoplay={{ delay: 1200 }}
+        autoplay={{ delay: 1800 }}
       >
         <SwiperSlide>
           <img className="home-img" src={banner1} />

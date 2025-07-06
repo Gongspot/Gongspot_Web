@@ -1,19 +1,38 @@
 import React from "react";
 
 interface SpaceCardProps {
+  className?: string;
   image: string;
   title: string;
 }
 
-const SpaceCard: React.FC<SpaceCardProps> = ({ image, title }) => (
-  <div className="w-60 flex-shrink-0 rounded-2xl overflow-hidden shadow-lg relative">
-    <img
-      src={image}
-      alt={title}
-      className="w-full h-40 object-cover"
+const SpaceCard: React.FC<SpaceCardProps> = ({
+  className = "",
+  image,
+  title,
+}) => (
+  <div
+    className={`
+      rounded-xl overflow-hidden shadow-lg relative
+      w-[160px] h-[120px] min-w-[160px] max-w-[160px] min-h-[120px] max-h-[120px]
+      ${className}
+    `}
+  >
+    <img src={image} alt={title} className="object-cover w-full h-full" />
+    <div
+      className="
+      absolute bottom-0 left-0 w-full h-1/3
+      bg-gradient-to-t from-black to-transparent
+      pointer-events-none
+    "
     />
-    <div className="absolute bottom-2 left-2 bg-black bg-opacity-30 px-2 py-1 rounded-md">
-      <span className="text-white text-base font-medium">{title}</span>
+    <div
+      className="
+      absolute bottom-2 left-2 text-white font-bold text-base drop-shadow
+      z-10
+    "
+    >
+      {title}
     </div>
   </div>
 );

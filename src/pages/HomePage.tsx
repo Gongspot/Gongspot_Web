@@ -1,5 +1,4 @@
 import React from "react";
-import TopNavBar from "../components/TopNavBar";
 import BannerCarousel from "../components/BannerCarousel";
 import SpaceSection from "../components/SpaceSection";
 
@@ -8,6 +7,7 @@ const hotSpaces = [
   { id: 2, title: "캐치카페",     image: "/src/assets/hot2.jpg" },
   { id: 3, title: "유라 도서관", image: "/src/assets/hot3.jpg" },
 ];
+
 const themeSpaces = [
   { id: 1, title: "도서관",   image: "/src/assets/theme1.jpg" },
   { id: 2, title: "카페",     image: "/src/assets/theme2.jpg" },
@@ -16,20 +16,26 @@ const themeSpaces = [
 
 const HomePage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 pb-16">
-      {/* 공통 상단바 */}
-      <TopNavBar title="Gong Spot" />
-
-      {/* 검색 창은 추후 개발*/}
+    <div className="bg-[#EFF7FB] from-white to-gray-100 pb-16">
 
       {/* 배너 */}
-      <div className="px-6 mt-8">
+      <div className="px-6">
         <BannerCarousel />
       </div>
 
-      {/* 학습 공간 섹션 */}
-      <SpaceSection title="요즘 HOT한 학습 공간" items={hotSpaces} />
-      <SpaceSection title="테마별 학습 공간" items={themeSpaces} />
+      {/* 요즘 HOT한 학습 공간 */}
+      <SpaceSection
+        title="요즘 HOT한 학습 공간"
+        items={hotSpaces}
+        moreLink="/hot-all"
+      />
+
+      {/* 테마별 학습 공간 */}
+      <SpaceSection
+        title="테마별 학습 공간"
+        items={themeSpaces}
+        moreLink="/theme-all"
+      />
     </div>
   );
 };
