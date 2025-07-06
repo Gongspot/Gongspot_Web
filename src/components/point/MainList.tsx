@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import next from '../../assets/next.svg';
 
 const MainList = () => {
@@ -8,7 +9,9 @@ const MainList = () => {
             text-[0.938rem]"
             >
                 포인트 충전하기
-                <img src={next} alt="다음" />
+                <Link to="/mypage/point/charge" className="flex items-center">
+                    <img src={next} alt="다음" />
+                </Link>
             </div>
             <div className="h-[0.063rem] w-full border-b border-[#CCCCCC]" />
             <div
@@ -16,7 +19,9 @@ const MainList = () => {
             text-[0.938rem]"
             >
                 포인트 내역
+                <Link to="/mypage/point/detail" className="flex items-center">
                 <img src={next} alt="다음" />
+                </Link>
             </div>
             <div className="h-[0.063rem] w-full border-b border-[#CCCCCC]" />
         </>
