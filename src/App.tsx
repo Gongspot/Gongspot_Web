@@ -8,6 +8,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import MyPage from "./pages/MyPage";
 import SignupPage from "./pages/SignupPage";
 import NoticePage from "./pages/NoticePage";
+import NoticeDetailPage from "./pages/NoticeDetailPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/mypage/notice" element={<NoticePage />} />
+          <Route path="/mypage/notice/:id" element={<NoticeDetailPage />} />
         </Routes>
       </main>
       
