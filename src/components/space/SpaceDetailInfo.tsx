@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import type { Space } from "../constants/dummySpaces";
-import mapSample from "../assets/map_sample.jpg";
-import SpaceCongestionCard from "./SpaceCongestionCard";
+import type { Space } from "../../constants/dummySpaces";
+import mapSample from "../../assets/map_sample.jpg";
+import SpaceCongestionCard from ".././homepage/SpaceCongestionCard";
 
 // 급변하는 더미 혼잡도 데이터 (9시~24시, 16개씩)
 const dummyCongestion = [

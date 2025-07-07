@@ -1,6 +1,6 @@
 import React from "react";
-import type { Space } from "../constants/dummySpaces";
-import type { Review } from "../constants/dummyReviews";
+import type { Space } from "../../constants/dummySpaces";
+import type { Review } from "../../constants/dummyReviews";
 
 const SpaceDetailReview: React.FC<{ space: Space; reviews: Review[] }> = ({ space, reviews }) => (
   <div className="px-5 py-4">

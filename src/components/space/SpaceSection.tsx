@@ -1,6 +1,6 @@
 // SpaceSection.tsx
 import React from "react";
-import SpaceCard from "./SpaceCard";
+import SpaceCard from ".././space/SpaceCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useNavigate } from "react-router-dom";

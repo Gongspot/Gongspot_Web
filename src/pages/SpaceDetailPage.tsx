@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import dummySpaces from "../constants/dummySpaces";
 import dummyReviews from "../constants/dummyReviews";
-import SpaceDetailInfo from "../components/SpaceDetailInfo";
-import SpaceDetailReview from "../components/SpaceDetailReview";
+import SpaceDetailInfo from "../components/space/SpaceDetailInfo";
+import SpaceDetailReview from "../components/space/SpaceDetailReview";
 import { FaHeart, FaRegClock , FaStar } from "react-icons/fa";
 
 function isOpen(opening: string): boolean {

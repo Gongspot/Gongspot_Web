@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SpaceFilterTab from "../components/SpaceFilterTab";
-import SpaceListCard from "../components/SpaceListCard";
+import SpaceFilterTab from "../components/space/SpaceFilterTab";
+import SpaceListCard from "../components/space/SpaceListCard";
 import dummySpaces from "../constants/dummySpaces";
 
 const RecsPage: React.FC = () => {
