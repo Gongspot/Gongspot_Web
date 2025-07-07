@@ -12,6 +12,9 @@
   }
 }
 
+.swiper {
+  --swiper-theme-color: #fff;
+}
 #root {
   width: '24.375 rem';
 }

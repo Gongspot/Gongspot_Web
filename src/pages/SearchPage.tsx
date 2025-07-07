@@ -1,20 +1,20 @@
-import { useEffect, useState, useRef  } from 'react';
-import { Search, Crosshair } from 'lucide-react';
-import type { RefObject } from 'react';
-import TopHeader from '../components/TopHeader';
+import { useEffect, useState, useRef } from "react";
+import { Search, Crosshair } from "lucide-react";
+import type { RefObject } from "react";
+import TopHeader from "../components/TopHeader";
 
 const SearchPage = () => {
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, []);
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const sheetRef = useRef<HTMLDivElement | null>(null);
 
-  const [activeTab, setActiveTab] = useState<string>('이용 목적');
+  const [activeTab, setActiveTab] = useState<string>("이용 목적");
 
   // 상세 필터 리스트 각 섹션을 위한 ref
   const purposeRef = useRef<HTMLDivElement>(null);
@@ -23,12 +23,18 @@ const SearchPage = () => {
   const facilityRef = useRef<HTMLDivElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);
 
-  const tabLabels = ['이용 목적', '공간 종류', '분위기', '부가시설', '지역'] as const;
-  type TabLabel = typeof tabLabels[number]; // '이용 목적' | '공간 종류' | ...
+  const tabLabels = [
+    "이용 목적",
+    "공간 종류",
+    "분위기",
+    "부가시설",
+    "지역",
+  ] as const;
+  type TabLabel = (typeof tabLabels)[number]; // '이용 목적' | '공간 종류' | ...
 
   const refMap: Record<TabLabel, RefObject<HTMLDivElement | null>> = {
-    '이용 목적': purposeRef,
-    '공간 종류': typeRef,
+    "이용 목적": purposeRef,
+    "공간 종류": typeRef,
     분위기: moodRef,
     부가시설: facilityRef,
     지역: areaRef,
@@ -36,7 +42,7 @@ const SearchPage = () => {
 
   // 탭 클릭 시 스크롤 이동 함수
   const scrollToRef = (ref: React.RefObject<HTMLDivElement | null>) => {
-    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const dragYRef = useRef<number | null>(null);
@@ -77,20 +83,21 @@ const SearchPage = () => {
       setIsSheetOpen(true);
     }
 
-    sheetRef.current.style.transform = '';
+    sheetRef.current.style.transform = "";
     dragYRef.current = null;
   };
 
   const initialSelectedFilters = {
-    '이용 목적': [],
-    '공간 종류': [],
-    '분위기': [],
-    '부가시설': [],
-    '지역': [],
+    "이용 목적": [],
+    "공간 종류": [],
+    분위기: [],
+    부가시설: [],
+    지역: [],
   };
 
-  const [selectedFilters, setSelectedFilters] = useState(initialSelectedFilters);
-
+  const [selectedFilters, setSelectedFilters] = useState(
+    initialSelectedFilters
+  );
 
   const toggleFilter = (category: string, label: string) => {
     setSelectedFilters((prev) => {
@@ -105,14 +112,12 @@ const SearchPage = () => {
     });
   };
 
-
   // 무료/유료 버튼 클릭 기능 구현
   const [paidFilter, setPaidFilter] = useState<"무료" | "유료" | null>(null);
 
   const togglePaidFilter = (label: "무료" | "유료") => {
     setPaidFilter((prev) => (prev === label ? null : label));
   };
-
 
   return (
     <div className="w-full h-screen bg-gray-200">
@@ -157,21 +162,17 @@ const SearchPage = () => {
           </button>
         </div>
 
-
         {/* 현재 위치 버튼 */}
         <button className="absolute bottom-36 left-4 w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-full shadow-sm z-20">
           <Crosshair className="w-4 h-4 text-gray-400" />
         </button>
 
         {/* 재검색 버튼 */}
-        <button
-          className="absolute bottom-36 left-1/2 -translate-x-1/2 flex items-center px-4 py-1.5 bg-white border border-gray-300 rounded-full shadow-sm text-sm text-gray-400 z-20"
-        >
-          <Search className="w-4 h-4 mr-1 text-gray-400" />
-          이 지역에서 재검색
+        <button className="absolute bottom-36 left-1/2 -translate-x-1/2 flex items-center px-4 py-1.5 bg-white border border-gray-300 rounded-full shadow-sm text-sm text-gray-400 z-20">
+          <Search className="w-4 h-4 mr-1 text-gray-400" />이 지역에서 재검색
         </button>
       </div>
-      
+
       {isSheetOpen && (
         <div className="fixed bottom-0 left-0 w-full z-50">
           <div className="bg-white w-full px-4 py-4 border-t shadow-md flex gap-2">
@@ -197,14 +198,13 @@ const SearchPage = () => {
         </div>
       )}
 
-
       {/* 바텀 시트 */}
       <div
         ref={sheetRef}
         className={`fixed bottom-0 left-0 w-full bg-white rounded-t-2xl shadow-lg z-30 transform transition-transform duration-300 ${
-          isSheetOpen ? 'translate-y-0' : 'translate-y-[83%]'
+          isSheetOpen ? "translate-y-0" : "translate-y-[83%]"
         }`}
-        style={{ height: '740px' }}
+        style={{ height: "740px" }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -224,20 +224,21 @@ const SearchPage = () => {
             <div className="px-4 pt-2">
               <div className="w-10 h-1.5 bg-gray-400 rounded-full mx-auto mb-2 cursor-pointer" />
               <div className="flex justify-between gap-2 overflow-x-auto">
-                {['이용 목적', '공간 종류', '분위기', '부가시설', '지역'].map((label) => (
-                  <button
-                    key={label}
-                    onClick={() => setIsSheetOpen(true)}
-                    className="whitespace-nowrap px-3 py-1 text-[11px] bg-white border border-gray-300 rounded-full shadow-sm text-gray-500 flex-shrink-0"
-                  >
-                    {label} <span className="inline-block rotate-90">›</span>
-                  </button>
-                ))}
+                {["이용 목적", "공간 종류", "분위기", "부가시설", "지역"].map(
+                  (label) => (
+                    <button
+                      key={label}
+                      onClick={() => setIsSheetOpen(true)}
+                      className="whitespace-nowrap px-3 py-1 text-[11px] bg-white border border-gray-300 rounded-full shadow-sm text-gray-500 flex-shrink-0"
+                    >
+                      {label} <span className="inline-block rotate-90">›</span>
+                    </button>
+                  )
+                )}
               </div>
             </div>
           </>
         )}
-
 
         {/* 바텀 시트가 열렸을 때만 나오는 상세 필터들 */}
         {isSheetOpen && (
@@ -253,7 +254,9 @@ const SearchPage = () => {
                         scrollToRef(refMap[label as keyof typeof refMap]);
                         setActiveTab(label);
                       }}
-                      className={activeTab === label ? 'font-semibold text-black' : ''}
+                      className={
+                        activeTab === label ? "font-semibold text-black" : ""
+                      }
                     >
                       {label}
                     </button>
@@ -267,18 +270,27 @@ const SearchPage = () => {
             <div className="mt-4 space-y-10 text-sm">
               {/* 이용 목적 */}
               <div>
-                <h3 ref={purposeRef} className="font-semibold mb-2">이용 목적</h3>
+                <h3 ref={purposeRef} className="font-semibold mb-2">
+                  이용 목적
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {['개인공부', '그룹공부', '휴식', '노트북 작업', '집중공부'].map((label) => {
-                    const selected = selectedFilters['이용 목적'].includes(label);
+                  {[
+                    "개인공부",
+                    "그룹공부",
+                    "휴식",
+                    "노트북 작업",
+                    "집중공부",
+                  ].map((label) => {
+                    const selected =
+                      selectedFilters["이용 목적"].includes(label);
                     return (
                       <button
                         key={label}
-                        onClick={() => toggleFilter('이용 목적', label)}
+                        onClick={() => toggleFilter("이용 목적", label)}
                         className={`px-5 py-1 border rounded-full text-sm ${
                           selected
-                            ? 'bg-[#d7f4ff] text-black border-gray-300'
-                            : 'bg-white text-gray-500 border-gray-300'
+                            ? "bg-[#d7f4ff] text-black border-gray-300"
+                            : "bg-white text-gray-500 border-gray-300"
                         }`}
                       >
                         {label}
@@ -290,18 +302,27 @@ const SearchPage = () => {
 
               {/* 공간 종류 */}
               <div>
-                <h3 ref={typeRef} className="font-semibold mb-2">공간 종류</h3>
+                <h3 ref={typeRef} className="font-semibold mb-2">
+                  공간 종류
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {['도서관', '카페', '민간학습공간', '공공학습공간', '교내학습공간'].map((label) => {
-                    const selected = selectedFilters['공간 종류'].includes(label);
+                  {[
+                    "도서관",
+                    "카페",
+                    "민간학습공간",
+                    "공공학습공간",
+                    "교내학습공간",
+                  ].map((label) => {
+                    const selected =
+                      selectedFilters["공간 종류"].includes(label);
                     return (
                       <button
                         key={label}
-                        onClick={() => toggleFilter('공간 종류', label)}
+                        onClick={() => toggleFilter("공간 종류", label)}
                         className={`px-5 py-1 border rounded-full text-sm ${
                           selected
-                            ? 'bg-[#d7f4ff] text-black border-gray-300'
-                            : 'bg-white text-gray-500 border-gray-300'
+                            ? "bg-[#d7f4ff] text-black border-gray-300"
+                            : "bg-white text-gray-500 border-gray-300"
                         }`}
                       >
                         {label}
@@ -313,18 +334,27 @@ const SearchPage = () => {
 
               {/* 분위기 */}
               <div>
-                <h3 ref={moodRef} className="font-semibold mb-2">분위기</h3>
+                <h3 ref={moodRef} className="font-semibold mb-2">
+                  분위기
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {['넓은', '아늑한', '깔끔한', '조용한', '음악이 나오는', '이야기를 나눌 수 있는'].map((label) => {
-                    const selected = selectedFilters['분위기'].includes(label);
+                  {[
+                    "넓은",
+                    "아늑한",
+                    "깔끔한",
+                    "조용한",
+                    "음악이 나오는",
+                    "이야기를 나눌 수 있는",
+                  ].map((label) => {
+                    const selected = selectedFilters["분위기"].includes(label);
                     return (
                       <button
                         key={label}
-                        onClick={() => toggleFilter('분위기', label)}
+                        onClick={() => toggleFilter("분위기", label)}
                         className={`px-5 py-1 border rounded-full text-sm ${
                           selected
-                            ? 'bg-[#d7f4ff] text-black border-gray-300'
-                            : 'bg-white text-gray-500 border-gray-300'
+                            ? "bg-[#d7f4ff] text-black border-gray-300"
+                            : "bg-white text-gray-500 border-gray-300"
                         }`}
                       >
                         {label}
@@ -333,21 +363,24 @@ const SearchPage = () => {
                   })}
                 </div>
               </div>
-                
+
               {/* 부가시설 */}
               <div>
-                <h3 ref={facilityRef} className="font-semibold mb-2">부가시설</h3>
+                <h3 ref={facilityRef} className="font-semibold mb-2">
+                  부가시설
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {['Wi-Fi', '콘센트', '넓은 좌석', '음료'].map((label) => {
-                    const selected = selectedFilters['부가시설'].includes(label);
+                  {["Wi-Fi", "콘센트", "넓은 좌석", "음료"].map((label) => {
+                    const selected =
+                      selectedFilters["부가시설"].includes(label);
                     return (
                       <button
                         key={label}
-                        onClick={() => toggleFilter('부가시설', label)}
+                        onClick={() => toggleFilter("부가시설", label)}
                         className={`px-5 py-1 border rounded-full text-sm ${
                           selected
-                            ? 'bg-[#d7f4ff] text-black border-gray-300'
-                            : 'bg-white text-gray-500 border-gray-300'
+                            ? "bg-[#d7f4ff] text-black border-gray-300"
+                            : "bg-white text-gray-500 border-gray-300"
                         }`}
                       >
                         {label}
@@ -356,21 +389,31 @@ const SearchPage = () => {
                   })}
                 </div>
               </div>
-              
+
               {/* 지역 */}
               <div>
-                <h3 ref={areaRef} className="font-semibold mb-2">지역</h3>
+                <h3 ref={areaRef} className="font-semibold mb-2">
+                  지역
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {['강남권', '강북권', '도심권', '서남권', '서북권', '동남권', '성동-광진권'].map((label) => {
-                    const selected = selectedFilters['지역'].includes(label);
+                  {[
+                    "강남권",
+                    "강북권",
+                    "도심권",
+                    "서남권",
+                    "서북권",
+                    "동남권",
+                    "성동-광진권",
+                  ].map((label) => {
+                    const selected = selectedFilters["지역"].includes(label);
                     return (
                       <button
                         key={label}
-                        onClick={() => toggleFilter('지역', label)}
+                        onClick={() => toggleFilter("지역", label)}
                         className={`px-5 py-1 border rounded-full text-sm ${
                           selected
-                            ? 'bg-[#d7f4ff] text-black border-gray-300'
-                            : 'bg-white text-gray-500 border-gray-300'
+                            ? "bg-[#d7f4ff] text-black border-gray-300"
+                            : "bg-white text-gray-500 border-gray-300"
                         }`}
                       >
                         {label}
@@ -383,10 +426,8 @@ const SearchPage = () => {
           </div>
         )}
       </div>
-        
     </div>
   );
 };
 
 export default SearchPage;
-

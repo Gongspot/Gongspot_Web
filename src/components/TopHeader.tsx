@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
 interface TopHeaderProps {
-  title: string;           // 헤더 가운데 텍스트
-  backButton?: boolean;    // 뒤로가기 버튼 유무 (기본값: true)
+  title: string;          
+  backButton?: boolean;    
 }
 
 const TopHeader = ({ title, backButton = true }: TopHeaderProps) => {
