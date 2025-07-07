@@ -1,4 +1,5 @@
 import React from "react";
+
 interface Props {
   name: string;
   image: string;
@@ -20,51 +21,73 @@ const SpaceListCard: React.FC<Props> = ({
   onDetail,
   onLike,
 }) => (
-  <div className="flex items-center bg-white rounded-2xl shadow px-4 py-4 mb-4 relative" style={{ minHeight: 110 }}>
-    <img
-      src={image}
-      alt={name}
-      className="w-[120px] h-[90px] object-cover rounded-xl border border-[#E5ECF2]"
-    />
-
-    <div className="flex-1 min-w-0 ml-4">
-      <div className="flex items-center mb-1">
-        <span className="font-semibold text-base text-[#222] truncate">{name}</span>
-      </div>
-      <div className="flex items-center text-[#666] text-[15px] gap-1 mb-0.5">
-        <svg width={14} height={14} className="inline-block mr-0.5" viewBox="0 0 14 14">
-          <circle cx="7" cy="7" r="7" fill="#4CB1F1" />
+  <div
+    className="
+      flex items-center  mb-4 relative
+      border-b border-[#CCCCCC]
+      bg-white
+      "
+  >
+    {/* 이미지 영역 */}
+    <div className="relative w-[180px] h-[130px] flex-shrink-0 mr-4 mb-3">
+      <img
+        src={image}
+        alt={name}
+        className="w-full h-full object-cover rounded-xl border border-[#E5ECF2]"
+      />
+      <button
+        className="absolute top-2 right-2 z-10"
+        onClick={onLike}
+        aria-label="좋아요"
+        style={{ lineHeight: 0, background: "none", border: "none" }}
+      >
+        <svg
+          width={25}
+          height={25}
+          fill={isLiked ? "#FF7D8A" : "#FFFFFF"}
+          stroke={isLiked ? "#FF7D8A" : "#C2C7CE"}
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 21s-6.7-5.2-8.2-7.1A5.4 5.4 0 0 1 5.5 5.5a5.5 5.5 0 0 1 6.5.7 5.5 5.5 0 0 1 6.5-.7 5.4 5.4 0 0 1 1.7 8.4C18.7 15.8 12 21 12 21z" />
         </svg>
-        <span className="font-medium">{rating}</span>
-        <span className="ml-2">{distance}km</span>
+      </button>
+    </div>
+
+    {/* 내용 영역 */}
+    <div className="flex-1 min-w-0 flex flex-col justify-center">
+      {/* 이름 */}
+      <div className="font-semibold text-base text-[#222] truncate mb-1">
+        {name}
       </div>
-      <div className="text-xs text-[#6A7A92] truncate">{tags.join(" ")}</div>
+      {/* 별점, 거리 */}
+      <div className="flex items-center gap-2 text-[15px] mb-1">
+        <span className="flex items-center gap-1">
+          <svg
+            width={16}
+            height={16}
+            viewBox="0 0 20 20"
+            fill="#FFC700"
+            className="inline"
+          >
+            <path d="M10 15.272l-5.708 3.11 1.09-6.365L.764 7.982l6.383-.927L10 1.018l2.853 6.037 6.383.927-4.618 4.035 1.09 6.365z" />
+          </svg>
+          <span className="font-medium">{rating}</span>
+        </span>
+        <span className="text-[#555] text-[14px] ml-2">{distance}km</span>
+      </div>
+      {/* 태그 */}
+      <div className="text-xs text-[#6A7A92] truncate mb-2">
+        {tags.join(" ")}
+      </div>
+      {/* 상세보기 버튼 */}
       <button
         onClick={onDetail}
-        className="block w-[120px] mt-3 py-1.5 rounded-full bg-sky-400 text-white text-base font-semibold shadow active:bg-sky-500"
-        style={{ fontSize: "15px" }}
+        className="block w-[140px] py-1.5 rounded-full bg-sky-400 text-white text-sm font-semibold active:bg-sky-500"
       >
         상세보기
       </button>
     </div>
-
-    <button
-      className="absolute top-3 right-3"
-      onClick={onLike}
-      aria-label="좋아요"
-      style={{ background: "none", border: "none" }}
-    >
-      <svg
-        width={24}
-        height={24}
-        fill={isLiked ? "#FF7D8A" : "none"}
-        stroke={isLiked ? "#FF7D8A" : "#C2C7CE"}
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 21s-6.7-5.2-8.2-7.1A5.4 5.4 0 0 1 5.5 5.5a5.5 5.5 0 0 1 6.5.7 5.5 5.5 0 0 1 6.5-.7 5.4 5.4 0 0 1 1.7 8.4C18.7 15.8 12 21 12 21z" />
-      </svg>
-    </button>
   </div>
 );
 

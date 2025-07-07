@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import SpaceFilterTab from "../components/space/SpaceFilterTab";
 import SpaceListCard from "../components/space/SpaceListCard";
 import dummySpaces from "../constants/dummySpaces";
+import TopHeader from "../components/TopHeader"; // <- 추가
 
 const RecsPage: React.FC = () => {
   const [filter, setFilter] = useState(""); // "" == 전체
@@ -23,7 +24,10 @@ const RecsPage: React.FC = () => {
     );
 
   return (
-    <div className="min-h-screen bg-blue-50 pb-16 flex flex-col">
+    <div className="min-h-screen bg-white pb-16 flex flex-col">
+      {/* 헤더 */}
+      <TopHeader title="추천 학습공간" /> {/* <- 추가! */}
+
       <div className="bg-white sticky top-0 z-20 flex flex-col gap-2 pt-2 pb-2 border-b border-[CCCCCC]">
         {/* 검색창 */}
         <div className="px-4">

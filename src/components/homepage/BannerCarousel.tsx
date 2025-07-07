@@ -12,7 +12,7 @@ const BannerCarousel: React.FC = () => {
   return (
     <div className="page-container">
       <Swiper
-        className="banner h-48 rounded-lg"
+        className="banner h-56 rounded-lg"
         spaceBetween={50}
         slidesPerView={1}
         navigation

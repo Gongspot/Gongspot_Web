@@ -1,5 +1,5 @@
 import profile from "../assets/profile.svg";
-import TopHeader from "../components/homepage/TopHeader";
+import TopHeader from "../components/TopHeader";
 import ProfileSection from "../components/myPage/ProfileSection";
 import MyPageItemSection from "../components/myPage/MyPageItemSection";
 import MenuSection from "../components/myPage/MenuSection";

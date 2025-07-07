@@ -1,4 +1,4 @@
-import TopHeader from "../components/homepage/TopHeader";
+import TopHeader from "../components/TopHeader";
 import NoticeSection from "../components/notice/NoticeSection";
 import Search from "../components/notice/Search";
 
