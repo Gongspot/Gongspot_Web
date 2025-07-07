@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import TopHeader from "../components/TopHeader";
-import SearchControls from "../components/mapsearch/SearchControls";
-import BottomSheet from "../components/mapsearch/BottomSheet";
-import SearchMode from "../components/mapsearch/SearchMode";
+import SearchControls from "../components/mapSearch/SearchControls";
+import BottomSheet from "../components/mapSearch/BottomSheet";
+import SearchMode from "../components/mapSearch/SearchMode";
 
 
 const SearchPage = () => {
@@ -115,6 +115,8 @@ const SearchPage = () => {
 
       {/* 지도 + 검색창 영역 */}
       <div className="absolute top-10 left-0 right-0 bottom-0 bg-gray-200">
+        {/* <KakaoMap /> 지도 삽입 */}
+
         {isSearchMode ? (
           <SearchMode exitSearchMode={() => setIsSearchMode(false)} />
         ) : (
