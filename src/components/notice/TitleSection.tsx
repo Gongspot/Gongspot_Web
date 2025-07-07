@@ -1,4 +1,4 @@
-const NoticeSection = () => {
+const TitleSection = () => {
     return (
         <>
             <div
@@ -11,4 +11,4 @@ const NoticeSection = () => {
     );
 };
 
-export default NoticeSection;
+export default TitleSection;

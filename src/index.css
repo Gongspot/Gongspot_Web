@@ -18,3 +18,17 @@
 #root {
   width: '24.375 rem';
 }
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./assets/fonts/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('./assets/fonts/Pretendard-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
