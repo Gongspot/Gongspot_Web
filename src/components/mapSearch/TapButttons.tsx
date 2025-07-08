@@ -7,7 +7,7 @@ const TabButtons = ({ onClick }: TabButtonsProps) => {
   const tabLabels = ["이용 목적", "공간 종류", "분위기", "부가시설", "지역"];
 
   return (
-    <div className="px-4 pt-2">
+    <div className="px-2 pt-2">
       <div className="flex justify-between gap-2 overflow-x-auto">
         {tabLabels.map((label) => (
           <button

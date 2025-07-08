@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import TopHeader from "../components/TopHeader";
 import SearchControls from "../components/mapSearch/SearchControls";
 import BottomSheet from "../components/mapSearch/BottomSheet";
@@ -13,86 +13,23 @@ const SearchPage = () => {
     };
   }, []);
 
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const sheetRef = useRef<HTMLDivElement | null>(null);
-
-  // 상세 필터 리스트 각 섹션을 위한 ref
-  const purposeRef = useRef<HTMLDivElement>(null);
-  const typeRef = useRef<HTMLDivElement>(null);
-  const moodRef = useRef<HTMLDivElement>(null);
-  const facilityRef = useRef<HTMLDivElement>(null);
-  const areaRef = useRef<HTMLDivElement>(null);
-
-
-  type TabLabel = "이용 목적" | "공간 종류" | "분위기" | "부가시설" | "지역";
-
-
-  const dragYRef = useRef<number | null>(null);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    dragYRef.current = e.touches[0].clientY;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (dragYRef.current === null || !sheetRef.current) return;
-
-    const deltaY = e.touches[0].clientY - dragYRef.current;
-
-    // 열린 상태에서 아래로 드래그할 때만 시트 움직임
-    if (isSheetOpen && deltaY > 0) {
-      sheetRef.current.style.transform = `translateY(${deltaY}px)`;
-    }
-
-    // 닫힌 상태에서 위로 드래그할 때도 움직이게
-    if (!isSheetOpen && deltaY < 0) {
-      sheetRef.current.style.transform = `translateY(calc(83% + ${deltaY}px))`;
-    }
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (dragYRef.current === null || !sheetRef.current) return;
-
-    const endY = e.changedTouches[0].clientY;
-    const deltaY = endY - dragYRef.current;
-
-    // 닫기 조건 (아래로 충분히 내림)
-    if (isSheetOpen && deltaY > 100) {
-      setIsSheetOpen(false);
-    }
-
-    // 열기 조건 (위로 충분히 올림)
-    if (!isSheetOpen && deltaY < -100) {
-      setIsSheetOpen(true);
-    }
-
-    sheetRef.current.style.transform = "";
-    dragYRef.current = null;
-  };
-
-  const initialSelectedFilters = {
-    "이용 목적": [],
-    "공간 종류": [],
-    분위기: [],
-    부가시설: [],
-    지역: [],
-  };
-
-  const [selectedFilters, setSelectedFilters] = useState<Record<TabLabel, string[]>>(initialSelectedFilters);
-
-
-  const toggleFilter = (category: TabLabel, label: string) => {
-    setSelectedFilters((prev) => {
-      const current = prev[category];
-      const isSelected = current.includes(label);
-
-      return {
-        ...prev,
-        [category]: isSelected
-          ? current.filter((item) => item !== label) // 제거
-          : [...current, label], // 추가
-      };
-    });
-  };
+  const {
+    isSheetOpen,
+    setIsSheetOpen,
+    sheetRef,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+    selectedFilters,
+    setSelectedFilters,
+    toggleFilter,
+    initialSelectedFilters,
+    purposeRef,
+    typeRef,
+    moodRef,
+    facilityRef,
+    areaRef,
+  } = useSearchFilters();
 
   // 무료/유료 버튼 클릭 기능 구현
   const [paidFilter, setPaidFilter] = useState<"무료" | "유료" | null>(null);
@@ -108,6 +45,11 @@ const SearchPage = () => {
     setIsSearchMode(true);
   };
 
+  // 검색 시 바텀 시트 올라오게
+  const [isSearchResultSheetOpen, setIsSearchResultSheetOpen] = useState(false);
+  const [sheetHeight, setSheetHeight] = useState("50vh");
+
+
   return (
     <div className="w-full h-screen bg-gray-200">
       {/* 상단 헤더 (뒤로가기 버튼 없음) */}
@@ -118,7 +60,11 @@ const SearchPage = () => {
         {/* <KakaoMap /> 지도 삽입 */}
 
         {isSearchMode ? (
-          <SearchMode exitSearchMode={() => setIsSearchMode(false)} />
+          <SearchMode
+            exitSearchMode={() => setIsSearchMode(false)}
+            openSearchResultSheet={() => setIsSearchResultSheetOpen(true)}
+          />
+                    
         ) : (
           <SearchControls
             paidFilter={paidFilter}
@@ -154,7 +100,7 @@ const SearchPage = () => {
       )}
 
       {/* 바텀 시트 */}
-      <BottomSheet
+      <BottomSheet        
         isSheetOpen={isSheetOpen}
         setIsSheetOpen={setIsSheetOpen}
         sheetRef={sheetRef}
@@ -170,10 +116,18 @@ const SearchPage = () => {
         areaRef={areaRef}
         initialSelectedFilters={initialSelectedFilters}
       />
+      {/* 검색 결과 바텀 시트 */}
+      {isSearchResultSheetOpen && (
+        <SearchResultSheet
+          isOpen={isSearchResultSheetOpen}
+          setIsOpen={setIsSearchResultSheetOpen}
+          height={sheetHeight}
+          setHeight={setSheetHeight}
+        />
 
+      )}
     </div>
   );
 };
 
 export default SearchPage;
-export type TabLabel = "이용 목적" | "공간 종류" | "분위기" | "부가시설" | "지역";
