@@ -22,7 +22,7 @@ const HotSpaceListPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EFF7FB]">
+    <div className="min-h-screen bg-[#EFF7FB] pb-20">
       <TopHeader title="요즘 HOT한 학습 공간" />
       <div className="px-4 pt-4">
         <div className="grid grid-cols-2 gap-4">
