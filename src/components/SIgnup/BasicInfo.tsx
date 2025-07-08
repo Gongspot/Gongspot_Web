@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 import BasicInfoItem from "./BasicInfoItem";
-import NextButton from "./NextButton";
+import NextButton from "../NextButton";
 import SelectButton from "./SelectButton";
 
 const PLACE_OPTIONS = [
@@ -181,10 +181,7 @@ const BasicInfo = () => {
           </div>
         </div>
       </div>
-
-      <div className="fixed bottom-0 w-full px-[1.75rem] pb-[1.875rem]">
-        <NextButton text={"시작하기"} />
-      </div>
+      <NextButton text={"시작하기"} />
     </div>
   );
 };
