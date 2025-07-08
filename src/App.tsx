@@ -15,7 +15,7 @@ import PointLayout from "./layouts/PointLayout";
 import MainList from "./components/point/MainList";
 import PointCharge from "./components/point/PointCharge";
 import PointDetail from "./components/point/PointDetail";
-
+import HotSpaceListPage from './pages/HotSpaceListPage';
 function App() {
   return (
     <div className="font-sans bg-[#EFF7FB] h-[100dvh] flex flex-col">
@@ -32,6 +32,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/mypage/notice" element={<NoticePage />} />
           <Route path="/mypage/notice/:id" element={<NoticeDetailPage />} />
+          <Route path="/hot-all" element={<HotSpaceListPage />} />
           <Route path="/mypage/point" element={<PointLayout />}>
             <Route index element={<MainList />} />
             <Route path="charge" element={<PointCharge />} />

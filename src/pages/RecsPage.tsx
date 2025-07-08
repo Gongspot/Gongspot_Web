@@ -1,12 +1,13 @@
+// src/pages/RecsPage.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SpaceFilterTab from "../components/space/SpaceFilterTab";
 import SpaceListCard from "../components/space/SpaceListCard";
 import dummySpaces from "../constants/dummySpaces";
-import TopHeader from "../components/TopHeader"; // <- 추가
+import TopHeader from "../components/TopHeader";
 
 const RecsPage: React.FC = () => {
-  const [filter, setFilter] = useState(""); // "" == 전체
+  const [filter, setFilter] = useState("");
   const [spaces, setSpaces] = useState(dummySpaces);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
@@ -16,8 +17,8 @@ const RecsPage: React.FC = () => {
       filter === ""
         ? true
         : filter === "무료"
-          ? space.isFree
-          : !space.isFree
+        ? space.isFree
+        : !space.isFree
     )
     .filter(space =>
       search === "" ? true : space.name.includes(search)
@@ -25,22 +26,18 @@ const RecsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white pb-16 flex flex-col">
-      {/* 헤더 */}
-      <TopHeader title="추천 학습공간" /> {/* <- 추가! */}
-
-      <div className="bg-white sticky top-0 z-20 flex flex-col gap-2 pt-2 pb-2 border-b border-[CCCCCC]">
-        {/* 검색창 */}
-        <div className="px-4">
-          <input
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            type="text"
-            placeholder="학습공간 검색"
-            className="w-full border border-gray-200 rounded-md px-4 py-2 text-sm outline-none focus:border-blue-400 transition"
-          />
-        </div>
-        <SpaceFilterTab filter={filter} setFilter={setFilter} />
+      {/* 헤더  */}
+      <TopHeader title="공간 추천" backButton={false} />
+      {/* 필터 */}
+      <div className="bg-white sticky top-10 z-20 border-b border-[#CCCCCC]">
+        <SpaceFilterTab
+          filter={filter}
+          setFilter={setFilter}
+          search={search}
+          setSearch={setSearch}
+        />
       </div>
+      {/* 리스트 */}
       <div className="flex-1 overflow-y-auto">
         <div className="px-4 mt-4">
           {filteredSpaces.map(space => (

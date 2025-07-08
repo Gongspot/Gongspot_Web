@@ -1,20 +1,20 @@
-// SpaceSection.tsx
+// src/components/homepage/HotSpaceSection.tsx
 import React from "react";
-import SpaceCard from ".././space/SpaceCard";
+import SpaceCard from "../space/SpaceCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useNavigate } from "react-router-dom";
 
-interface SpaceSectionProps {
+interface HotSpaceSectionProps {
   className?: string;
-  title: string;
-  items: { id: number; title: string; image: string }[];
+  title?: string;
+  items: { id: number; title?: string; name?: string; image: string }[];
   moreLink?: string;
 }
 
-const SpaceSection: React.FC<SpaceSectionProps> = ({
+const HotSpaceSection: React.FC<HotSpaceSectionProps> = ({
   className = "",
-  title,
+  title = "요즘 HOT한 학습 공간",
   items,
   moreLink,
 }) => {
@@ -37,7 +37,12 @@ const SpaceSection: React.FC<SpaceSectionProps> = ({
         <Swiper spaceBetween={16} slidesPerView={2.1}>
           {items.map((item) => (
             <SwiperSlide key={item.id}>
-              <SpaceCard image={item.image} title={item.title} />
+              <div
+                onClick={() => navigate(`/space/${item.id}`)}
+                className="cursor-pointer"
+              >
+                <SpaceCard image={item.image} title={item.title || item.name || ""} />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -46,4 +51,4 @@ const SpaceSection: React.FC<SpaceSectionProps> = ({
   );
 };
 
-export default SpaceSection;
+export default HotSpaceSection;

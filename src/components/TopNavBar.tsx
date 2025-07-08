@@ -1,5 +1,4 @@
 import React from "react";
-import { BellIcon } from "@heroicons/react/24/outline";
 
 interface TopNavBarProps {
   title?: string; 
