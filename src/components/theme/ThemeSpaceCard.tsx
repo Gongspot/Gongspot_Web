@@ -14,7 +14,7 @@ const ThemeSpaceCard: React.FC<ThemeSpaceCardProps> = ({
   onClick,
 }) => (
   <button
-    className={`relative w-full overflow-hidden rounded-2xl shadow-md group focus:outline-none ${className}`}
+    className={`relative w-full overflow-hidden rounded-2xl shadow-md focus:outline-none ${className}`}
     style={{ aspectRatio: "1/1" }}
     onClick={onClick}
     type="button"
@@ -22,9 +22,9 @@ const ThemeSpaceCard: React.FC<ThemeSpaceCardProps> = ({
     <img
       src={image}
       alt={title}
-      className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+      className="w-full h-full object-cover"
     />
-    <div className="absolute inset-0 bg-black bg-opacity-35 group-hover:bg-opacity-40 transition" />
+    <div className="absolute inset-0 bg-black bg-opacity-35 transition" />
     <span className="absolute top-3 left-4 text-white font-bold text-lg drop-shadow-lg z-10">
       {title}
     </span>

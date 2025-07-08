@@ -25,7 +25,7 @@ const SpaceListCard: React.FC<Props> = ({
     className="
       flex items-center  mb-4 relative
       border-b border-[#CCCCCC]
-      bg-white
+      
       "
   >
     {/* 이미지 영역 */}

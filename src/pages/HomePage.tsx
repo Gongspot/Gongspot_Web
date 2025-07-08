@@ -1,15 +1,19 @@
+// src/pages/HomePage.tsx
+
 import React from "react";
 import BannerCarousel from "../components/homepage/BannerCarousel";
-import SpaceSection from "../components/space/SpaceSection";
-import hotSpaces from "../constants/dummySpaces"; 
-import { themeSpaces } from "../constants/spaceThemes"; 
-import TopNavBar from "../components/TopNavBar"; 
+import HotSpaceSection from "../components/homepage/HotSpaceSection";
+import ThemeSpaceSection from "../components/homepage/ThemeSpaceSection";
+import TopNavBar from "../components/TopNavBar";
+
+// 데이터
+import hotSpaces from "../constants/hotSpaces";        // 평점 or 리뷰 기준 상위 N개
+import { themeSpaces } from "../constants/spaceThemes"; // 테마별 데이터
 
 const HomePage: React.FC = () => {
   return (
-    <div className="bg-[#EFF7FB] from-white to-gray-100 pb-16">
-      {/* Top Navigation Bar */}
-      <TopNavBar title="Gpng Spot" /> 
+    <div className="bg-[#EFF7FB] pb-16 min-h-screen">
+      <TopNavBar title="Gong Spot" />
 
       {/* 배너 */}
       <div className="px-6 mt-10">
@@ -17,14 +21,10 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* 요즘 HOT한 학습 공간 */}
-      <SpaceSection
-        title="요즘 HOT한 학습 공간"
-        items={hotSpaces}
-        moreLink="/hot-all"
-      />
+      <HotSpaceSection items={hotSpaces} moreLink="/hot-all" />
 
       {/* 테마별 학습 공간 */}
-      <SpaceSection
+      <ThemeSpaceSection
         title="테마별 학습 공간"
         items={themeSpaces}
         moreLink="/theme-all"

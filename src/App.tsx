@@ -15,6 +15,7 @@ import PointLayout from "./layouts/PointLayout";
 import MainList from "./components/point/MainList";
 import PointCharge from "./components/point/PointCharge";
 import PointDetail from "./components/point/PointDetail";
+import HotSpaceListPage from "./pages/HotSpaceListPage";  
 import ProfilePage from "./pages/ProfilePage";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/space/:id" element={<SpaceDetailPage />} />
           <Route path="/theme-all" element={<ThemeAllPage />} />
           <Route path="/theme/:themeTitle" element={<ThemeDetailPage />} />
+          <Route path="/hot-all" element={<HotSpaceListPage />} />  
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/mypage/notice" element={<NoticePage />} />
           <Route path="/mypage/notice/:id" element={<NoticeDetailPage />} />
@@ -45,5 +47,5 @@ function App() {
     </div>
   );
 }
-export default App;
 
+export default App;
