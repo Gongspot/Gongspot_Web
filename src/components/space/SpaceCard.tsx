@@ -14,23 +14,23 @@ const SpaceCard: React.FC<SpaceCardProps> = ({
   <div
     className={`
       rounded-xl overflow-hidden shadow-lg relative
-      w-[160px] h-[120px] min-w-[160px] max-w-[160px] min-h-[120px] max-h-[120px]
+      w-[160px] h-[130px] min-w-[160px] max-w-[160px] min-h-[130px] max-h-[130px]
       ${className}
     `}
   >
     <img src={image} alt={title} className="object-cover w-full h-full" />
     <div
       className="
-      absolute bottom-0 left-0 w-full h-1/3
-      bg-gradient-to-t from-black to-transparent
-      pointer-events-none
-    "
+        absolute bottom-0 left-0 w-full h-1/3
+        bg-gradient-to-t from-black to-transparent
+        pointer-events-none
+      "
     />
     <div
       className="
-      absolute bottom-2 left-2 text-white font-bold text-base drop-shadow
-      z-10
-    "
+        absolute bottom-2 left-2 text-white font-bold text-base drop-shadow
+        z-10
+      "
     >
       {title}
     </div>
