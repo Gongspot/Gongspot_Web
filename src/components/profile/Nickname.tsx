@@ -37,7 +37,7 @@ const Nickname = ({ nickname }: NicknameProps) => {
         />
         <button
           type="button"
-          className={`text-[0.75rem] font-medium absolute right-2 ${buttonClass}`}
+          className={`text-[0.75rem] font-medium absolute right-[1.5rem] ${buttonClass}`}
           onClick={checkNickname}
           disabled={!inputValue.trim()}
         >
