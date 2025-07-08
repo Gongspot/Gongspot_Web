@@ -5,10 +5,9 @@ interface MyPointSectionProps {
 const MyPointSection = ({ point }: MyPointSectionProps) => {
     return (
         <div
-            className="flex flex-col items-center justify-center
-            mt-[2.5rem] pt-[3.375rem] pb-[2.25rem]"
+            className="flex flex-col items-center justify-center pt-[3.375rem] pb-[2.25rem]"
         >
-            <h1 className="text-[2rem]">
+            <h1 className="py-[0.25rem] text-[2rem]">
                 <span className="text-[2.5rem] font-bold">{point}</span>P
             </h1>
             <button

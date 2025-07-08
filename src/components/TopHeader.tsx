@@ -14,11 +14,11 @@ const TopHeader = ({ title, backButton = true }: TopHeaderProps) => {
     <div className="w-full bg-white flex items-center px-4 h-10 z-30 sticky top-0"
       style={{ boxShadow: '0px 4px 10px 0px #0000000D' }}>
       {backButton && (
-        <button onClick={() => navigate(-1)} className="z-10 font-bold text-lg">
+        <button onClick={() => navigate(-1)} className="z-10 font-bold text-lg absolute left-[1rem]">
           <img src={back} alt="이전" />
         </button>
       )}
-      <div className="mx-auto text-sm font-semibold">{title}</div>
+      <div className="mx-auto text-sm font-bold">{title}</div>
     </div>
   );
 };
