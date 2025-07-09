@@ -1,5 +1,15 @@
 // src/constants/dummySpaces.ts
 
+import hot1 from "../assets/hot1.jpg";
+import hot2 from "../assets/hot2.jpg";
+import hot3 from "../assets/hot3.jpg";
+import theme1 from "../assets/theme1.jpg";
+import theme2 from "../assets/theme2.jpg";
+import theme3 from "../assets/theme3.jpg";
+import theme4 from "../assets/theme4.jpg";
+import theme5 from "../assets/theme5.jpg";
+
+
 export interface RealTimeCongestion {
   type: string;
   comment: string;
@@ -42,7 +52,7 @@ const dummySpaces: Space[] = [
   {
     id: 1,
     name: "서울청년센터 희망점",
-    image: "/src/assets/hot1.jpg",
+    image: hot1,
     rating: 4.8,
     distance: 0.2,
     tags: ["#공공도서관"],
@@ -81,7 +91,7 @@ const dummySpaces: Space[] = [
   {
     id: 2,
     name: "비담 도서관",
-    image: "/src/assets/theme1.jpg",
+    image: theme1,
     rating: 4.5,
     distance: 0.6,
     tags: ["#도서관"],
@@ -120,7 +130,7 @@ const dummySpaces: Space[] = [
   {
     id: 3,
     name: "유라 독서실",
-    image: "/src/assets/hot2.jpg",
+    image: hot2,
     rating: 4.7,
     distance: 1.0,
     tags: ["#스터디룸", "#공공도서관"],
@@ -158,7 +168,7 @@ const dummySpaces: Space[] = [
   {
     id: 4,
     name: "서울청년센터 구로점",
-    image: "/src/assets/hot3.jpg",
+    image: hot3,
     rating: 4.6,
     distance: 0.9,
     tags: ["#공공도서관"],
@@ -196,7 +206,7 @@ const dummySpaces: Space[] = [
   {
     id: 5,
     name: "성북구립도서관",
-    image: "/src/assets/theme1.jpg",
+    image: theme1,
     rating: 4.3,
     distance: 1.5,
     tags: ["#도서관"],
@@ -234,7 +244,7 @@ const dummySpaces: Space[] = [
   {
     id: 6,
     name: "숲속작은도서관",
-    image: "/src/assets/theme1.jpg",
+    image: theme1,
     rating: 4.5,
     distance: 1.8,
     tags: ["#도서관"],
@@ -271,7 +281,7 @@ const dummySpaces: Space[] = [
   {
     id: 7,
     name: "공공스터디 라운지",
-    image: "/src/assets/theme4.jpg",
+    image: theme4,
     rating: 4.7,
     distance: 0.8,
     tags: ["#공공학습공간"],
@@ -309,7 +319,7 @@ const dummySpaces: Space[] = [
   {
     id: 8,
     name: "청년공유스페이스",
-    image: "/src/assets/theme4.jpg",
+    image: theme4,
     rating: 4.3,
     distance: 1.2,
     tags: ["#공공학습공간"],
@@ -346,7 +356,7 @@ const dummySpaces: Space[] = [
   {
     id: 9,
     name: "스터디카페 루트",
-    image: "/src/assets/theme2.jpg",
+    image: theme2,
     rating: 4.2,
     distance: 1.2,
     tags: ["#민간학습공간", "#카페"],
@@ -383,7 +393,7 @@ const dummySpaces: Space[] = [
   {
     id: 10,
     name: "더지니어스 스터디",
-    image: "/src/assets/theme2.jpg",
+    image: theme2,
     rating: 4.7,
     distance: 1.9,
     tags: ["#민간학습공간"],
@@ -421,7 +431,7 @@ const dummySpaces: Space[] = [
   {
     id: 11,
     name: "스터디존",
-    image: "/src/assets/theme2.jpg",
+    image: theme2,
     rating: 4.3,
     distance: 1.7,
     tags: ["#민간학습공간"],
@@ -458,7 +468,7 @@ const dummySpaces: Space[] = [
   {
     id: 12,
     name: "스터디하우스",
-    image: "/src/assets/theme2.jpg",
+    image: theme2,
     rating: 4.5,
     distance: 2.0,
     tags: ["#민간학습공간"],
@@ -495,7 +505,7 @@ const dummySpaces: Space[] = [
   {
     id: 13,
     name: "서울대 제1열람실",
-    image: "/src/assets/theme5.jpg",
+    image: theme5,
     rating: 4.9,
     distance: 2.2,
     tags: ["#교내학습공간"],
@@ -532,7 +542,7 @@ const dummySpaces: Space[] = [
   {
     id: 14,
     name: "연세대 학습관",
-    image: "/src/assets/theme5.jpg",
+    image: theme5,
     rating: 4.3,
     distance: 2.8,
     tags: ["#교내학습공간"],
@@ -569,7 +579,7 @@ const dummySpaces: Space[] = [
   {
     id: 15,
     name: "이화여대 도서관",
-    image: "/src/assets/theme5.jpg",
+    image: theme5,
     rating: 4.6,
     distance: 3.1,
     tags: ["#교내학습공간"],
@@ -606,7 +616,7 @@ const dummySpaces: Space[] = [
   {
     id: 16,
     name: "고려대 개방형열람실",
-    image: "/src/assets/theme5.jpg",
+    image: theme5,
     rating: 4.5,
     distance: 2.4,
     tags: ["#교내학습공간"],
@@ -643,7 +653,7 @@ const dummySpaces: Space[] = [
   {
     id: 17,
     name: "카페아뜰리에",
-    image: "/src/assets/theme3.jpg",
+    image: theme3,
     rating: 4.5,
     distance: 1.3,
     tags: ["#카페"],
@@ -680,7 +690,7 @@ const dummySpaces: Space[] = [
   {
     id: 18,
     name: "힐링 카페",
-    image: "/src/assets/theme3.jpg",
+    image: theme3,
     rating: 4.2,
     distance: 1.7,
     tags: ["#카페"],
@@ -717,7 +727,7 @@ const dummySpaces: Space[] = [
   {
     id: 19,
     name: "카페 모던",
-    image: "/src/assets/theme3.jpg",
+    image: theme3,
     rating: 4.1,
     distance: 2.1,
     tags: ["#카페"],
@@ -754,7 +764,7 @@ const dummySpaces: Space[] = [
   {
     id: 20,
     name: "도서사랑방",
-    image: "/src/assets/theme1.jpg",
+    image: theme1,
     rating: 4.5,
     distance: 2.0,
     tags: ["#도서관"],
@@ -791,7 +801,7 @@ const dummySpaces: Space[] = [
   {
     id: 21,
     name: "스터디파크",
-    image: "/src/assets/hot1.jpg",
+    image: hot1,
     rating: 4.3,
     distance: 2.4,
     tags: ["#스터디룸"],
@@ -828,7 +838,7 @@ const dummySpaces: Space[] = [
   {
     id: 22,
     name: "공유열린공간",
-    image: "/src/assets/theme4.jpg",
+    image: theme4,
     rating: 4.1,
     distance: 1.8,
     tags: ["#공공학습공간"],
@@ -865,7 +875,7 @@ const dummySpaces: Space[] = [
   {
     id: 23,
     name: "민간스페이스A",
-    image: "/src/assets/hot2.jpg",
+    image: hot2,
     rating: 4.4,
     distance: 2.3,
     tags: ["#민간학습공간"],
@@ -902,7 +912,7 @@ const dummySpaces: Space[] = [
   {
     id: 24,
     name: "민간스페이스B",
-    image: "/src/assets/hot3.jpg",
+    image: hot3,
     rating: 4.3,
     distance: 2.9,
     tags: ["#민간학습공간"],
@@ -939,7 +949,7 @@ const dummySpaces: Space[] = [
   {
     id: 25,
     name: "책방공간",
-    image: "/src/assets/theme1.jpg",
+    image: theme1,
     rating: 4.2,
     distance: 2.1,
     tags: ["#도서관"],
@@ -976,7 +986,7 @@ const dummySpaces: Space[] = [
   {
     id: 26,
     name: "자유스터디존",
-    image: "/src/assets/theme4.jpg",
+    image: theme4,
     rating: 4.0,
     distance: 3.3,
     tags: ["#공공학습공간"],
@@ -1013,7 +1023,7 @@ const dummySpaces: Space[] = [
   {
     id: 27,
     name: "도심스터디카페",
-    image: "/src/assets/hot1.jpg",
+    image: hot1,
     rating: 4.6,
     distance: 1.5,
     tags: ["#카페", "#민간학습공간"],
@@ -1050,7 +1060,7 @@ const dummySpaces: Space[] = [
   {
     id: 28,
     name: "마포 열린카페",
-    image: "/src/assets/theme3.jpg",
+    image: theme3,
     rating: 4.7,
     distance: 2.2,
     tags: ["#카페"],
@@ -1087,7 +1097,7 @@ const dummySpaces: Space[] = [
   {
     id: 29,
     name: "명동 스터디카페",
-    image: "/src/assets/theme2.jpg",
+    image: theme2,
     rating: 4.4,
     distance: 2.3,
     tags: ["#민간학습공간"],
@@ -1124,7 +1134,7 @@ const dummySpaces: Space[] = [
   {
     id: 30,
     name: "교내 열린 학습관",
-    image: "/src/assets/theme5.jpg",
+    image: theme5,
     rating: 4.9,
     distance: 2.9,
     tags: ["#교내학습공간"],
