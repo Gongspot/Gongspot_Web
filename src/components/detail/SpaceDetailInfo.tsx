@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import type { Space } from "../../constants/dummySpaces";
 import mapSample from "../../assets/map_sample.jpg";
-import SpaceCongestionCard from ".././homepage/SpaceCongestionCard";
+import SpaceCongestionCard from "../homepage/SpaceCongestionCard";
 
-// 급변하는 더미 혼잡도 데이터 (9시~24시, 16개씩)
 const dummyCongestion = [
   [3, 4, 6, 34, 26, 19, 12, 7, 4, 3, 9, 13, 18, 24, 32, 40], // 월
   [2, 3, 5, 8, 17, 9, 5, 3, 2, 14, 22, 33, 42, 48, 40, 29], // 화
@@ -84,14 +83,18 @@ const SpaceDetailInfo: React.FC<{ space: Space }> = ({ space }) => {
             복사
           </button>
           {copySuccess && (
-            <span className="ml-0.5 text-[8px] text-gray-400">복사되었습니다.</span>
+            <span className="ml-0.5 text-[8px] text-gray-400">
+              복사되었습니다.
+            </span>
           )}
         </div>
       </div>
 
       {/* 예상 혼잡도 */}
       <div className="mt-12 w-full flex flex-col items-center">
-        <div className="font-semibold mb-2 w-[360px] text-left">예상 혼잡도</div>
+        <div className="font-semibold mb-2 w-[360px] text-left">
+          예상 혼잡도
+        </div>
         <div className="flex justify-between text-xs text-gray-400 w-[360px] mx-auto mb-1 px-1">
           <span>9시</span>
           <span>14시</span>
@@ -99,7 +102,7 @@ const SpaceDetailInfo: React.FC<{ space: Space }> = ({ space }) => {
         </div>
         {/* 막대그래프 */}
         <div
-          className="relative w-[360px] flex items-end justify-between"
+          className="relative w-[340px] flex items-end justify-between"
           style={{ height: "120px" }}
         >
           {congestionData.map((v, i) => (

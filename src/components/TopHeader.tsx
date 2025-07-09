@@ -1,5 +1,6 @@
 // src/components/TopHeader.tsx
 import { useNavigate } from 'react-router-dom';
+import back from '../assets/topBack.svg';
 
 interface TopHeaderProps {
   title: string;          
@@ -10,13 +11,14 @@ const TopHeader = ({ title, backButton = true }: TopHeaderProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full bg-white flex items-center px-4 h-10 shadow-md z-30 sticky top-0">
+    <div className="w-full bg-white flex items-center px-4 h-10 z-30 sticky top-0"
+      style={{ boxShadow: '0px 4px 10px 0px #0000000D' }}>
       {backButton && (
-        <button onClick={() => navigate(-1)} className="z-10 font-bold text-lg px-2">
-          ‹
+        <button onClick={() => navigate(-1)} className="z-10 font-bold text-lg absolute left-[1rem]">
+          <img src={back} alt="이전" />
         </button>
       )}
-      <div className="mx-auto text-sm font-semibold">{title}</div>
+      <div className="mx-auto text-sm font-bold">{title}</div>
     </div>
   );
 };

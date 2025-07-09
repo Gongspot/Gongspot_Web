@@ -4,7 +4,7 @@ import Search from "../components/notice/Search";
 
 const NoticePage = () => {
   return (
-    <div className="flex flex-col h-screen w-full">
+    <div className="flex flex-col h-screen w-full bg-white">
       <TopHeader title="공지사항" backButton={true} />
       <Search />
       <NoticeSection />

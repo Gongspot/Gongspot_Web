@@ -1,4 +1,4 @@
-import NextButton from "./NextButton";
+import NextButton from "../NextButton";
 
 interface NicknameProps {
   onNext: () => void;
@@ -21,9 +21,7 @@ const Nickname = ({ onNext }: NicknameProps) => {
           placeholder="사용할 이름을 입력해주세요. (2~12자)"
         />
       </div>
-      <div className="fixed bottom-0 w-full px-[1.75rem] pb-[1.875rem] bg-transparent">
-        <NextButton text={"다음"} onClick={onNext} />
-      </div>
+      <NextButton text={"다음"} onClick={onNext} />
     </div>
   );
 };
