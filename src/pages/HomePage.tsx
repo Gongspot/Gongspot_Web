@@ -5,10 +5,8 @@ import BannerCarousel from "../components/homepage/BannerCarousel";
 import HotSpaceSection from "../components/homepage/HotSpaceSection";
 import ThemeSpaceSection from "../components/homepage/ThemeSpaceSection";
 import TopNavBar from "../components/TopNavBar";
-
-// 데이터
-import hotSpaces from "../constants/hotSpaces";        // 평점 or 리뷰 기준 상위 N개
-import { themeSpaces } from "../constants/spaceThemes"; // 테마별 데이터
+import hotSpaces from "../constants/hotSpaces";     
+import { themeSpaces } from "../constants/spaceThemes"; 
 
 const HomePage: React.FC = () => {
   return (
