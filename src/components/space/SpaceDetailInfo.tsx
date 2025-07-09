@@ -3,7 +3,6 @@ import type { Space } from "../../constants/dummySpaces";
 import mapSample from "../../assets/map_sample.jpg";
 import SpaceCongestionCard from ".././homepage/SpaceCongestionCard";
 
-// 급변하는 더미 혼잡도 데이터 (9시~24시, 16개씩)
 const dummyCongestion = [
   [3, 4, 6, 34, 26, 19, 12, 7, 4, 3, 9, 13, 18, 24, 32, 40], // 월
   [2, 3, 5, 8, 17, 9, 5, 3, 2, 14, 22, 33, 42, 48, 40, 29], // 화

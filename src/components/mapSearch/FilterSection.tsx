@@ -1,6 +1,6 @@
 import FilterBlock from "./FilterBlock";
 import type { RefObject } from "react";
-import type { TabLabel } from "/Gongspot_Web/src/pages/SearchPage"
+import type { TabLabel } from "../../pages/SearchPage";
 
 interface FilterSectionProps {
   title: TabLabel;

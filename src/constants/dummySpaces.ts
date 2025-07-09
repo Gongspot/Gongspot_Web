@@ -1,5 +1,44 @@
 // src/constants/dummySpaces.ts
-const dummySpaces = [
+
+export interface RealTimeCongestion {
+  type: string;
+  comment: string;
+  date: string;
+  ago: string;
+}
+
+export interface Space {
+  id: number;
+  name: string;
+  image: string;
+  rating: number;
+  distance: number;
+  tags: string[];
+  isFree: boolean;
+  isLiked: boolean;
+  address: string;
+  phone: string;
+  opening: string;
+  holiday: string;
+  congestionGraph: number[];
+  realTimeCongestion: RealTimeCongestion[];
+  reviews: number[];
+  reviewStats: ReviewStats;
+}
+
+
+export interface ReviewTag {
+  label: string;
+  count: number;
+}
+
+export interface ReviewStats {
+  score: number;
+  counts: number[];
+  tags: ReviewTag[];
+}
+
+const dummySpaces: Space[] = [
   {
     id: 1,
     name: "서울청년센터 희망점",
@@ -14,7 +53,20 @@ const dummySpaces = [
     opening: "오늘 10:00 ~ 22:00",
     holiday: "매주 월요일 휴무",
     congestionGraph: [8, 5, 8, 12, 20, 22, 8, 5],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [1, 2],
     reviewStats: {
       score: 4.8,
@@ -40,7 +92,20 @@ const dummySpaces = [
     opening: "오늘 09:00 ~ 21:00",
     holiday: "연중무휴",
     congestionGraph: [4, 4, 8, 14, 22, 24, 10, 2],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [3, 4],
     reviewStats: {
       score: 4.2,
@@ -66,7 +131,20 @@ const dummySpaces = [
     opening: "오늘 08:00 ~ 21:00",
     holiday: "매월 마지막주 일요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [5, 6],
     reviewStats: {
       score: 4.4,
@@ -91,7 +169,20 @@ const dummySpaces = [
     opening: "오늘 10:00 ~ 22:00",
     holiday: "매주 금요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [7, 8],
     reviewStats: {
       score: 4.6,
@@ -116,7 +207,20 @@ const dummySpaces = [
     opening: "오늘 09:00 ~ 20:00",
     holiday: "매월 2번째 화요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [9, 10],
     reviewStats: {
       score: 4.3,
@@ -141,7 +245,20 @@ const dummySpaces = [
     opening: "오늘 10:00 ~ 19:00",
     holiday: "매주 일요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [11, 12],
     reviewStats: {
       score: 4.5,
@@ -165,7 +282,20 @@ const dummySpaces = [
     opening: "오늘 09:30 ~ 20:30",
     holiday: "매월 마지막주 토요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [13, 14],
     reviewStats: {
       score: 4.7,
@@ -190,7 +320,20 @@ const dummySpaces = [
     opening: "오늘 10:00 ~ 22:00",
     holiday: "매주 화요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [15, 16],
     reviewStats: {
       score: 4.3,
@@ -214,7 +357,20 @@ const dummySpaces = [
     opening: "오늘 09:00 ~ 22:00",
     holiday: "매주 월요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [17, 18],
     reviewStats: {
       score: 4.2,
@@ -238,7 +394,20 @@ const dummySpaces = [
     opening: "오늘 09:00 ~ 22:00",
     holiday: "매월 1일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [19, 20],
     reviewStats: {
       score: 4.7,
@@ -263,7 +432,20 @@ const dummySpaces = [
     opening: "오늘 08:00 ~ 22:00",
     holiday: "공휴일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [21, 22],
     reviewStats: {
       score: 4.3,
@@ -287,7 +469,20 @@ const dummySpaces = [
     opening: "오늘 11:00 ~ 23:00",
     holiday: "매주 수요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [23, 24],
     reviewStats: {
       score: 4.5,
@@ -311,7 +506,20 @@ const dummySpaces = [
     opening: "오늘 08:00 ~ 23:00",
     holiday: "공휴일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [25, 26],
     reviewStats: {
       score: 4.9,
@@ -335,7 +543,20 @@ const dummySpaces = [
     opening: "오늘 08:00 ~ 22:00",
     holiday: "매주 토요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [27, 28],
     reviewStats: {
       score: 4.3,
@@ -359,7 +580,20 @@ const dummySpaces = [
     opening: "오늘 09:00 ~ 23:00",
     holiday: "매월 마지막주 일요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [29, 30],
     reviewStats: {
       score: 4.6,
@@ -383,7 +617,20 @@ const dummySpaces = [
     opening: "오늘 08:30 ~ 22:30",
     holiday: "공휴일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [1, 3],
     reviewStats: {
       score: 4.5,
@@ -407,7 +654,20 @@ const dummySpaces = [
     opening: "오늘 11:00 ~ 22:00",
     holiday: "매주 월요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [2, 4],
     reviewStats: {
       score: 4.5,
@@ -431,7 +691,20 @@ const dummySpaces = [
     opening: "오늘 09:30 ~ 22:00",
     holiday: "매주 일요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [5, 7],
     reviewStats: {
       score: 4.2,
@@ -455,7 +728,20 @@ const dummySpaces = [
     opening: "오늘 08:00 ~ 21:00",
     holiday: "매주 토요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [8, 10],
     reviewStats: {
       score: 4.1,
@@ -479,7 +765,20 @@ const dummySpaces = [
     opening: "오늘 10:00 ~ 20:00",
     holiday: "매월 1일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [9, 12],
     reviewStats: {
       score: 4.5,
@@ -503,7 +802,20 @@ const dummySpaces = [
     opening: "오늘 09:00 ~ 22:00",
     holiday: "매주 월요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [11, 13],
     reviewStats: {
       score: 4.3,
@@ -527,7 +839,20 @@ const dummySpaces = [
     opening: "오늘 09:00 ~ 21:00",
     holiday: "매주 화요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [14, 16],
     reviewStats: {
       score: 4.1,
@@ -551,7 +876,20 @@ const dummySpaces = [
     opening: "오늘 10:00 ~ 21:00",
     holiday: "매주 목요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [18, 19],
     reviewStats: {
       score: 4.4,
@@ -575,7 +913,20 @@ const dummySpaces = [
     opening: "오늘 11:00 ~ 22:00",
     holiday: "매주 토요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [20, 21],
     reviewStats: {
       score: 4.3,
@@ -599,7 +950,20 @@ const dummySpaces = [
     opening: "오늘 10:00 ~ 20:00",
     holiday: "매주 일요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [22, 23],
     reviewStats: {
       score: 4.2,
@@ -623,7 +987,20 @@ const dummySpaces = [
     opening: "오늘 09:30 ~ 22:30",
     holiday: "공휴일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [24, 25],
     reviewStats: {
       score: 4.0,
@@ -647,7 +1024,20 @@ const dummySpaces = [
     opening: "오늘 10:00 ~ 21:00",
     holiday: "매주 월요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [26, 27],
     reviewStats: {
       score: 4.6,
@@ -671,7 +1061,20 @@ const dummySpaces = [
     opening: "오늘 08:00 ~ 23:00",
     holiday: "매주 수요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [28, 29],
     reviewStats: {
       score: 4.7,
@@ -695,7 +1098,20 @@ const dummySpaces = [
     opening: "오늘 10:00 ~ 21:30",
     holiday: "매주 월요일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [30, 1],
     reviewStats: {
       score: 4.4,
@@ -719,7 +1135,20 @@ const dummySpaces = [
     opening: "오늘 08:00 ~ 23:00",
     holiday: "공휴일 휴무",
     congestionGraph: [],
-    realTimeCongestion: [],
+    realTimeCongestion: [
+      {
+        type: "보통",
+        comment: "적당히 자리가 있습니다.",
+        date: "2025-07-09",
+        ago: "방금 전"
+      },
+      {
+        type: "혼잡",
+        comment: "자리가 많이 찼습니다.",
+        date: "2025-07-09",
+        ago: "5분 전"
+      },
+    ],
     reviews: [2, 3, 5],
     reviewStats: {
       score: 4.8,
@@ -730,5 +1159,7 @@ const dummySpaces = [
     },
   },
 ];
+
+
 
 export default dummySpaces;
