@@ -4,9 +4,7 @@ import banner2 from "../../assets/banner2.jpg";
 import banner3 from "../../assets/banner3.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import "swiper/swiper-bundle.css";
 
 const BannerCarousel: React.FC = () => {
   return (

@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import TopHeader from "../components/TopHeader";
-import SearchControls from "../components/mapSearch/SearchControls";
-import BottomSheet from "../components/mapSearch/BottomSheet";
-import SearchMode from "../components/mapSearch/SearchMode";
+import SearchControls from "../components/mapsearch/SearchControls";
+import BottomSheet from "../components/mapsearch/BottomSheet";
+import SearchMode from "../components/mapsearch/SearchMode";
 
 
 const SearchPage = () => {
