@@ -1,7 +1,12 @@
 import SubMenu from "./SubMemu";
 import Menu from "./Menu";
+import next from '../../assets/next.svg';
 
-const MenuSection = () => {
+interface MenuSectionProps {
+    onLogoutClick: () => void;
+}
+
+const MenuSection = ({ onLogoutClick }: MenuSectionProps) => {
     const Divider = () => (
         <div className="w-full mt-[1.25rem] border-b-[0.063rem] border-[#CCCCCC]" />
     );
@@ -32,7 +37,14 @@ const MenuSection = () => {
 
             <Menu text="계정 관리" />
             <div className="flex flex-col gap-[0.563rem]">
-                <SubMenu text="로그아웃" />
+                <button 
+                    className="flex items-center justify-between px-[1.75rem] 
+                    text-[0.938rem] text-black font-medium"
+                    onClick={onLogoutClick}
+                    >
+                        로그아웃
+                    <img src={next} alt="다음" />
+                </button>
                 <SubMenu text="회원 탈퇴" link="/mypage/withdrawal" />
             </div>
             <Divider />
