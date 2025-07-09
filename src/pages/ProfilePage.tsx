@@ -12,9 +12,11 @@ const ProfilePage = () => {
 
   return (
     <div className="flex flex-col h-screen w-full bg-white">
-      <TopHeader title="프로필 관리" backButton={true} />
-      <Profile onClick={() => setOverlayActive(true)} />
-      <Nickname nickname={nickname} />
+      <div className="flex-1">
+        <TopHeader title="프로필 관리" backButton={true} />
+        <Profile onClick={() => setOverlayActive(true)} />
+        <Nickname nickname={nickname} />
+      </div>
       <NextButton
         text="변경하기"
         onClick={() => {

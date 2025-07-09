@@ -1,29 +1,53 @@
 import SubMenu from "./SubMemu";
 import Menu from "./Menu";
+import next from '../../assets/next.svg';
 
-const MenuSection = () => {
+interface MenuSectionProps {
+    onLogoutClick: () => void;
+}
+
+const MenuSection = ({ onLogoutClick }: MenuSectionProps) => {
+    const Divider = () => (
+        <div className="w-full mt-[1.25rem] border-b-[0.063rem] border-[#CCCCCC]" />
+    );
+
     return (
         <>
             <Menu text="프로필 관리" />
-            <SubMenu text="프로필 관리" />
-            <div className="w-full mt-[1.25rem] border-b-[0.063rem] border-[#CCCCCC]" />
+            <SubMenu text="프로필 관리" link="/mypage/profile" />
+            <Divider />
 
-            <Menu text="공관 관리" />
+            <Menu text="공간 관리" />
             <div className="flex flex-col gap-[0.563rem]">
-                <SubMenu text="내가 방문한 공간" />
-                <SubMenu text="새 공간 등록 신청" />
+                <SubMenu text="내가 방문한 공간" link="/mypage/spaces/visit" />
+                <SubMenu text="새 공간 등록 신청" link="/mypage/spaces/proposal" />
             </div>
-            <div className="w-full mt-[1.25rem] border-b-[0.063rem] border-[#CCCCCC]" />
+            <Divider />
 
             <Menu text="알림 설정" />
-            <SubMenu text="알림 설정" />
-            <div className="w-full mt-[1.25rem] border-b-[0.063rem] border-[#CCCCCC]" />
+            <SubMenu text="알림 설정" link="/mypage/push" />
+            <Divider />
 
             <Menu text="포인트" />
             <div className="flex flex-col gap-[0.563rem]">
-                <SubMenu text="나의 포인트" />
-                <SubMenu text="포인트 충전하기" />
+                <SubMenu text="나의 포인트" link="/mypage/point" />
+                <SubMenu text="포인트 충전하기" link="/mypage/point/charge" />
             </div>
+            <Divider />
+
+            <Menu text="계정 관리" />
+            <div className="flex flex-col gap-[0.563rem]">
+                <button 
+                    className="flex items-center justify-between px-[1.75rem] 
+                    text-[0.938rem] text-black font-medium"
+                    onClick={onLogoutClick}
+                    >
+                        로그아웃
+                    <img src={next} alt="다음" />
+                </button>
+                <SubMenu text="회원 탈퇴" link="/mypage/withdrawal" />
+            </div>
+            <Divider />
         </>
     );
 };

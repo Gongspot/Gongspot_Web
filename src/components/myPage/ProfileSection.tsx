@@ -10,7 +10,7 @@ const ProfileSection = ({ nickname, profile }: ProfileSectionProps) => {
                 <span className="flex h-[2.938rem] w-[2.938rem] items-center justify-center rounded-full bg-[#D9D9D9]">
                     <img src={profile} alt="프로필" />
                 </span>
-                <span className="ml-[1.125rem] flex flex-col justify-center">
+                <span className="ml-[1.125rem] flex flex-col justify-center font-medium">
                     <h1 className="text-[1.438rem]">
                         <span className="font-bold text-[#4CB1F1]">{nickname}</span>님
                     </h1>

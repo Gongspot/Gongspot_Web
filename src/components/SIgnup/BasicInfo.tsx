@@ -57,126 +57,125 @@ const BasicInfo = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center text-center bg-[#EFF7FB]">
-      <div className="mt-[3.5rem]">
-        <h1 className="text-[1.25rem] text-[#4CB1F1]">
+      <div className="flex-1">
+        <h1 className="mt-[3.5rem] text-[1.25rem] text-[#4CB1F1]">
           어떤 공부장소를 선호하세요?
         </h1>
         <p className="mt-[0.75rem] text-[0.875rem] text-[#4CB1F1]">
           취향에 맞는 장소를 추천해드릴게요!
         </p>
-      </div>
-
-      <div className="mt-[2.25rem] mb-[1.5rem] w-full px-[1.25rem]">
-        <div className="rounded-[15px] border border-[#B1B8C180] bg-white">
-          <div className="my-[1.5rem] ml-[1.125rem] mr-[2.375rem]">
-            <BasicInfoItem text={"자주 이용하는 공부 장소를 선택해주세요."} />
-            <div className="mt-[1rem]">
-              <span className="flex justify-start space-x-[0.5rem]">
-                {PLACE_OPTIONS.slice(0, 3).map((option) => (
-                  <SelectButton 
-                    key={option}
-                    text={option}
-                    selected={state.places.includes(option)}
-                    onClick={() =>
-                      dispatch({ type: 'TOGGLE_SELECT', group: 'places', payload: option })
-                    }
-                    disabled={
-                      !state.places.includes(option) && state.places.length >= MAX_SELECT
-                    }
-                  />
-                ))}
-              </span>
-              <span className="flex justify-start mt-[0.5rem] space-x-[0.5rem]">
-                {PLACE_OPTIONS.slice(3).map((option) => (
-                  <SelectButton 
-                    key={option}
-                    text={option}
-                    selected={state.places.includes(option)}
-                    onClick={() =>
-                      dispatch({ type: 'TOGGLE_SELECT', group: 'places', payload: option })
-                    }
-                    disabled={
-                      !state.places.includes(option) && state.places.length >= MAX_SELECT
-                    }
-                  />
-                ))}
-              </span>
+        <div className="mt-[2.25rem] mb-[1.5rem] w-full px-[1.25rem]">
+          <div className="rounded-[15px] border border-[#B1B8C180] bg-white">
+            <div className="my-[1.5rem] ml-[1.125rem] mr-[2.375rem]">
+              <BasicInfoItem text={"자주 이용하는 공부 장소를 선택해주세요."} />
+              <div className="mt-[1rem]">
+                <span className="flex justify-start space-x-[0.5rem]">
+                  {PLACE_OPTIONS.slice(0, 3).map((option) => (
+                    <SelectButton 
+                      key={option}
+                      text={option}
+                      selected={state.places.includes(option)}
+                      onClick={() =>
+                        dispatch({ type: 'TOGGLE_SELECT', group: 'places', payload: option })
+                      }
+                      disabled={
+                        !state.places.includes(option) && state.places.length >= MAX_SELECT
+                      }
+                    />
+                  ))}
+                </span>
+                <span className="flex justify-start mt-[0.5rem] space-x-[0.5rem]">
+                  {PLACE_OPTIONS.slice(3).map((option) => (
+                    <SelectButton 
+                      key={option}
+                      text={option}
+                      selected={state.places.includes(option)}
+                      onClick={() =>
+                        dispatch({ type: 'TOGGLE_SELECT', group: 'places', payload: option })
+                      }
+                      disabled={
+                        !state.places.includes(option) && state.places.length >= MAX_SELECT
+                      }
+                    />
+                  ))}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-[1.25rem] rounded-[15px] border border-[#B1B8C180] bg-white">
-          <div className="my-[1.5rem] ml-[1.125rem] mr-[2.375rem]">
-            <BasicInfoItem text={"방문하시는 목적을 선택해주세요."} />
-            <div className="mt-[1rem]">
-              <span className="flex justify-start space-x-[0.5rem]">
-                {PURPOSE_OPTIONS.slice(0, 3).map((option) => (
-                  <SelectButton 
-                    key={option}
-                    text={option}
-                    selected={state.purposes.includes(option)}
-                    onClick={() =>
-                      dispatch({ type: 'TOGGLE_SELECT', group: 'purposes', payload: option })
-                    }
-                    disabled={
-                      !state.purposes.includes(option) && state.purposes.length >= MAX_SELECT
-                    }
-                  />
-                ))}
-              </span>
-              <span className="flex justify-start mt-[0.5rem] space-x-[0.5rem]">
-                {PURPOSE_OPTIONS.slice(3).map((option) => (
-                  <SelectButton 
-                    key={option}
-                    text={option}
-                    selected={state.purposes.includes(option)}
-                    onClick={() =>
-                      dispatch({ type: 'TOGGLE_SELECT', group: 'purposes', payload: option })
-                    }
-                    disabled={
-                      !state.purposes.includes(option) && state.purposes.length >= MAX_SELECT
-                    }
-                  />
-                ))}
-              </span>
+          <div className="mt-[1.25rem] rounded-[15px] border border-[#B1B8C180] bg-white">
+            <div className="my-[1.5rem] ml-[1.125rem] mr-[2.375rem]">
+              <BasicInfoItem text={"방문하시는 목적을 선택해주세요."} />
+              <div className="mt-[1rem]">
+                <span className="flex justify-start space-x-[0.5rem]">
+                  {PURPOSE_OPTIONS.slice(0, 3).map((option) => (
+                    <SelectButton 
+                      key={option}
+                      text={option}
+                      selected={state.purposes.includes(option)}
+                      onClick={() =>
+                        dispatch({ type: 'TOGGLE_SELECT', group: 'purposes', payload: option })
+                      }
+                      disabled={
+                        !state.purposes.includes(option) && state.purposes.length >= MAX_SELECT
+                      }
+                    />
+                  ))}
+                </span>
+                <span className="flex justify-start mt-[0.5rem] space-x-[0.5rem]">
+                  {PURPOSE_OPTIONS.slice(3).map((option) => (
+                    <SelectButton 
+                      key={option}
+                      text={option}
+                      selected={state.purposes.includes(option)}
+                      onClick={() =>
+                        dispatch({ type: 'TOGGLE_SELECT', group: 'purposes', payload: option })
+                      }
+                      disabled={
+                        !state.purposes.includes(option) && state.purposes.length >= MAX_SELECT
+                      }
+                    />
+                  ))}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-[1.25rem] rounded-[15px] border border-[#B1B8C180] bg-white">
-          <div className="my-[1.5rem] ml-[1.125rem] mr-[2.375rem]">
-            <BasicInfoItem text={"주 활동 지역을 선택해주세요."} />
-            <div className="mt-[1rem]">
-              <span className="flex justify-start space-x-[0.5rem]">
-                {REGION_OPTIONS.slice(0, 4).map((option) => (
-                  <SelectButton 
-                    key={option}
-                    text={option}
-                    selected={state.regions.includes(option)}
-                    onClick={() =>
-                      dispatch({ type: 'TOGGLE_SELECT', group: 'regions', payload: option })
-                    }
-                    disabled={
-                      !state.regions.includes(option) && state.regions.length >= MAX_SELECT
-                    }
-                  />
-                ))}
-              </span>
-              <span className="flex justify-start mt-[0.5rem] space-x-[0.5rem]">
-                {REGION_OPTIONS.slice(4).map((option) => (
-                  <SelectButton 
-                    key={option}
-                    text={option}
-                    selected={state.regions.includes(option)}
-                    onClick={() =>
-                      dispatch({ type: 'TOGGLE_SELECT', group: 'regions', payload: option })
-                    }
-                    disabled={
-                      !state.regions.includes(option) && state.regions.length >= MAX_SELECT
-                    }
-                  />
-                ))}
-              </span>
+          <div className="mt-[1.25rem] rounded-[15px] border border-[#B1B8C180] bg-white">
+            <div className="my-[1.5rem] ml-[1.125rem] mr-[2.375rem]">
+              <BasicInfoItem text={"주 활동 지역을 선택해주세요."} />
+              <div className="mt-[1rem]">
+                <span className="flex justify-start space-x-[0.5rem]">
+                  {REGION_OPTIONS.slice(0, 4).map((option) => (
+                    <SelectButton 
+                      key={option}
+                      text={option}
+                      selected={state.regions.includes(option)}
+                      onClick={() =>
+                        dispatch({ type: 'TOGGLE_SELECT', group: 'regions', payload: option })
+                      }
+                      disabled={
+                        !state.regions.includes(option) && state.regions.length >= MAX_SELECT
+                      }
+                    />
+                  ))}
+                </span>
+                <span className="flex justify-start mt-[0.5rem] space-x-[0.5rem]">
+                  {REGION_OPTIONS.slice(4).map((option) => (
+                    <SelectButton 
+                      key={option}
+                      text={option}
+                      selected={state.regions.includes(option)}
+                      onClick={() =>
+                        dispatch({ type: 'TOGGLE_SELECT', group: 'regions', payload: option })
+                      }
+                      disabled={
+                        !state.regions.includes(option) && state.regions.length >= MAX_SELECT
+                      }
+                    />
+                  ))}
+                </span>
+              </div>
             </div>
           </div>
         </div>
