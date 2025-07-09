@@ -1,8 +1,8 @@
 import profile from "../assets/profile.svg";
+import MenuSection from "../components/myPage/MenuSection";
+import MyPageItemSection from "../components/myPage/MyPageItemSection";
+import ProfileSection from "../components/myPage/ProfileSection";
 import TopHeader from "../components/TopHeader";
-import ProfileSection from "../components/mypage/ProfileSection";
-import MyPageItemSection from "../components/mypage/MyPageItemSection";
-import MenuSection from "../components/mypage/MenuSection";
 
 const nickname = "카공족";
 const point = 500;
