@@ -5,9 +5,9 @@ interface NextButtonProps {
 
 const NextButton = ({ text, onClick, ...props }: NextButtonProps) => {
     return (
-        <div className="fixed bottom-0 w-full px-[1.75rem] pb-[1.875rem]">
+        <div className="w-full px-[1.75rem] pb-[1.875rem]">
             <button
-                className="w-full h-[3.125rem] bg-[#4CB1F1] text-white text-[1rem] rounded"
+                className="w-full py-[0.875rem] bg-[#4CB1F1] text-white text-[1rem] rounded-[0.313rem]"
                 onClick={onClick}
                 {...props}
             >
