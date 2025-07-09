@@ -5,8 +5,8 @@ interface ProfileSectionProps {
 
 const ProfileSection = ({ nickname, profile }: ProfileSectionProps) => {
     return (
-        <div className="pt-[2.5rem]">
-            <div className="mb-[1.938rem] m-[1.75rem] flex items-center">
+        <div className="pt-0">
+            <div className="m-[1.75rem] flex items-center">
                 <span className="flex h-[2.938rem] w-[2.938rem] items-center justify-center rounded-full bg-[#D9D9D9]">
                     <img src={profile} alt="프로필" />
                 </span>
