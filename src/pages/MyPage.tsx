@@ -9,7 +9,7 @@ const point = 500;
 
 const MyPage = () => {
   return (
-    <div className="flex flex-col h-screen w-full bg-white">
+    <div className="flex flex-col min-h-screen w-full bg-white pb-[5rem]">
       <TopHeader title="마이페이지" backButton={false} />
       <ProfileSection nickname={nickname} profile={profile} />
       <MyPageItemSection point={point} />
