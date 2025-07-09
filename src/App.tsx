@@ -17,6 +17,7 @@ import PointCharge from "./components/point/PointCharge";
 import PointDetail from "./components/point/PointDetail";
 import HotSpaceListPage from "./pages/HotSpaceListPage";  
 import ProfilePage from "./pages/ProfilePage";
+import WithdrawalPage from "./pages/WithdrawalPage";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             <Route path="detail" element={<PointDetail />} />
           </Route>
           <Route path="/mypage/profile" element={<ProfilePage />} />
+          <Route path="/mypage/withdrawal" element={<WithdrawalPage />} />
         </Routes>
       </div>
       <BottomNavBar />
