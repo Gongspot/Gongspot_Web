@@ -21,16 +21,20 @@ const LoginSplashView = () => {
         </p>
         <div className="flex flex-col items-center mt-[2.375rem]">
           <Symbol
-            className={`
-              transition-transform transition-colors duration-[2000ms] mb-[0.5rem]
-              ${animate ? 'text-white scale-100' : 'text-[#4CB1F1] scale-[0.8]'}
-            `}
+            className="transition-transform transition-colors mb-[0.5rem]"
+            style={{ 
+              color: animate ? 'white' : '#4CB1F1',
+              transform: animate ? 'scale(1)' : 'scale(0.8)',
+              transition: 'color 2s, transform 2s',
+            }}
           />
           <Logo
-            className={`
-              transition-transform transition-colors duration-[2000ms]
-              ${animate ? 'text-white scale-100' : 'text-[#4CB1F1] scale-[0.8]'}
-            `}
+            className="transition-transform transition-colors"
+            style={{ 
+              color: animate ? 'white' : '#4CB1F1',
+              transform: animate ? 'scale(1)' : 'scale(0.8)',
+              transition: 'color 2s, transform 2s',
+            }}
           />
         </div>
       </div>
