@@ -8,12 +8,13 @@ const BottomNavBar = () => {
   const location = useLocation();
   if (
     location.pathname === "/signup" ||
+    location.pathname === "/" ||
     location.pathname.startsWith("/mypage/")
   ) {
     return null;
   }
   const navItems = [
-    { path: "/", label: "홈", icon: HomeIcon },
+    { path: "/home", label: "홈", icon: HomeIcon },
     { path: "/recommendations", label: "추천", icon: FireIcon },
     { path: "/search", label: "검색", icon: MagnifyingGlassIcon },
     { path: "/favorites", label: "찜", icon: BookmarkIcon },

@@ -9,9 +9,7 @@ const Nickname = ({ nickname }: NicknameProps) => {
   const [message, setMessage] = useState("");
   
   const checkNickname = () => {
-    if (inputValue === "") {
-      setMessage("닉네임을 입력해주세요.");
-    } else if (inputValue === "카공족") {
+    if (inputValue === "카공족") {
       setMessage("이미 사용 중인 닉네임입니다.");
     } else {
       setMessage("사용 가능한 닉네임입니다.");
