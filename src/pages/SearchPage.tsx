@@ -3,7 +3,10 @@ import TopHeader from "../components/TopHeader";
 import SearchControls from "../components/mapSearch/SearchControls";
 import BottomSheet from "../components/mapSearch/BottomSheet";
 import SearchMode from "../components/mapSearch/SearchMode";
-
+import { useSearchFilters } from "../hooks/useSearchFilters";
+import KakaoMap from "../components/mapSearch/KakaoMap";
+import SearchResultSheet from "../components/mapSearch/SearchResultSheet";
+import { useSearchMode } from "../contexts/SearchModeContext";
 
 const SearchPage = () => {
   useEffect(() => {
@@ -12,6 +15,13 @@ const SearchPage = () => {
       document.body.style.overflow = "auto";
     };
   }, []);
+
+  const {
+    isSearchMode,
+    setIsSearchMode,
+    isSearchResultSheetOpen,
+    setIsSearchResultSheetOpen,
+  } = useSearchMode();
 
   const {
     isSheetOpen,
@@ -31,56 +41,65 @@ const SearchPage = () => {
     areaRef,
   } = useSearchFilters();
 
-  // 무료/유료 버튼 클릭 기능 구현
   const [paidFilter, setPaidFilter] = useState<"무료" | "유료" | null>(null);
 
   const togglePaidFilter = (label: "무료" | "유료") => {
     setPaidFilter((prev) => (prev === label ? null : label));
   };
 
-  // 검색창
-  const [isSearchMode, setIsSearchMode] = useState(false);
+  const [sheetHeight, setSheetHeight] = useState("50vh");
 
   const enterSearchMode = () => {
     setIsSearchMode(true);
   };
 
-  // 검색 시 바텀 시트 올라오게
-  const [isSearchResultSheetOpen, setIsSearchResultSheetOpen] = useState(false);
-  const [sheetHeight, setSheetHeight] = useState("50vh");
+  const exitSearchMode = () => {
+    setIsSearchMode(false);
+  };
 
+  // 검색어 유지
+  const [searchInput, setSearchInput] = useState(""); 
 
   return (
     <div className="w-full h-screen bg-gray-200">
-      {/* 상단 헤더 (뒤로가기 버튼 없음) */}
+      {/* 상단 헤더 */}
       <TopHeader title="공간 검색" backButton={false} />
 
-      {/* 지도 + 검색창 영역 */}
+      {/* 지도 + 검색창 */}
       <div className="absolute top-10 left-0 right-0 bottom-0 bg-gray-200">
-        {/* <KakaoMap /> 지도 삽입 */}
+        <KakaoMap /> 지도 삽입
 
-        {isSearchMode ? (
-          <SearchMode
-            exitSearchMode={() => setIsSearchMode(false)}
-            openSearchResultSheet={() => setIsSearchResultSheetOpen(true)}
-          />
-                    
-        ) : (
+        {/* 검색창은 항상 렌더링 */}
+        <SearchMode
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+          exitSearchMode={exitSearchMode}
+          enterSearchMode={enterSearchMode}
+          openSearchResultSheet={() => setIsSearchResultSheetOpen(true)}
+          isSearchMode={isSearchMode}
+          isSearchResultSheetOpen={isSearchResultSheetOpen}
+        />
+
+        {/* 유료/무료 버튼은 검색모드 아닐 때만 렌더링 */}
+        {(!isSearchMode || isSearchResultSheetOpen) && (
           <SearchControls
             paidFilter={paidFilter}
             togglePaidFilter={togglePaidFilter}
             enterSearchMode={enterSearchMode}
           />
         )}
+
       </div>
 
-      {isSheetOpen && (
+
+      {/* 바텀 시트 하단 버튼 (검색 모드일 때 숨김) */}
+      {isSheetOpen && !isSearchMode && (
         <div className="fixed bottom-0 left-0 w-full z-50">
           <div className="bg-white w-full px-4 py-4 border-t shadow-md flex gap-2">
             <button
               onClick={() => {
-                setSelectedFilters(initialSelectedFilters); // 선택값 초기화
-                setIsSheetOpen(false); // 바텀 시트 닫기
+                setSelectedFilters(initialSelectedFilters);
+                setIsSheetOpen(false);
               }}
               className="w-24 py-2 text-sm border border-gray-300 rounded-lg text-gray-600 bg-white"
             >
@@ -99,33 +118,38 @@ const SearchPage = () => {
         </div>
       )}
 
-      {/* 바텀 시트 */}
-      <BottomSheet        
-        isSheetOpen={isSheetOpen}
-        setIsSheetOpen={setIsSheetOpen}
-        sheetRef={sheetRef}
-        selectedFilters={selectedFilters}
-        toggleFilter={toggleFilter}
-        handleTouchStart={handleTouchStart}
-        handleTouchMove={handleTouchMove}
-        handleTouchEnd={handleTouchEnd}
-        purposeRef={purposeRef}
-        typeRef={typeRef}
-        moodRef={moodRef}
-        facilityRef={facilityRef}
-        areaRef={areaRef}
-        initialSelectedFilters={initialSelectedFilters}
-      />
-      {/* 검색 결과 바텀 시트 */}
-      {isSearchResultSheetOpen && (
-        <SearchResultSheet
-          isOpen={isSearchResultSheetOpen}
-          setIsOpen={setIsSearchResultSheetOpen}
-          height={sheetHeight}
-          setHeight={setSheetHeight}
+      {/* 바텀 시트 자체도 검색 모드일 땐 숨김 */}
+      {!isSearchMode && (
+        <BottomSheet
+          isSheetOpen={isSheetOpen}
+          setIsSheetOpen={setIsSheetOpen}
+          sheetRef={sheetRef}
+          selectedFilters={selectedFilters}
+          toggleFilter={toggleFilter}
+          handleTouchStart={handleTouchStart}
+          handleTouchMove={handleTouchMove}
+          handleTouchEnd={handleTouchEnd}
+          purposeRef={purposeRef}
+          typeRef={typeRef}
+          moodRef={moodRef}
+          facilityRef={facilityRef}
+          areaRef={areaRef}
+          initialSelectedFilters={initialSelectedFilters}
         />
-
       )}
+
+      {/* 검색 결과 바텀 시트 */}
+      <SearchResultSheet
+        isOpen={isSearchResultSheetOpen}
+        setIsOpen={(open) => {
+          setIsSearchResultSheetOpen(open);
+          if (!open) {
+            exitSearchMode(); // ← 닫힐 때만 검색모드 종료
+          }
+        }}
+        height={sheetHeight}
+        setHeight={setSheetHeight}
+      />
     </div>
   );
 };
