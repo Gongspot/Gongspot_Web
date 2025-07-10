@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import dummySpaces from "../constants/dummySpaces";
 import dummyReviews from "../constants/dummyReviews";
 import type { Space } from "../constants/dummySpaces";
@@ -12,11 +12,12 @@ import TopHeader from "../components/TopHeader";
 
 const TOP_HEADER_HEIGHT = 42; // TopHeader height(px)
 const IMAGE_HEIGHT = 220;
-const SUMMARY_HEIGHT = 84; // 이름+별점+태그+탭
-const BOTTOM_NAV_HEIGHT = 64; // BottomNavBar 등
+const SUMMARY_HEIGHT = 84;
+const BOTTOM_NAV_HEIGHT = 64;
 
 const SpaceDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [tab, setTab] = useState<"info" | "review">("info");
   const [liked, setLiked] = useState(false);
 
@@ -93,11 +94,10 @@ const SpaceDetailPage: React.FC = () => {
             공간리뷰
           </button>
         </div>
-        {/* 평점 통계 영역을 탭 아래에 "고정" */}
         {tab === "review" && <SpaceDetailReviewStats space={space} />}
       </div>
 
-      {/* 스크롤 영역: 상세/리뷰 */}
+      {/* 스크롤 영역 */}
       <div
         className="flex-1 overflow-y-auto"
         style={{
@@ -115,6 +115,27 @@ const SpaceDetailPage: React.FC = () => {
           <SpaceDetailReview reviews={reviews} />
         )}
       </div>
+
+      {/* 리뷰 작성하기 버튼 (리뷰 탭에서만) */}
+      {tab === "review" && (
+        <div
+          className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[400px] px-4 pb-4 bg-white z-50"
+          style={{
+            boxShadow: "0 -2px 12px rgba(0,0,0,0.08)",
+          }}
+        >
+          <button
+            className="absolute bottom-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-white shadow border border-gray-200"
+            onClick={() => alert("수정")}
+          >
+            <img
+              src="/path/to/pencil_icon.svg"
+              alt="수정"
+              className="w-4 h-4"
+            />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
