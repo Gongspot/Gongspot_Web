@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 import TabButtons from "./TapButttons";
 import FilterSection from "./FilterSection";
-import type { TabLabel } from "../../pages/SearchPage";
+import type { TabLabel } from "/Gongspot_Web/src/hooks/useSearchFilters";
 
 interface BottomSheetProps {
   sheetRef: RefObject<HTMLDivElement | null>;
@@ -35,6 +35,34 @@ const BottomSheet = ({
   facilityRef,
   areaRef,
 }: BottomSheetProps) => {
+  const sections = [
+    {
+      title: "이용 목적" as TabLabel,
+      labels: ["개인공부", "그룹공부", "휴식", "노트북 작업", "집중공부"],
+      ref: purposeRef,
+    },
+    {
+      title: "공간 종류" as TabLabel,
+      labels: ["도서관", "카페", "민간학습공간", "공공학습공간", "교내학습공간"],
+      ref: typeRef,
+    },
+    {
+      title: "분위기" as TabLabel,
+      labels: ["넓은", "아늑한", "깔끔한", "조용한", "음악이 나오는", "이야기를 나눌 수 있는"],
+      ref: moodRef,
+    },
+    {
+      title: "부가시설" as TabLabel,
+      labels: ["Wi-Fi", "콘센트", "넓은 좌석", "음료"],
+      ref: facilityRef,
+    },
+    {
+      title: "지역" as TabLabel,
+      labels: ["강남권", "강북권", "도심권", "서남권", "서북권", "동남권", "성동·광진권"],
+      ref: areaRef,
+    },
+  ];
+
   return (
     <div
       ref={sheetRef}
@@ -56,7 +84,6 @@ const BottomSheet = ({
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           />
-
           <TabButtons onClick={() => setIsSheetOpen(true)} />
         </>
       )}
@@ -67,17 +94,17 @@ const BottomSheet = ({
             <div className="w-full h-px bg-gray-200 mt-10" />
           </div>
 
+          {sections.map((section) => (
           <FilterSection
-            title="이용 목적"
-            labels={["개인공부", "그룹공부", "휴식", "노트북 작업", "집중공부"]}
+            key={section.title}
+            title={section.title}
+            labels={section.labels}
             selectedFilters={selectedFilters}
             toggleFilter={toggleFilter}
-            purposeRef={purposeRef}
-            typeRef={typeRef}
-            moodRef={moodRef}
-            facilityRef={facilityRef}
-            areaRef={areaRef}
+            sectionRef={section.ref} 
           />
+        ))}
+
         </div>
       )}
     </div>
