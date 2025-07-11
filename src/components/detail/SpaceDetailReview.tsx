@@ -7,8 +7,8 @@ const SpaceDetailReview: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
   }
   return (
     <div className="px-5 py-4">
-      {reviews.map((r) => (
-        <div key={r.id} className="bg-white border rounded-lg p-4 mb-3">
+      {reviews.map((r, idx) => (
+        <div key={`${r.id}_${idx}`} className="bg-white border rounded-lg p-4 mb-3">
           <div className="flex items-center mb-1">
             <span className="font-medium mr-2">{r.user}</span>
             <span className="text-xs text-gray-400">{r.date}</span>

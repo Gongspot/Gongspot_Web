@@ -1,9 +1,10 @@
 import Nickname from "../components/signup/Nickname";
-import UserInfo from "../components/signup/BasicInfo";
+import BasicInfo from "../components/signup/BasicInfo";
 import { useState } from "react";
 
 const SignupPage = () => {
   const [step, setStep] = useState("nickname");
+  const [nickname, setNickname] = useState("");
 
   const handleNext = () => {
     setStep("userinfo");
@@ -11,8 +12,13 @@ const SignupPage = () => {
 
   return (
     <div>
-      {step === "nickname" && <Nickname onNext={handleNext} />}
-      {step === "userinfo" && <UserInfo />}
+      {step === "nickname" && 
+        <Nickname 
+          onNext={handleNext} 
+          nickname={nickname}
+          setNickname={setNickname} 
+        />}
+      {step === "userinfo" && <BasicInfo nickname={nickname} />}
     </div>
   );
 };
