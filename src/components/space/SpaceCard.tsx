@@ -28,7 +28,7 @@ const SpaceCard: React.FC<SpaceCardProps> = ({
     />
     <div
       className="
-        absolute bottom-2 left-2 text-white font-bold text-base drop-shadow
+        absolute bottom-2 left-2 text-white text-base drop-shadow
         z-10
       "
     >
