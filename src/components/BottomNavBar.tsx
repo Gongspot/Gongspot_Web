@@ -21,7 +21,7 @@ const BottomNavBar = () => {
     return null;
   }
   const navItems = [
-    { path: "/", label: "홈", icon: HomeSolid },
+    { path: "/home", label: "홈", icon: HomeSolid },
     { path: "/recommendations", label: "추천", icon: FireSolid },
     { path: "/search", label: "검색", icon: MagnifyingGlassIcon },
     { path: "/favorites", label: "찜", icon: BookmarkIcon },
