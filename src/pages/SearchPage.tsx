@@ -7,6 +7,8 @@ import { useSearchFilters } from "../hooks/useSearchFilters";
 import KakaoMap from "../components/mapSearch/KakaoMap";
 import SearchResultSheet from "../components/mapSearch/SearchResultSheet";
 import { useSearchMode } from "../contexts/SearchModeContext";
+import type { Space } from "../types/space";
+import PlaceSelectSheet from "../components/mapSearch/PlaceSelectSheet";
 
 const SearchPage = () => {
   useEffect(() => {
@@ -60,6 +62,17 @@ const SearchPage = () => {
   // 검색어 유지
   const [searchInput, setSearchInput] = useState(""); 
 
+  // 선택된 공간 및 시트 열림 여부
+  const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
+  const [isPlaceSelectSheetOpen, setIsPlaceSelectSheetOpen] = useState(false);
+
+  useEffect(() => {
+    if (isPlaceSelectSheetOpen) {
+      setSearchInput(""); // 시트가 열릴 때 검색어 초기화
+    }
+  }, [isPlaceSelectSheetOpen]);
+
+
   return (
     <div className="w-full h-screen bg-gray-200">
       {/* 상단 헤더 */}
@@ -108,7 +121,8 @@ const SearchPage = () => {
 
             <button
               onClick={() => {
-                // 학습 공간 보기 로직
+                setIsSheetOpen(false); // 필터 바텀시트 닫기
+                setIsSearchResultSheetOpen(true); // 검색 결과 바텀시트 열기
               }}
               className="flex-1 py-2 text-sm text-white bg-[#4cb1f1] rounded-lg"
             >
@@ -149,7 +163,18 @@ const SearchPage = () => {
         }}
         height={sheetHeight}
         setHeight={setSheetHeight}
+        selectedFilters={selectedFilters}
+        setSelectedSpace={setSelectedSpace}
+        setIsPlaceSelectSheetOpen={setIsPlaceSelectSheetOpen}
       />
+
+      {isPlaceSelectSheetOpen && selectedSpace && (
+        <PlaceSelectSheet
+          space={selectedSpace}
+          isOpen={isPlaceSelectSheetOpen}
+          setIsOpen={setIsPlaceSelectSheetOpen}
+        />
+      )}
     </div>
   );
 };

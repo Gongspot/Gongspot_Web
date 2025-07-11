@@ -9,6 +9,7 @@ interface Props {
   isLiked: boolean;
   onDetail: () => void;
   onLike: () => void;
+  enableWholeCardClick?: boolean; // 카드 전체 클릭 허용 여부 (기본 false)
 }
 
 const SpaceListCard: React.FC<Props> = ({
@@ -20,13 +21,14 @@ const SpaceListCard: React.FC<Props> = ({
   isLiked,
   onDetail,
   onLike,
+  enableWholeCardClick = false, // 기본값 false
 }) => (
   <div
     className="
-      flex items-center  mb-4 relative
+      flex items-center mb-4 relative
       border-b border-[#CCCCCC]
-      
-      "
+    "
+    onClick={enableWholeCardClick ? onDetail : undefined} // 카드 전체 클릭 적용 여부
   >
     {/* 이미지 영역 */}
     <div className="relative w-[180px] h-[130px] flex-shrink-0 mr-4 mb-3">
@@ -37,7 +39,10 @@ const SpaceListCard: React.FC<Props> = ({
       />
       <button
         className="absolute top-2 right-2 z-10"
-        onClick={onLike}
+        onClick={(e) => {
+          e.stopPropagation(); // 카드 클릭 이벤트 방지
+          onLike();
+        }}
         aria-label="좋아요"
         style={{ lineHeight: 0, background: "none", border: "none" }}
       >
@@ -56,11 +61,9 @@ const SpaceListCard: React.FC<Props> = ({
 
     {/* 내용 영역 */}
     <div className="flex-1 min-w-0 flex flex-col justify-center">
-      {/* 이름 */}
       <div className="font-semibold text-base text-[#222] truncate mb-1">
         {name}
       </div>
-      {/* 별점, 거리 */}
       <div className="flex items-center gap-2 text-[15px] mb-1">
         <span className="flex items-center gap-1">
           <svg
@@ -76,13 +79,14 @@ const SpaceListCard: React.FC<Props> = ({
         </span>
         <span className="text-[#555] text-[14px] ml-2">{distance}km</span>
       </div>
-      {/* 태그 */}
       <div className="text-xs text-[#6A7A92] truncate mb-2">
         {tags.join(" ")}
       </div>
-      {/* 상세보기 버튼 */}
       <button
-        onClick={onDetail}
+        onClick={(e) => {
+          e.stopPropagation(); // 카드 클릭 이벤트 방지
+          onDetail();
+        }}
         className="block w-[140px] py-1.5 rounded-full bg-sky-400 text-white text-sm font-semibold active:bg-sky-500"
       >
         상세보기
