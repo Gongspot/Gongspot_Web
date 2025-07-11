@@ -3,15 +3,16 @@ import NextButton from "../NextButton";
 
 interface NicknameProps {
   onNext: () => void;
+  nickname: string;
+  setNickname: (value: string) => void;
 }
 
-const Nickname = ({ onNext }: NicknameProps) => {
-  const [inputValue, setInputValue] = useState("");
+const Nickname = ({ onNext, nickname, setNickname }: NicknameProps) => {
   const [message, setMessage] = useState("");
   const [isAvailable, setIsAvailable] = useState(false);
 
   const checkNickname = () => {
-    if (inputValue === "카공족") {
+    if (nickname === "카공족") {
       setMessage("이미 사용 중인 닉네임입니다.");
     } else {
       setMessage("사용 가능한 닉네임입니다.");
@@ -19,7 +20,7 @@ const Nickname = ({ onNext }: NicknameProps) => {
     }
   };
 
-  const buttonClass = inputValue.trim()
+  const buttonClass = nickname.trim()
     ? "text-[#4CB1F1] cursor-pointer"
     : "text-[#ADAEBC] cursor-not-allowed";
   
@@ -38,14 +39,18 @@ const Nickname = ({ onNext }: NicknameProps) => {
             className="w-full px-[1rem] py-[0.563rem] text-[0.75rem] text-black
             border border-[#E5E5E5] rounded-[0.5rem]"
             placeholder="사용할 이름을 입력해주세요. (2~12자)"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            value={nickname}
+            onChange={(e) => {
+              setNickname(e.target.value);
+              setIsAvailable(false);
+              setMessage("");
+            }}
           />
           <button
             type="button"
             className={`text-[0.75rem] font-medium absolute right-[1rem] ${buttonClass}`}
             onClick={checkNickname}
-            disabled={!inputValue.trim()}
+            disabled={!nickname.trim()}
           >
             중복확인
           </button>

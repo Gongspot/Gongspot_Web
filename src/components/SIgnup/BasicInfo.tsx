@@ -2,6 +2,12 @@ import { useReducer } from "react";
 import BasicInfoItem from "./BasicInfoItem";
 import NextButton from "../NextButton";
 import SelectButton from "./SelectButton";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+interface BasicInfoProps {
+  nickname: string;
+}
 
 const PLACE_OPTIONS = [
   "도서관", "카페", "민간 학습 공간",
@@ -50,10 +56,35 @@ function reducer(state: IState, action: IAction): IState {
   }
 }
 
-const BasicInfo = () => {
+const BasicInfo = ({ nickname }: BasicInfoProps) => {
+  const navigate = useNavigate();
+  
   const [state, dispatch] = useReducer(reducer, {
     places: [], purposes: [], regions: []
   });
+
+    const handleClick = async () => {
+    try {
+      const requestBody = {
+        nickname,
+        // 기본 정보 추가 예정
+      };
+      const response = await axios.post(
+        "http://localhost:8080/api/users/kakao/signup", //테스트용 URL
+        requestBody
+      );
+      if (response.status === 200) {
+        navigate("/home");
+      } else {
+        alert("회원가입에 실패했습니다.");
+        navigate("/");
+      }
+    } catch (error) {
+      alert("오류가 발생했습니다.");
+      console.error(error);
+      navigate("/");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center text-center bg-[#EFF7FB]">
@@ -180,7 +211,7 @@ const BasicInfo = () => {
           </div>
         </div>
       </div>
-      <NextButton text={"시작하기"} />
+      <NextButton text={"시작하기"} onClick={handleClick} />
     </div>
   );
 };
