@@ -20,13 +20,14 @@ import ProfilePage from "./pages/ProfilePage";
 import WithdrawalPage from "./pages/WithdrawalPage";
 import ProposalPage from "./pages/ProposalPage";
 import SpaceReviewWritePage from "./pages/SpaceReviewWritePage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
     <div className="font-sans bg-[#EFF7FB] h-[100dvh] flex flex-col">
       <div className="flex-1 min-h-0">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/recommendations" element={<RecsPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
@@ -47,6 +48,7 @@ function App() {
           <Route path="/mypage/profile" element={<ProfilePage />} />
           <Route path="/mypage/withdrawal" element={<WithdrawalPage />} />
           <Route path="/mypage/spaces/proposal" element={<ProposalPage />} />
+          <Route path="/" element={<LoginPage />} />
         </Routes>
       </div>
       <BottomNavBar />

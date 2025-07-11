@@ -1,6 +1,4 @@
-import FilterBlock from "./FilterBlock";
-import type { RefObject } from "react";
-import type { TabLabel } from "../../pages/SearchPage";
+type TabLabel = "이용 목적" | "공간 종류" | "분위기" | "부가시설" | "지역";
 
 interface FilterSectionProps {
   title: TabLabel;
