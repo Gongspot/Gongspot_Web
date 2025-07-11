@@ -1,9 +1,10 @@
 import Symbol from "../../assets/symbol.svg?react";
 import Logo from '../../assets/whiteLogo.svg?react';
+import KakaoLoginButton from "./KakaoLoginButton";
 
 const LoginMainView = () => {
   return (
-    <div className="flex flex-col min-h-screen justify-center"
+    <div className="flex flex-col min-h-screen justify-center relative"
       style={{
         background: 'linear-gradient(180deg, #EFF7FB 0%, #CAF1FF 100%)',
     }}>
@@ -18,7 +19,11 @@ const LoginMainView = () => {
           className="text-[#4CB1F1] scale-[0.8]"
         />
       </div>
+      <div className="absolute bottom-[3.375rem] w-full">
+        <KakaoLoginButton />
+      </div>
     </div>
   );
 };
+
 export default LoginMainView;

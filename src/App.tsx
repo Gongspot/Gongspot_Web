@@ -21,6 +21,7 @@ import WithdrawalPage from "./pages/WithdrawalPage";
 import ProposalPage from "./pages/ProposalPage";
 import SpaceReviewWritePage from "./pages/SpaceReviewWritePage";
 import LoginPage from "./pages/LoginPage";
+import OauthKakaoCallback from "./components/login/OauthKakaoCallback";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/mypage/withdrawal" element={<WithdrawalPage />} />
           <Route path="/mypage/spaces/proposal" element={<ProposalPage />} />
           <Route path="/" element={<LoginPage />} />
+          <Route path="/oauth/kakao/callback" element={<OauthKakaoCallback />} />
         </Routes>
       </div>
       <BottomNavBar />
