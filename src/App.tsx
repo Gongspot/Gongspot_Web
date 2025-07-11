@@ -19,6 +19,7 @@ import HotSpaceListPage from "./pages/HotSpaceListPage";
 import ProfilePage from "./pages/ProfilePage";
 import WithdrawalPage from "./pages/WithdrawalPage";
 import ProposalPage from "./pages/ProposalPage";
+import SpaceReviewWritePage from "./pages/SpaceReviewWritePage";
 import LoginPage from "./pages/LoginPage";
 import OauthKakaoCallback from "./components/login/OauthKakaoCallback";
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/space/:id" element={<SpaceDetailPage />} />
+          <Route path="/space/:id/review" element={<SpaceReviewWritePage />} />
           <Route path="/theme-all" element={<ThemeAllPage />} />
           <Route path="/theme/:themeTitle" element={<ThemeDetailPage />} />
           <Route path="/hot-all" element={<HotSpaceListPage />} />  

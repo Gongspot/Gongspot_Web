@@ -1,12 +1,12 @@
 import React from "react";
+import homeLogo from "../assets/homelogo.svg";
 
-interface TopNavBarProps {
-  title?: string; 
-}
-
-const TopNavBar: React.FC<TopNavBarProps> = ({ title = "Gong Spot" }) => (
-  <header className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-white shadow-md">
-    <h1 className="text-2xl font-extrabold text-gray-800">{title}</h1>
+const TopNavBar: React.FC = () => (
+  <header className="sticky top-0 z-10 flex items-center gap-2 px-4 py-3 bg-white shadow">
+    {/* SVG 이미지 */}
+    <img src={homeLogo} alt="로고" className="w-6 h-6" />
+    <span className="text-xl font-bold text-sky-400 select-none tracking-tight">GongSpot</span>
+    <div className="flex-1" />
   </header>
 );
 

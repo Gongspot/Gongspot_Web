@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
-import SpaceListCard from "/Gongspot_Web/src/components/space/SpaceListCard";
+import SpaceListCard from "../space/SpaceListCard";
 import TabButtons from "./TapButttons";
-import dummySpaces from "/Gongspot_Web/src/constants/dummySpaces";
+import dummySpaces from "../../constants/dummySpaces";
 
 interface SearchResultSheetProps {
   isOpen: boolean;

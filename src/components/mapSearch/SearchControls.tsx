@@ -6,21 +6,9 @@ interface SearchControlsProps {
   enterSearchMode: () => void;
 }
 
-const SearchControls = ({ paidFilter, togglePaidFilter, enterSearchMode }: SearchControlsProps) => {
+const SearchControls = ({ paidFilter, togglePaidFilter }: SearchControlsProps) => {
   return (
     <>
-      {/* 검색창 */}
-      <div className="absolute top-4 left-4 right-4 z-20">
-        <div className="flex items-center bg-white px-3 py-2 rounded-md shadow-sm border border-gray-300">
-          <Search className="w-4 h-4 text-gray-500 mr-2" />
-          <input
-            type="text"
-            placeholder="학습공간 검색"
-            onFocus={enterSearchMode}
-            className="flex-1 bg-transparent text-sm placeholder-gray-400 outline-none"
-          />
-        </div>
-      </div>
 
       {/* 필터 버튼 */}
       <div className="absolute top-[65px] left-4 right-4 z-20 flex space-x-2">
