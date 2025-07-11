@@ -1,13 +1,18 @@
 import React, { useRef } from "react";
-import SpaceListCard from "../space/SpaceListCard";
-import TabButtons from "./TapButttons";
-import dummySpaces from "../../constants/dummySpaces";
+import SpaceListCard from "/Gongspot_Web/src/components/space/SpaceListCard";
+import dummySpaces from "/Gongspot_Web/src/constants/dummySpaces";
+import type { TabLabel } from "/Gongspot_Web/src/hooks/useSearchFilters";
+import TabButtons from "./TabButtons";
+import type { Space } from "../../types/space";
 
 interface SearchResultSheetProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   height: string;
   setHeight: (height: string) => void;
+  selectedFilters: Record<TabLabel, string[]>;
+  setSelectedSpace: (space: Space) => void;
+  setIsPlaceSelectSheetOpen: (open: boolean) => void;
 }
 
 const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
@@ -15,6 +20,9 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
   setIsOpen,
   height,
   setHeight,
+  selectedFilters,
+  setSelectedSpace,
+  setIsPlaceSelectSheetOpen,
 }) => {
   const startYRef = useRef(0);
   const startHeightRef = useRef(0);
@@ -70,7 +78,7 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
 
             {/* 탭 버튼 */}
             <div className="py-2 px-2 overflow-x-hidden">
-              <TabButtons onClick={() => setIsOpen(true)} />
+              <TabButtons selectedFilters={selectedFilters} onClick={() => setIsOpen(true)} />
             </div>
           </div>
 
@@ -86,10 +94,26 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
                   distance={space.distance}
                   tags={space.tags}
                   isLiked={space.isLiked}
-                  onDetail={() => alert(`${space.name} 상세보기`)}
-                  onLike={() => alert(`${space.name} 좋아요 토글`)}
+                  onDetail={() => {
+                    setSelectedSpace({
+                      id: space.id,
+                      name: space.name,
+                      image: space.image,
+                      rating: space.rating,
+                      distance: space.distance,
+                      tags: space.tags,
+                      isLiked: space.isLiked,
+                    }); // 필요한 필드만 전달
+                    setIsPlaceSelectSheetOpen(true);
+                    setIsOpen(false);
+                  }}
+                  onLike={() => {
+                    // 좋아요 토글 로직이 있다면 여기에
+                  }}
                 />
+
               ))}
+
             </div>
           </div>
         </div>

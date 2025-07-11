@@ -1,5 +1,5 @@
 import type { RefObject } from "react";
-import TabButtons from "./TapButttons";
+import TabButtons from "./TabButtons";
 import FilterSection from "./FilterSection";
 import type { TabLabel } from "/Gongspot_Web/src/hooks/useSearchFilters";
 
@@ -84,14 +84,17 @@ const BottomSheet = ({
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           />
-          <TabButtons onClick={() => setIsSheetOpen(true)} />
+          <TabButtons
+            selectedFilters={selectedFilters}
+            onClick={() => setIsSheetOpen(true)}
+          />
+
         </>
       )}
 
       {isSheetOpen && (
-        <div className="h-full overflow-y-auto px-4 pb-24">
+        <div className="h-full overflow-y-auto px-4 pb-24 pt-6">
           <div className="sticky top-0 z-10 bg-white">
-            <div className="w-full h-px bg-gray-200 mt-10" />
           </div>
 
           {sections.map((section) => (
