@@ -31,7 +31,7 @@ const ReviewDatePicker: React.FC<Props> = ({ value, onChange }) => {
         <span className="text-gray-400">{open ? "▲" : "▼"}</span>
       </button>
       {open && (
-        <div className="absolute left-0 z-20 bg-white rounded-lg shadow border mt-2">
+        <div className="absolute left-0 z-20 bg-white rounded-lg shadow border mt-2 p-4">
           <DayPicker
             mode="single"
             selected={value ?? undefined}
@@ -41,7 +41,7 @@ const ReviewDatePicker: React.FC<Props> = ({ value, onChange }) => {
             }}
             locale="ko"
             modifiersClassNames={{
-              selected: "bg-sky-400 text-white"
+              selected: "bg-sky-400 text-white rounded-full",
             }}
           />
         </div>

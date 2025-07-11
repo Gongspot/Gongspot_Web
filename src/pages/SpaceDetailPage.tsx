@@ -9,6 +9,7 @@ import SpaceDetailReviewStats from "../components/detail/SpaceDetailReviewStats"
 import SpaceDetailReview from "../components/detail/SpaceDetailReview";
 import { FaHeart, FaRegClock, FaStar } from "react-icons/fa";
 import TopHeader from "../components/TopHeader";
+import pencilIcon from "../assets/pencil_icon.svg"; // SVG 경로
 
 const TOP_HEADER_HEIGHT = 42; // TopHeader height(px)
 const IMAGE_HEIGHT = 220;
@@ -118,23 +119,20 @@ const SpaceDetailPage: React.FC = () => {
 
       {/* 리뷰 작성하기 버튼 (리뷰 탭에서만) */}
       {tab === "review" && (
-        <div
-          className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[400px] px-4 pb-4 bg-white z-50"
+        <button
+          className="fixed z-50 bottom-24 right-5 w-[64px] h-[64px] flex items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 transition-all"
           style={{
-            boxShadow: "0 -2px 12px rgba(0,0,0,0.08)",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.11)",
           }}
+          onClick={() => navigate(`/space/${id}/review`)}
         >
-          <button
-            className="absolute bottom-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-white shadow border border-gray-200"
-            onClick={() => alert("수정")}
-          >
-            <img
-              src="/path/to/pencil_icon.svg"
-              alt="수정"
-              className="w-4 h-4"
-            />
-          </button>
-        </div>
+          <img
+            src={pencilIcon}
+            alt="리뷰 작성"
+            className="w-10 h-10 md:w-12 md:h-12"
+            style={{ objectFit: "contain" }}
+          />
+        </button>
       )}
     </div>
   );
