@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import back from '../../assets/back.svg';
+import back from '../../../assets/back.svg';
 
 interface TitleSectionProps {
     title: string;

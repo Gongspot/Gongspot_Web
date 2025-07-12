@@ -1,5 +1,5 @@
 import React from "react";
-import SpaceListCard from "/Gongspot_Web/src/components/space/SpaceListCard";
+import SpaceListCard from "../space/SpaceListCard";
 
 interface SpaceLite {
   id: number;

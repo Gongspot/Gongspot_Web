@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import MyPointSection from "../components/point/MyPointSection";
+import MyPointSection from "../components/myPage/point/MyPointSection";
 import TopHeader from "../components/TopHeader";
 
 const point = 56;

@@ -12,9 +12,9 @@ import SignupPage from "./pages/SignupPage";
 import NoticePage from "./pages/NoticePage";
 import NoticeDetailPage from "./pages/NoticeDetailPage";
 import PointLayout from "./layouts/PointLayout";
-import MainList from "./components/point/MainList";
-import PointCharge from "./components/point/PointCharge";
-import PointDetail from "./components/point/PointDetail";
+import MainList from "./components/myPage/point/MainList";
+import PointCharge from "./components/myPage/point/PointCharge";
+import PointDetail from "./components/myPage/point/PointDetail";
 import HotSpaceListPage from "./pages/HotSpaceListPage";  
 import ProfilePage from "./pages/ProfilePage";
 import WithdrawalPage from "./pages/WithdrawalPage";
@@ -22,6 +22,7 @@ import ProposalPage from "./pages/ProposalPage";
 import SpaceReviewWritePage from "./pages/SpaceReviewWritePage";
 import LoginPage from "./pages/LoginPage";
 import OauthKakaoCallback from "./components/login/OauthKakaoCallback";
+import PushPage from "./pages/PushPage";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
           <Route path="/mypage/spaces/proposal" element={<ProposalPage />} />
           <Route path="/" element={<LoginPage />} />
           <Route path="/oauth/kakao/callback" element={<OauthKakaoCallback />} />
+          <Route path="/mypage/push" element={<PushPage />} />
         </Routes>
       </div>
       <BottomNavBar />

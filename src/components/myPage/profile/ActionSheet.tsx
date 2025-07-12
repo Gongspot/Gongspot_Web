@@ -1,4 +1,4 @@
-import ActionSheetButton from "../ActionSheetButton";
+import ActionSheetButton from "../../ActionSheetButton";
 
 interface ActionSheetProps {
     onTake: () => void;

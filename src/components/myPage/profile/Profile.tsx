@@ -1,5 +1,5 @@
-import profile from "../../assets/profile.svg";
-import camera from "../../assets/camera.svg";
+import profile from "../../../assets/profile.svg";
+import camera from "../../../assets/camera.svg";
 
 interface ProfileProps {
   onClick: () => void;
