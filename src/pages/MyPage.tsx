@@ -4,7 +4,7 @@ import MenuSection from "../components/myPage/MenuSection";
 import MyPageItemSection from "../components/myPage/MyPageItemSection";
 import ProfileSection from "../components/myPage/ProfileSection";
 import TopHeader from "../components/TopHeader";
-import ActionSheet from "../components/account/ActionSheet";
+import ActionSheet from "../components/myPage/account/ActionSheet";
 
 const nickname = "카공족";
 const point = 500;

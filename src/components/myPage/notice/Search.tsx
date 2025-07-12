@@ -1,4 +1,4 @@
-import search from '../../assets/search.svg';
+import search from '../../../assets/search.svg';
 
 const Search = () => {
     return (

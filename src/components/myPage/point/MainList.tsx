@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import next from '../../assets/next.svg';
+import next from '../../../assets/next.svg';
 
 const MainList = () => {
     return (

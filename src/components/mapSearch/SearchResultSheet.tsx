@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
-import SpaceListCard from "/Gongspot_Web/src/components/space/SpaceListCard";
-import dummySpaces from "/Gongspot_Web/src/constants/dummySpaces";
-import type { TabLabel } from "/Gongspot_Web/src/hooks/useSearchFilters";
+import SpaceListCard from "../space/SpaceListCard";
+import dummySpaces from "../../constants/dummySpaces";
+import type { TabLabel } from "../../hooks/useSearchFilters";
 import TabButtons from "./TabButtons";
 import type { Space } from "../../types/space";
 
