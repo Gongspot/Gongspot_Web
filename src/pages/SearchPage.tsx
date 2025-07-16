@@ -115,6 +115,7 @@ const SearchPage = () => {
                 setIsSheetOpen(false);
               }}
               className="w-24 py-2 text-sm border border-gray-300 rounded-lg text-gray-600 bg-white"
+              style={{ borderStyle: "solid" }}
             >
               닫기
             </button>

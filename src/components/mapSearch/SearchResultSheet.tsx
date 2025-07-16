@@ -77,7 +77,7 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
             <div className="w-10 h-1 bg-gray-400 rounded-full mx-auto mt-2 cursor-pointer" />
 
             {/* 탭 버튼 */}
-            <div className="py-2 px-2 overflow-x-hidden">
+            <div className="py-2 px-0.5 overflow-x-hidden">
               <TabButtons selectedFilters={selectedFilters} onClick={() => setIsOpen(true)} />
             </div>
           </div>

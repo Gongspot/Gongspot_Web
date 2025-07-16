@@ -25,6 +25,7 @@ const FilterSection = ({
             <button
               key={label}
               onClick={() => toggleFilter(title, label)}
+              style={{ borderStyle: "solid" }}
               className={`px-6 py-1.5 rounded-full border text-xs ${
                 isSelected
                   ? "bg-[#eff7fb] text-[#4cb1f1] border-[#4cb1f1]"
