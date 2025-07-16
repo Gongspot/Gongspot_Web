@@ -14,6 +14,7 @@ const SearchControls = ({ paidFilter, togglePaidFilter }: SearchControlsProps) =
       <div className="absolute top-[65px] left-4 right-4 z-20 flex space-x-2">
         <button
           onClick={() => togglePaidFilter("무료")}
+          style={{ borderStyle: 'solid' }}
           className={`px-4 py-1 text-sm rounded-full border ${
             paidFilter === "무료"
               ? "bg-[#4cb1f1] text-white border-[#4cb1f1]"
@@ -24,6 +25,7 @@ const SearchControls = ({ paidFilter, togglePaidFilter }: SearchControlsProps) =
         </button>
         <button
           onClick={() => togglePaidFilter("유료")}
+          style={{ borderStyle: 'solid' }}
           className={`px-4 py-1 text-sm rounded-full border ${
             paidFilter === "유료"
               ? "bg-[#4cb1f1] text-white border-[#4cb1f1]"

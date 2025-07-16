@@ -9,6 +9,7 @@ const FilterButton = ({ label, selected, onClick }: FilterButtonProps) => {
   return (
     <button
       onClick={onClick}
+      style={{ borderStyle: "solid" }}
       className={`px-5 py-1 border rounded-full text-sm ${
         selected
           ? "bg-[#d7f4ff] text-black border-gray-300"
