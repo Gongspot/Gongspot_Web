@@ -23,6 +23,7 @@ import SpaceReviewWritePage from "./pages/SpaceReviewWritePage";
 import LoginPage from "./pages/LoginPage";
 import OauthKakaoCallback from "./components/login/OauthKakaoCallback";
 import PushPage from "./pages/PushPage";
+import VisitPage from "./pages/VisitPage";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/oauth/kakao/callback" element={<OauthKakaoCallback />} />
           <Route path="/mypage/push" element={<PushPage />} />
+          <Route path="/mypage/spaces/visit" element={<VisitPage />} />
         </Routes>
       </div>
       <BottomNavBar />
