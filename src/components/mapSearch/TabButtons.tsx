@@ -1,4 +1,4 @@
-import type { TabLabel } from "/Gongspot_Web/src/hooks/useSearchFilters";
+import type { TabLabel } from "../../hooks/useSearchFilters";
 
 interface TabButtonsProps {
   onClick: () => void;
