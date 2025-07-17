@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 import TabButtons from "./TabButtons";
 import FilterSection from "./FilterSection";
-import type { TabLabel } from "/Gongspot_Web/src/hooks/useSearchFilters";
+import type { TabLabel } from "../../hooks/useSearchFilters";
 
 interface BottomSheetProps {
   sheetRef: RefObject<HTMLDivElement | null>;
