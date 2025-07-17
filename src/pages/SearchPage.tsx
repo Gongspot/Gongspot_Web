@@ -25,6 +25,12 @@ const SearchPage = () => {
     setIsSearchResultSheetOpen,
   } = useSearchMode();
 
+  useEffect(() => {
+    // 페이지 처음 진입 시 검색 모드가 false가 되도록
+    setIsSearchMode(false);
+  }, []);
+
+
   const {
     isSheetOpen,
     setIsSheetOpen,
@@ -72,6 +78,22 @@ const SearchPage = () => {
     }
   }, [isPlaceSelectSheetOpen]);
 
+  // 초기 상태로 리셋하는 함수: 지도 클릭 시 실행됨
+  const resetToInitialState = () => {
+    setIsSearchMode(false);
+    setIsSearchResultSheetOpen(false);
+    setSelectedFilters(initialSelectedFilters);
+    setSearchInput(""); // 검색어도 초기화
+    setIsPlaceSelectSheetOpen(false);     // 장소 선택 시트 닫기
+    setSelectedSpace(null);               // 선택된 공간 초기화
+    setPaidFilter(null); // 유료/무료 필터 초기화
+  };
+
+  const handleRecentClick = (keyword: string) => {
+    setSearchInput(keyword);                 // 검색창에 키워드 반영
+    setIsSearchResultSheetOpen(true);       // 검색 결과 시트 열기
+  };
+
 
   return (
     <div className="w-full h-screen bg-gray-200">
@@ -80,7 +102,7 @@ const SearchPage = () => {
 
       {/* 지도 + 검색창 */}
       <div className="absolute top-10 left-0 right-0 bottom-0 bg-gray-200">
-        <KakaoMap /> 지도 삽입
+        <KakaoMap resetToInitialState={resetToInitialState} /> 지도 삽입
 
         {/* 검색창은 항상 렌더링 */}
         <SearchMode
@@ -91,6 +113,8 @@ const SearchPage = () => {
           openSearchResultSheet={() => setIsSearchResultSheetOpen(true)}
           isSearchMode={isSearchMode}
           isSearchResultSheetOpen={isSearchResultSheetOpen}
+          resetToInitialState={resetToInitialState}
+          onRecentClick={handleRecentClick}
         />
 
         {/* 유료/무료 버튼은 검색모드 아닐 때만 렌더링 */}
