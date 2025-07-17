@@ -1,5 +1,4 @@
-import { Routes, Route } from "react-router-dom";
-import BottomNavBar from "./components/BottomNavBar";
+import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import RecsPage from "./pages/RecsPage";
 import SearchPage from "./pages/SearchPage";
@@ -24,41 +23,72 @@ import LoginPage from "./pages/LoginPage";
 import OauthKakaoCallback from "./components/login/OauthKakaoCallback";
 import PushPage from "./pages/PushPage";
 import VisitPage from "./pages/VisitPage";
+import PublicLayout from "./layouts/PublicLayout";
+import ProtectedLayout from "./layouts/ProtectedLayout";
+import AdminHomePage from "./pages/AdminHomePage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AdminNoticePage from "./pages/AdminNoticePage";
+
+const publicRoutes: RouteObject[] = [
+  {
+    path: "/",
+    element: <PublicLayout/>,
+    children: [
+      { index: true, element: <LoginPage/>, },
+      { path: "home", element: <HomePage/>, },
+      { path: "recommendations", element: <RecsPage />, },
+      { path: "search", element: <SearchPage />, },
+      { path: "favorites", element: <FavoritesPage />, },
+      { path: "mypage", element: <MyPage />, },
+      { path: "space/:id", element: <SpaceDetailPage />, },
+      { path: "space/:id/review", element: <SpaceReviewWritePage />, },
+      { path: "theme-all", element: <ThemeAllPage />, },
+      { path: "theme/:themeTitle", element: <ThemeDetailPage />, },
+      { path: "hot-all", element: <HotSpaceListPage />, },
+      { path: "signup", element: <SignupPage />, },
+      { path: "mypage/notice", element: <NoticePage />, },
+      { path: "mypage/notice/:id", element: <NoticeDetailPage />, },
+      {
+        path: "mypage/point",
+        element: <PointLayout />,
+        children: [
+          { index: true, element: <MainList />, },
+          { path: "charge", element: <PointCharge />, },
+          { path: "detail", element: <PointDetail />, },
+        ],
+      },
+      { path: "mypage/profile", element: <ProfilePage />, },
+      { path: "mypage/withdrawal", element: <WithdrawalPage />, },
+      { path: "mypage/spaces/proposal", element: <ProposalPage />, },
+      { path: "oauth/kakao/callback", element: <OauthKakaoCallback />, },
+      { path: "mypage/push", element: <PushPage />, },
+      { path: "mypage/spaces/visit", element: <VisitPage />, },
+    ],
+  },
+];
+
+const protectedRoutes: RouteObject[] = [
+  {
+    path: "/admin",
+    element: <ProtectedLayout/>,
+    children: [
+      { index: true, element: <AdminHomePage/>, },
+      { path: "notice", element: <AdminNoticePage/>, },
+    ],
+  },
+];
+
+const router = createBrowserRouter([
+  ...publicRoutes, ...protectedRoutes,
+]);
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="font-sans bg-[#EFF7FB] h-[100dvh] flex flex-col">
-      <div className="flex-1 min-h-0">
-        <Routes>
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/recommendations" element={<RecsPage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/space/:id" element={<SpaceDetailPage />} />
-          <Route path="/space/:id/review" element={<SpaceReviewWritePage />} />
-          <Route path="/theme-all" element={<ThemeAllPage />} />
-          <Route path="/theme/:themeTitle" element={<ThemeDetailPage />} />
-          <Route path="/hot-all" element={<HotSpaceListPage />} />  
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/mypage/notice" element={<NoticePage />} />
-          <Route path="/mypage/notice/:id" element={<NoticeDetailPage />} />
-          <Route path="/mypage/point" element={<PointLayout />}>
-            <Route index element={<MainList />} />
-            <Route path="charge" element={<PointCharge />} />
-            <Route path="detail" element={<PointDetail />} />
-          </Route>
-          <Route path="/mypage/profile" element={<ProfilePage />} />
-          <Route path="/mypage/withdrawal" element={<WithdrawalPage />} />
-          <Route path="/mypage/spaces/proposal" element={<ProposalPage />} />
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/oauth/kakao/callback" element={<OauthKakaoCallback />} />
-          <Route path="/mypage/push" element={<PushPage />} />
-          <Route path="/mypage/spaces/visit" element={<VisitPage />} />
-        </Routes>
-      </div>
-      <BottomNavBar />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
 
