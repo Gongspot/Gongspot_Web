@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Search, X } from "lucide-react";
 
 interface SearchModeProps {
@@ -9,6 +9,8 @@ interface SearchModeProps {
   isSearchMode: boolean;
   isSearchResultSheetOpen: boolean;
   enterSearchMode: () => void;
+  resetToInitialState: () => void;
+  onRecentClick: (keyword: string) => void;
 }
 
 const LOCAL_STORAGE_KEY = "recentSearches";
@@ -16,12 +18,15 @@ const LOCAL_STORAGE_KEY = "recentSearches";
 const SearchMode = ({
   searchInput,
   setSearchInput,
-  exitSearchMode,
   openSearchResultSheet,
   isSearchMode,
   isSearchResultSheetOpen,
   enterSearchMode,
+  resetToInitialState,
+  onRecentClick,
 }: SearchModeProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
   // 로컬스토리지에서 불러오기
@@ -54,6 +59,15 @@ const SearchMode = ({
     saveToLocalStorage(updated);
   };
 
+  useEffect(() => {
+    if (isSearchMode && !isSearchResultSheetOpen) {
+      inputRef.current?.focus(); // 검색 모드에서 검색창에 커서 표시
+    } else {
+      inputRef.current?.blur(); // 그렇지 않으면 커서 제거
+    }
+  }, [isSearchMode, isSearchResultSheetOpen]);
+
+
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 z-30 pointer-events-none">
       {/* 검색창 (항상 보임) */}
@@ -61,6 +75,7 @@ const SearchMode = ({
         <div className="flex items-center px-3 py-2 rounded-md shadow-sm border border-gray-500 bg-white">
           <Search className="w-4 h-4 text-gray-500 mr-2" />
           <input
+            ref={inputRef}
             type="text"
             placeholder="학습공간 검색"
             className="flex-1 text-sm outline-none bg-transparent"
@@ -68,13 +83,9 @@ const SearchMode = ({
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyDown={handleSearchSubmit}
             onFocus={enterSearchMode}
-            autoFocus
           />
           <button
-            onClick={() => {
-              setSearchInput("");
-              exitSearchMode();
-            }}
+            onClick={resetToInitialState}
           >
             <X className="w-6 h-6 text-gray-500" />
           </button>
@@ -89,14 +100,25 @@ const SearchMode = ({
             {recentSearches.map((term, idx) => (
               <div
                 key={idx}
-                className="flex items-center px-3 py-1 rounded-full border border-gray-300 bg-white text-xs text-gray-400"
+                className="flex items-center px-3 py-1 rounded-full border border-gray-300 bg-white text-xs text-gray-400 cursor-pointer"
+                onClick={() => {
+                  onRecentClick(term);           // 검색어 반영
+                  enterSearchMode();             // 검색 모드 유지
+                }}
               >
                 <span>{term}</span>
-                <button onClick={() => removeSearch(term)} className="ml-1">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();         // X버튼 클릭 시 부모 클릭 방지
+                    removeSearch(term);
+                  }}
+                  className="ml-1"
+                >
                   <X className="w-3 h-3 text-gray-400" />
                 </button>
               </div>
             ))}
+
           </div>
         </div>
       )}
