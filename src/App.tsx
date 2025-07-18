@@ -28,6 +28,7 @@ import ProtectedLayout from "./layouts/ProtectedLayout";
 import AdminHomePage from "./pages/admin/AdminHomePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AdminNoticePage from "./pages/admin/AdminNoticePage";
+import NewNoticePage from "./pages/admin/NewNoticePage";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -74,6 +75,7 @@ const protectedRoutes: RouteObject[] = [
     children: [
       { index: true, element: <AdminHomePage/>, },
       { path: "notices", element: <AdminNoticePage/>, },
+      { path: "notices/new", element: <NewNoticePage/>, },
     ],
   },
 ];
