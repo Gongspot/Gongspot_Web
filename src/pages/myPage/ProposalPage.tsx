@@ -1,5 +1,5 @@
-import TopHeader from "../components/TopHeader";
-import ProposalForm from "../components/space/ProposalForm";
+import TopHeader from "../../components/TopHeader";
+import ProposalForm from "../../components/space/ProposalForm";
 
 const ProposalPage = () => {
   return (

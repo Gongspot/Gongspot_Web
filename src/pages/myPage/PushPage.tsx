@@ -1,5 +1,5 @@
-import ToggleSwitch from "../components/myPage/ToggleSwitch";
-import TopHeader from "../components/TopHeader";
+import ToggleSwitch from "../../components/myPage/ToggleSwitch";
+import TopHeader from "../../components/TopHeader";
 import { useEffect, useState } from "react";
 
 const PushPage = () => {

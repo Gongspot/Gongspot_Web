@@ -1,8 +1,8 @@
 import { useState } from "react";
-import NextButton from "../components/NextButton";
-import TopHeader from "../components/TopHeader";
-import ContentSection from "../components/myPage/account/ContentSection";
-import ConfirmButton from "../components/myPage/account/ConfirmButton";
+import NextButton from "../../components/NextButton";
+import TopHeader from "../../components/TopHeader";
+import ContentSection from "../../components/myPage/account/ContentSection";
+import ConfirmButton from "../../components/myPage/account/ConfirmButton";
 
 const WithdrawalPage = () => {
   const [selected, setSelected] = useState(false);

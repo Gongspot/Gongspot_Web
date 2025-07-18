@@ -1,5 +1,5 @@
-import AdminBottomNavBar from "../components/AdminBottomNavBar";
-import TopNavBar from "../components/TopNavBar";
+import AdminBottomNavBar from "../../components/AdminBottomNavBar";
+import TopNavBar from "../../components/TopNavBar";
 
 const AdminHomePage = () => {
   return (
