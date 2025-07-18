@@ -1,10 +1,10 @@
 import { useState } from "react";
-import profile from "../assets/profile.svg";
-import MenuSection from "../components/myPage/MenuSection";
-import MyPageItemSection from "../components/myPage/MyPageItemSection";
-import ProfileSection from "../components/myPage/ProfileSection";
-import TopHeader from "../components/TopHeader";
-import ActionSheet from "../components/myPage/account/ActionSheet";
+import profile from "../../assets/profile.svg";
+import MenuSection from "../../components/myPage/MenuSection";
+import MyPageItemSection from "../../components/myPage/MyPageItemSection";
+import ProfileSection from "../../components/myPage/ProfileSection";
+import TopHeader from "../../components/TopHeader";
+import ActionSheet from "../../components/myPage/account/ActionSheet";
 
 const nickname = "카공족";
 const point = 500;
@@ -13,7 +13,7 @@ const MyPage = () => {
   const [logout, setLogout] = useState(false);
   
   return (
-    <div className="flex flex-col min-h-screen w-full bg-white pb-[5rem]">
+    <div className="flex flex-col min-h-screen w-full bg-white pb-[5rem] scrollbar-hide">
       <TopHeader title="마이페이지" backButton={false} />
       <ProfileSection nickname={nickname} profile={profile} />
       <MyPageItemSection point={point} />

@@ -10,8 +10,8 @@ import { themeSpaces } from "../constants/spaceThemes";
 
 const HomePage: React.FC = () => {
   return (
-    <div className="bg-[#EFF7FB] pb-16 min-h-screen">
-      <TopNavBar title="Gong Spot" />
+    <div className="bg-[#EFF7FB] pb-16 min-h-screen scrollbar-hide">
+      <TopNavBar />
 
       {/* 배너 */}
       <div className="px-6 mt-10">

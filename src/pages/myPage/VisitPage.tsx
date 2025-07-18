@@ -1,5 +1,5 @@
-import TopHeader from "../components/TopHeader";
-import Likes from '../assets/likes.svg?react';
+import TopHeader from "../../components/TopHeader";
+import Likes from '../../assets/likes.svg?react';
 
 const VisitPage = () => {
   return (

@@ -27,7 +27,7 @@ const MyPageItemSection = ({ point }: MyPageItemSectionProps) => {
                 value="보기"
             />
             <MyPageItem
-                link="/mypage/notice"
+                link="/mypage/notices"
                 icon={
                     <img src={notice} alt="공지사항" className="h-[1.375rem] w-[1.375rem]" />
                 }
