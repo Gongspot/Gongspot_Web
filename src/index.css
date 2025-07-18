@@ -15,34 +15,35 @@
 .swiper {
   --swiper-theme-color: #fff;
 }
-#root {
-  width: '24.375 rem';
-}
 
 @font-face {
   font-family: 'Pretendard';
-  src: url('./assets/fonts/Pretendard-Regular.woff') format('woff');
+  src: url('/src/assets/fonts/Pretendard-Regular.woff2') format('woff2'),
+       url('/src/assets/fonts/Pretendard-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Pretendard';
-  src: url('./assets/fonts/Pretendard-Medium.woff') format('woff');
+  src: url('/src/assets/fonts/Pretendard-Medium.woff2') format('woff2'),
+       url('/src/assets/fonts/Pretendard-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Pretendard';
-  src: url('./assets/fonts/Pretendard-SemiBold.woff') format('woff');
+  src: url('/src/assets/fonts/Pretendard-SemiBold.woff2') format('woff2'),
+       url('/src/assets/fonts/Pretendard-SemiBold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Pretendard';
-  src: url('./assets/fonts/Pretendard-Bold.woff') format('woff');
+  src: url('/src/assets/fonts/Pretendard-Bold.woff2') format('woff2'),
+       url('/src/assets/fonts/Pretendard-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
 }
