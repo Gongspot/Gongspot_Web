@@ -7,7 +7,7 @@ const BottomNavBar = () => {
   
   const navItems = [
     { path: "/admin", label: "공간관리", icon: Space },
-    { path: "/admin/notice", label: "공지사항", icon: Notice },
+    { path: "/admin/notices", label: "공지사항", icon: Notice },
   ];
 
   return (

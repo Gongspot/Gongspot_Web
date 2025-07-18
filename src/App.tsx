@@ -46,8 +46,8 @@ const publicRoutes: RouteObject[] = [
       { path: "theme/:themeTitle", element: <ThemeDetailPage />, },
       { path: "hot-all", element: <HotSpaceListPage />, },
       { path: "signup", element: <SignupPage />, },
-      { path: "mypage/notice", element: <NoticePage />, },
-      { path: "mypage/notice/:id", element: <NoticeDetailPage />, },
+      { path: "mypage/notices", element: <NoticePage />, },
+      { path: "mypage/notices/:id", element: <NoticeDetailPage />, },
       {
         path: "mypage/point",
         element: <PointLayout />,
@@ -73,7 +73,7 @@ const protectedRoutes: RouteObject[] = [
     element: <ProtectedLayout/>,
     children: [
       { index: true, element: <AdminHomePage/>, },
-      { path: "notice", element: <AdminNoticePage/>, },
+      { path: "notices", element: <AdminNoticePage/>, },
     ],
   },
 ];
