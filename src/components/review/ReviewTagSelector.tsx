@@ -20,7 +20,7 @@ const ReviewTagSelector = ({
   const facilities = ["Wi-Fi", "콘센트", "넓은 좌석", "음료"];
 
   const getBtnClass = (isSelected: boolean) =>
-    `px-4 py-1 rounded-full border-2 text-sm font-medium transition-all duration-150 bg-white`;
+    `px-4 py-1 rounded-full border-2 border-gray-300 text-sm font-medium transition-all duration-150 bg-white`;
 
   return (
     <div className="mb-4">
@@ -35,7 +35,8 @@ const ReviewTagSelector = ({
               className={getBtnClass(isSelected)}
               style={{
                 color: isSelected ? SELECTED_COLOR : "#868686",
-                borderColor: isSelected ? SELECTED_COLOR : BORDER_COLOR,
+                borderStyle: "solid",
+                borderColor: isSelected ? SELECTED_COLOR : undefined,
                 boxShadow: isSelected ? "0 0 0 2px #eaf6fd" : undefined,
                 fontWeight: isSelected ? 600 : 400,
               }}
@@ -57,7 +58,7 @@ const ReviewTagSelector = ({
               className={getBtnClass(isSelected)}
               style={{
                 color: isSelected ? SELECTED_COLOR : "#868686",
-                borderColor: isSelected ? SELECTED_COLOR : BORDER_COLOR,
+                borderColor: isSelected ? SELECTED_COLOR : undefined,
                 boxShadow: isSelected ? "0 0 0 2px #eaf6fd" : undefined,
                 fontWeight: isSelected ? 600 : 400,
               }}
@@ -79,7 +80,7 @@ const ReviewTagSelector = ({
               className={getBtnClass(isSelected)}
               style={{
                 color: isSelected ? SELECTED_COLOR : "#868686",
-                borderColor: isSelected ? SELECTED_COLOR : BORDER_COLOR,
+                borderColor: isSelected ? SELECTED_COLOR : undefined,
                 boxShadow: isSelected ? "0 0 0 2px #eaf6fd" : undefined,
                 fontWeight: isSelected ? 600 : 400,
               }}

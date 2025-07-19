@@ -54,7 +54,7 @@ const SpaceDetailPage: React.FC = () => {
         <img
           src={space.image}
           alt={space.name}
-          className="w-full h-[220px] object-cover"
+          className="w-full h-[180px] object-cover"
         />
         <div className="p-4 pt-3 pb-2">
           <div className="flex justify-between items-center">
