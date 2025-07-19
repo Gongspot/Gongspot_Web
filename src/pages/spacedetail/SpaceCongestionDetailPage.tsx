@@ -49,13 +49,13 @@ const SpaceCongestionDetailPage: React.FC = () => {
           <div className="text-center text-gray-400 pt-20">혼잡도 내역이 없습니다.</div>
         ) : (
           grouped.map(([date, list]) => {
-            // 블러처리 여부: 7월 5일 이후(크다)면 블러!
+            // 블러처리 여부: 7월 5일 이후(크다)면 블러 (일단 더미 데이터 확인용)
             const isBlur = date > BLUR_DATE;
             return (
               <div key={date} className="mb-8 relative">
                 {/* 날짜 타이틀 */}
                 <div className="font-semibold text-[15px] mb-2 mt-2">{formatDate(date)}</div>
-                {/* 카드 리스트 전체에 blur! */}
+                {/* 카드 리스트 전체에 blur */}
                 <div className={`flex flex-col gap-2 ${isBlur ? "filter blur-[4px] pointer-events-none select-none" : ""}`}>
                   {list.map((c, idx) => (
                     <SpaceCongestionCard

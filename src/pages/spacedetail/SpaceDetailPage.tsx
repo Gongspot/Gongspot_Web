@@ -120,7 +120,7 @@ const SpaceDetailPage: React.FC = () => {
       {/* 리뷰 작성하기 버튼 (리뷰 탭에서만) */}
       {tab === "review" && (
         <button
-          className="fixed z-50 bottom-24 right-5 w-[64px] h-[64px] flex items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 transition-all"
+          className="fixed z-50 bottom-24 right-5 w-[50px] h-[50px] flex items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 transition-all"
           style={{
             boxShadow: "0 4px 16px rgba(0,0,0,0.11)",
           }}
@@ -129,7 +129,7 @@ const SpaceDetailPage: React.FC = () => {
           <img
             src={pencilIcon}
             alt="리뷰 작성"
-            className="w-10 h-10 md:w-12 md:h-12"
+            className="w-8 h-8 md:w-10 md:h-10"
             style={{ objectFit: "contain" }}
           />
         </button>
