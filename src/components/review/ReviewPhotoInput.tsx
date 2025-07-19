@@ -29,12 +29,21 @@ const ReviewPhotoInput: React.FC<ReviewPhotoInputProps> = ({
   return (
     <div className="mb-4">
       <div className="font-semibold mb-1">사진이나 영상을 첨부해주세요.</div>
-      <div className="flex gap-2">
+      <div
+        className="
+          flex gap-2
+          overflow-x-auto
+          flex-nowrap
+          scrollbar-hide
+          py-1
+          "
+        style={{ WebkitOverflowScrolling: "touch" }} // iOS 스크롤 부드럽게
+      >
         {/* 업로드 박스 */}
         {files.length < MAX_FILES && (
           <button
             type="button"
-            className="w-[100px] h-[100px] rounded-lg border-2 border-gray-600 bg-white flex items-center justify-center text-2xl text-gray-400 font-thin transition"
+            className="min-w-[100px] w-[100px] h-[100px] rounded-lg border-2 border-gray-200 bg-white flex items-center justify-center text-2xl text-gray-400 font-thin transition"
             onClick={handleBoxClick}
             style={{ minWidth: 100, minHeight: 100 }}
           >
@@ -57,7 +66,7 @@ const ReviewPhotoInput: React.FC<ReviewPhotoInputProps> = ({
           return (
             <div
               key={i}
-              className="w-[100px] h-[100px] rounded-lg border border-gray-200 bg-white flex items-center justify-center relative overflow-hidden"
+              className="min-w-[100px] w-[100px] h-[100px] rounded-lg border border-gray-200 bg-white flex items-center justify-center relative overflow-hidden"
               style={{ minWidth: 100, minHeight: 100 }}
             >
               {isImage ? (
@@ -84,6 +93,13 @@ const ReviewPhotoInput: React.FC<ReviewPhotoInputProps> = ({
         })}
       </div>
       <div className="mt-1 text-xs text-gray-300">{`최대 ${MAX_FILES}장`}</div>
+      <style>
+        {`
+        /* 스크롤바 숨기기 (tailwind의 scrollbar-hide 역할, 크로스브라우저) */
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        `}
+      </style>
     </div>
   );
 };

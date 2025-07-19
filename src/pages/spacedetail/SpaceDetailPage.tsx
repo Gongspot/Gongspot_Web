@@ -59,8 +59,32 @@ const SpaceDetailPage: React.FC = () => {
         <div className="p-4 pt-3 pb-2">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold">{space.name}</h1>
-            <button onClick={() => setLiked((prev) => !prev)}>
-              <FaHeart className={liked ? "text-red-500" : "text-gray-400"} />
+            <button
+              onClick={() => setLiked((prev) => !prev)}
+              className="flex items-center justify-center"
+              style={{
+                width: 30, 
+                height: 30,
+                padding: 0,
+                border: "none",
+                background: "transparent",
+                boxShadow: "none",
+                outline: "none",
+              }}
+            >
+              <span
+                className="flex items-center justify-center"
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: "50%",
+                  background: liked ? "#FF3959" : "#DBDBDB",
+                  transition: "background 0.18s",
+                  display: "flex",
+                }}
+              >
+                <FaHeart size={21} color="#fff" />
+              </span>
             </button>
           </div>
           <div className="flex items-center gap-2 mt-1">
