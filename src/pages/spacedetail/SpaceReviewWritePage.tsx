@@ -2,16 +2,16 @@
 
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import dummySpaces from "../constants/dummySpaces";
-import TopHeader from "../components/TopHeader";
-import ReviewRatingInput from "../components/review/ReviewRatingInput";
-import ReviewCongestionInput from "../components/review/ReviewCongestionInput";
-import ReviewTagSelector from "../components/review/ReviewTagSelector";
-import ReviewPhotoInput from "../components/review/ReviewPhotoInput";
-import ReviewDatePicker from "../components/review/ReviewDatePicker";
-import ReviewTimeDropdown from "../components/review/ReviewTimeDropdown";
-import ReviewTextArea from "../components/review/ReviewTextArea";
-import minilogo from "../assets/minilogo.svg";
+import dummySpaces from "../../constants/dummySpaces";
+import TopHeader from "../../components/TopHeader";
+import ReviewRatingInput from "../../components/review/ReviewRatingInput";
+import ReviewCongestionInput from "../../components/review/ReviewCongestionInput";
+import ReviewTagSelector from "../../components/review/ReviewTagSelector";
+import ReviewPhotoInput from "../../components/review/ReviewPhotoInput";
+import ReviewDatePicker from "../../components/review/ReviewDatePicker";
+import ReviewTimeDropdown from "../../components/review/ReviewTimeDropdown";
+import ReviewTextArea from "../../components/review/ReviewTextArea";
+import minilogo from "../../assets/minilogo.svg";
 import { FaRegHeart } from "react-icons/fa6";
 
 const SpaceReviewWritePage: React.FC = () => {

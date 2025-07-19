@@ -1,4 +1,7 @@
+// src/components/detail/SpaceDetailInfo.tsx
+
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import type { Space } from "../../constants/dummySpaces";
 import mapSample from "../../assets/map_sample.jpg";
 import SpaceCongestionCard from "../homepage/SpaceCongestionCard";
@@ -31,6 +34,8 @@ const SpaceDetailInfo: React.FC<{ space: Space }> = ({ space }) => {
   });
   const [copySuccess, setCopySuccess] = useState(false);
 
+  const navigate = useNavigate(); // navigate 선언
+
   const currentHourIdx = getCurrentHourIndex();
   const congestionData = dummyCongestion[selectedDay];
 
@@ -44,6 +49,10 @@ const SpaceDetailInfo: React.FC<{ space: Space }> = ({ space }) => {
       alert("복사에 실패했습니다.");
     }
   };
+
+  // 보여줄 혼잡도 개수
+  const VISIBLE_COUNT = 2;
+  const showMore = space.realTimeCongestion.length > VISIBLE_COUNT;
 
   return (
     <div className="px-5 py-4">
@@ -158,16 +167,30 @@ const SpaceDetailInfo: React.FC<{ space: Space }> = ({ space }) => {
 
       {/* 실시간 혼잡도 */}
       <div className="mt-6">
-        <div className="font-semibold mb-2">실시간 혼잡도</div>
-        {space.realTimeCongestion.map((d, i) => (
-          <SpaceCongestionCard
-            key={i}
-            type={d.type}
-            comment={d.comment}
-            date={d.date}
-            ago={d.ago}
-          />
-        ))}
+        <div className="font-semibold mb-2 flex justify-between items-center">
+          <span>실시간 혼잡도</span>
+          {showMore && (
+            <button
+              onClick={() => navigate(`/space/${space.id}/congestion`)}
+              className="text-xs font-medium"
+            >
+              더보기 &gt;
+            </button>
+          )}
+        </div>
+        {space.realTimeCongestion.length === 0 ? (
+          <div className="text-gray-400 text-xs mt-6">혼잡도 정보가 없습니다.</div>
+        ) : (
+          space.realTimeCongestion.slice(0, VISIBLE_COUNT).map((d, i) => (
+            <SpaceCongestionCard
+              key={i}
+              type={d.type}
+              comment={d.comment}
+              date={d.date}
+              ago={d.ago}
+            />
+          ))
+        )}
       </div>
     </div>
   );

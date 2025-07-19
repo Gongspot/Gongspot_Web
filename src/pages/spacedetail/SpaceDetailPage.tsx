@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import dummySpaces from "../constants/dummySpaces";
-import dummyReviews from "../constants/dummyReviews";
-import type { Space } from "../constants/dummySpaces";
-import type { Review } from "../constants/dummyReviews";
-import SpaceDetailInfo from "../components/detail/SpaceDetailInfo";
-import SpaceDetailReviewStats from "../components/detail/SpaceDetailReviewStats";
-import SpaceDetailReview from "../components/detail/SpaceDetailReview";
+import dummySpaces from "../../constants/dummySpaces";
+import dummyReviews from "../../constants/dummyReviews";
+import type { Space } from "../../constants/dummySpaces";
+import type { Review } from "../../constants/dummyReviews";
+import SpaceDetailInfo from "../../components/detail/SpaceDetailInfo";
+import SpaceDetailReviewStats from "../../components/detail/SpaceDetailReviewStats";
+import SpaceDetailReview from "../../components/detail/SpaceDetailReview";
 import { FaHeart, FaRegClock, FaStar } from "react-icons/fa";
-import TopHeader from "../components/TopHeader";
-import pencilIcon from "../assets/pencil_icon.svg"; // SVG 경로
+import TopHeader from "../../components/TopHeader";
+import pencilIcon from "../../assets/pencil_icon.svg"; // SVG 경로
 
 const TOP_HEADER_HEIGHT = 42; // TopHeader height(px)
 const IMAGE_HEIGHT = 220;
