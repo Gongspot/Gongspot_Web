@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { DayPicker } from "react-day-picker";
+import { ko } from "date-fns/locale";
 import "react-day-picker/dist/style.css";
 
 interface Props {
@@ -51,42 +52,25 @@ const ReviewDatePicker: React.FC<Props> = ({ value, onChange }) => {
               onChange(date ?? null);
               setOpen(false);
             }}
-            locale="ko"
+            locale={ko}
             modifiersClassNames={{
               selected: "custom-selected",
               today: "custom-today",
             }}
-            // 네비게이션 아이콘 커스텀
-            components={{
-              IconLeft: () => (
-                <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
-                  <path d="M15 6l-6 6 6 6" stroke={SKY} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              ),
-              IconRight: () => (
-                <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
-                  <path d="M9 6l6 6-6 6" stroke={SKY} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              ),
-            }}
           />
           <style>{`
-            /* DayPicker 기본 네비 아이콘 완전 숨김 */
             .rdp-nav_icon > svg { display: none !important; }
             .rdp-nav_button > svg:not([stroke="#4CB1F1"]) { display: none !important; }
-            /* 선택된 날짜(동그라미) */
             .custom-selected, .custom-selected:focus, .custom-selected:hover,
             .rdp-day_selected, .rdp-day_selected:focus, .rdp-day_selected:hover {
               background: ${SKY} !important;
               color: #fff !important;
               border-radius: 9999px;
             }
-            /* 오늘 날짜(테두리) */
             .custom-today:not(.custom-selected):not(.rdp-day_selected) {
               color: ${SKY} !important;
               background: #fff !important;
             }
-            /* 네비게이션(좌우) 버튼 색상 (혹시 모르니 한번 더) */
             .rdp-nav_button, .rdp-nav_button svg, .rdp-nav_button path {
               color: ${SKY} !important;
               stroke: ${SKY} !important;
