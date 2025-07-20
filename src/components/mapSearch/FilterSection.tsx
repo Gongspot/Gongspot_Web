@@ -5,7 +5,7 @@ interface FilterSectionProps {
   labels: string[];
   selectedFilters: Record<string, string[]>;
   toggleFilter: (category: TabLabel, label: string) => void;
-  sectionRef: React.RefObject<HTMLDivElement | null>;
+  sectionRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 const FilterSection = ({
@@ -16,7 +16,7 @@ const FilterSection = ({
   sectionRef,
 }: FilterSectionProps) => {
   return (
-    <div ref={sectionRef} className="mb-6">
+    <div ref={sectionRef ?? undefined} className="mb-6">
       <h2 className="text-sm mb-2">{title}</h2>
       <div className="flex flex-wrap gap-2">
         {labels.map((label) => {

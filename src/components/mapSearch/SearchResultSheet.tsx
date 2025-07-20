@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import SpaceListCard from "../space/SpaceListCard";
 import dummySpaces from "../../constants/dummySpaces";
 import type { TabLabel } from "../../hooks/useSearchFilters";
-import TabButtons from "./TabButtons";
+import TabButtons from "../mapSearch/TabButtons";
 import type { Space } from "../../types/space";
 
 interface SearchResultSheetProps {
