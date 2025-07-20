@@ -1,6 +1,6 @@
 // src/pages/admin/AllAdminRequestsPage.tsx (또는 홈 등에서)
 
-import React, { useState } from "react";
+import { useState } from "react";
 import TopHeader from "../../components/TopHeader";
 import AdminBottomNavBar from "../../components/AdminBottomNavBar";
 import { adminRequests } from "../../constants/adminRequests";

@@ -17,7 +17,6 @@ const AdminRequestCard: React.FC<Props> = ({
   placeName,
   date,
   isReviewed,
-  googleMapsUrl,
 }) => {
   const navigate = useNavigate();
 

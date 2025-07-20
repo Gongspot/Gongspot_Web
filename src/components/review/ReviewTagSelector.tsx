@@ -19,8 +19,9 @@ const ReviewTagSelector = ({
   const tags = ["넓은", "아늑한", "깔끔한", "조용한", "음악이 나오는", "이야기를 나눌 수 있는"];
   const facilities = ["Wi-Fi", "콘센트", "넓은 좌석", "음료"];
 
-  const getBtnClass = (isSelected: boolean) =>
-    `px-4 py-1 rounded-full border-[0.3px] text-sm font-medium transition-all duration-150 bg-white`;
+  // 에러 원인인 isSelected 파라미터를 제거!
+  const getBtnClass = () =>
+    "px-4 py-1 rounded-full border-[0.3px] text-sm font-medium transition-all duration-150 bg-white";
 
   return (
     <div className="mb-4">
@@ -32,7 +33,7 @@ const ReviewTagSelector = ({
             <button
               key={label}
               type="button"
-              className={getBtnClass(isSelected)}
+              className={getBtnClass()}
               style={{
                 color: isSelected ? SELECTED_COLOR : "#868686",
                 borderStyle: "solid",
@@ -55,7 +56,7 @@ const ReviewTagSelector = ({
             <button
               key={tag}
               type="button"
-              className={getBtnClass(isSelected)}
+              className={getBtnClass()}
               style={{
                 color: isSelected ? SELECTED_COLOR : "#868686",
                 borderStyle: "solid",
@@ -78,7 +79,7 @@ const ReviewTagSelector = ({
             <button
               key={facility}
               type="button"
-              className={getBtnClass(isSelected)}
+              className={getBtnClass()}
               style={{
                 color: isSelected ? SELECTED_COLOR : "#868686",
                 borderStyle: "solid",

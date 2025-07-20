@@ -14,6 +14,8 @@ import ReviewTextArea from "../../components/review/ReviewTextArea";
 import minilogo from "../../assets/minilogo.svg";
 import LikeButton from "../../components/review/LikeButton";
 
+type AmpmType = "오전" | "오후" | "";
+
 const SpaceReviewWritePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ const SpaceReviewWritePage: React.FC = () => {
 
   // 날짜/시간 state
   const [date, setDate] = useState<Date | null>(null);
-  const [ampm, setAmpm] = useState<"오전" | "오후">("");
+  const [ampm, setAmpm] = useState<AmpmType>("");
   const [hour, setHour] = useState<string>("");
   const [minute, setMinute] = useState<string>("");
 
