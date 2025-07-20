@@ -51,7 +51,10 @@ const AdminHomePage = () => {
               새 공간 등록
             </span>
           </button>
-          <button className="bg-white flex flex-col items-center w-28 h-28 py-8 rounded-xl shadow-sm border border-[#E7EDF3] transition">
+          <button
+            onClick={() => navigate("/admin/search-space")}
+            className="bg-white flex flex-col items-center w-28 h-28 py-8 rounded-xl shadow-sm border border-[#E7EDF3] transition"
+          >
             <FaClock className="text-[#737373] mb-1" size={24} />
             <span className="text-sm text-[#737373] font-semibold">
               등록 공간 수정

@@ -10,6 +10,7 @@ interface Props {
   onDetail: () => void;
   onLike: () => void;
   enableWholeCardClick?: boolean; // 카드 전체 클릭 허용 여부 (기본 false)
+  buttonText?: string;
 }
 
 const SpaceListCard: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const SpaceListCard: React.FC<Props> = ({
   onDetail,
   onLike,
   enableWholeCardClick = false, // 기본값 false
+  buttonText,
 }) => (
   <div
     className="
@@ -89,7 +91,7 @@ const SpaceListCard: React.FC<Props> = ({
         }}
         className="block w-[140px] py-1.5 rounded-full bg-sky-400 text-white text-sm font-semibold active:bg-sky-500"
       >
-        상세보기
+        {buttonText || "상세보기"}
       </button>
     </div>
   </div>
