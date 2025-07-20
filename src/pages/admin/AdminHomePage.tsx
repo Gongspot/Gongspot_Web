@@ -42,7 +42,10 @@ const AdminHomePage = () => {
       <div className="px-5 py-2 mb-4">
         <div className="text-m font-bold text-left">빠른 작업</div>
         <div className="flex gap-4 my-5">
-          <button className="bg-white flex flex-col items-center w-28 h-28 py-8 rounded-xl shadow-sm border border-[#E7EDF3] transition">
+          <button
+            onClick={() => navigate("/admin/create-space")} // 경로 연결 추가
+            className="bg-white flex flex-col items-center w-28 h-28 py-8 rounded-xl shadow-sm border border-[#E7EDF3] transition"
+          >
             <FaPen className="text-[#737373] mb-1" size={24} />
             <span className="text-sm text-[#737373] font-semibold">
               새 공간 등록
