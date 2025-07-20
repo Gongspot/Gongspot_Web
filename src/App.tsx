@@ -39,6 +39,8 @@ import AdminRequestDetailPage from "./pages/admin/AdminRequestDetailPage";
 import AdminCreateSpacePage from "./pages/admin/AdminCreateSpacePage";
 import AdminConfirmSpacePage from "./pages/admin/AdminConfirmSpacePage";
 import AdminInitSpaceInfoPage from "./pages/admin/AdminInitSpaceInfoPage";
+import AdminSearchSpacePage from "./pages/admin/AdminSearchSpacePage";
+import AdminEditSpacePage from "./pages/admin/AdminEditSpacePage";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -92,6 +94,8 @@ const protectedRoutes: RouteObject[] = [
       { path: "create-space", element: <AdminCreateSpacePage /> },
       { path: "confirm-space", element: <AdminConfirmSpacePage /> },
       { path: "init-space-info", element: <AdminInitSpaceInfoPage /> },
+      { path: "search-space", element: <AdminSearchSpacePage /> },
+      { path: "edit-space", element: <AdminEditSpacePage /> },
     ],
   },
 ];
