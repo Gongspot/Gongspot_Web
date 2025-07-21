@@ -17,19 +17,19 @@ const AdminNoticeDetailPage = () => {
       </div>
       <div className="flex gap-[0.375rem] w-full px-[1.75rem] pb-[0.625rem]">
           <button
-              className="w-full py-[0.875rem] bg-[#4CB1F1] text-white text-[1rem] rounded-[0.313rem]"
+              className="w-full leading-[2.875rem] bg-[#4CB1F1] text-white text-[1rem] rounded-[0.313rem]"
           >
             수정하기
           </button>
           <button
-              className="w-full py-[0.875rem] bg-[#4CB1F1] text-white text-[1rem] rounded-[0.313rem]"
+              className="w-full leading-[2.875rem] bg-[#4CB1F1] text-white text-[1rem] rounded-[0.313rem]"
           >
             삭제하기
           </button>
       </div>
       <NextButton
         text="목록으로 돌아가기"
-        className="w-full py-[0.875rem] border-[1px] border-solid border-[#CCCCCC] text-[#8F9098] text-[1rem] rounded-[0.313rem]"
+        className="w-full leading-[2.875rem] border-[1px] border-solid border-[#CCCCCC] text-[#8F9098] text-[1rem] rounded-[0.313rem]"
         onClick={() => {
           navigate("/admin/notices/all");
         }}
