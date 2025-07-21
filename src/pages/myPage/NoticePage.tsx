@@ -1,6 +1,6 @@
 import TopHeader from "../../components/TopHeader";
-import NoticeSection from "../../components/myPage/notice/NoticeSection";
-import Search from "../../components/myPage/notice/Search";
+import NoticeSection from "../../components/mypage/notice/NoticeSection";
+import Search from "../../components/mypage/notice/Search";
 
 const NoticePage = () => {
   return (

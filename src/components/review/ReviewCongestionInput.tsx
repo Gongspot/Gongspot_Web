@@ -1,6 +1,4 @@
 // src/components/review/ReviewCongestionInput.tsx
-import React from "react";
-
 const icons = [
   // "높음"
   (selected: boolean) => (

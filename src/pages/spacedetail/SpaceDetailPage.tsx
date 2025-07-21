@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import dummySpaces from "../constants/dummySpaces";
-import dummyReviews from "../constants/dummyReviews";
-import type { Space } from "../constants/dummySpaces";
-import type { Review } from "../constants/dummyReviews";
-import SpaceDetailInfo from "../components/detail/SpaceDetailInfo";
-import SpaceDetailReviewStats from "../components/detail/SpaceDetailReviewStats";
-import SpaceDetailReview from "../components/detail/SpaceDetailReview";
+import dummySpaces from "../../constants/dummySpaces";
+import dummyReviews from "../../constants/dummyReviews";
+import type { Space } from "../../constants/dummySpaces";
+import type { Review } from "../../constants/dummyReviews";
+import SpaceDetailInfo from "../../components/detail/SpaceDetailInfo";
+import SpaceDetailReviewStats from "../../components/detail/SpaceDetailReviewStats";
+import SpaceDetailReview from "../../components/detail/SpaceDetailReview";
 import { FaHeart, FaRegClock, FaStar } from "react-icons/fa";
-import TopHeader from "../components/TopHeader";
-import pencilIcon from "../assets/pencil_icon.svg"; // SVG 경로
+import TopHeader from "../../components/TopHeader";
+import pencilIcon from "../../assets/pencil_icon.svg"; // SVG 경로
 
 const TOP_HEADER_HEIGHT = 42; // TopHeader height(px)
 const IMAGE_HEIGHT = 220;
@@ -54,13 +54,37 @@ const SpaceDetailPage: React.FC = () => {
         <img
           src={space.image}
           alt={space.name}
-          className="w-full h-[220px] object-cover"
+          className="w-full h-[180px] object-cover"
         />
         <div className="p-4 pt-3 pb-2">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold">{space.name}</h1>
-            <button onClick={() => setLiked((prev) => !prev)}>
-              <FaHeart className={liked ? "text-red-500" : "text-gray-400"} />
+            <button
+              onClick={() => setLiked((prev) => !prev)}
+              className="flex items-center justify-center"
+              style={{
+                width: 30, 
+                height: 30,
+                padding: 0,
+                border: "none",
+                background: "transparent",
+                boxShadow: "none",
+                outline: "none",
+              }}
+            >
+              <span
+                className="flex items-center justify-center"
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: "50%",
+                  background: liked ? "#FF3959" : "#DBDBDB",
+                  transition: "background 0.18s",
+                  display: "flex",
+                }}
+              >
+                <FaHeart size={21} color="#fff" />
+              </span>
             </button>
           </div>
           <div className="flex items-center gap-2 mt-1">
@@ -120,7 +144,7 @@ const SpaceDetailPage: React.FC = () => {
       {/* 리뷰 작성하기 버튼 (리뷰 탭에서만) */}
       {tab === "review" && (
         <button
-          className="fixed z-50 bottom-24 right-5 w-[64px] h-[64px] flex items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 transition-all"
+          className="fixed z-50 bottom-24 right-5 w-[50px] h-[50px] flex items-center justify-center rounded-full bg-white shadow-lg border border-gray-200 transition-all"
           style={{
             boxShadow: "0 4px 16px rgba(0,0,0,0.11)",
           }}
@@ -129,7 +153,7 @@ const SpaceDetailPage: React.FC = () => {
           <img
             src={pencilIcon}
             alt="리뷰 작성"
-            className="w-10 h-10 md:w-12 md:h-12"
+            className="w-8 h-8 md:w-10 md:h-10"
             style={{ objectFit: "contain" }}
           />
         </button>

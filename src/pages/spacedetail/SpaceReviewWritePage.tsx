@@ -1,18 +1,20 @@
-// src/pages/SpaceReviewWritePage.tsx
+// src/pages/spacedetail/SpaceReviewWritePage.tsx
 
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import dummySpaces from "../constants/dummySpaces";
-import TopHeader from "../components/TopHeader";
-import ReviewRatingInput from "../components/review/ReviewRatingInput";
-import ReviewCongestionInput from "../components/review/ReviewCongestionInput";
-import ReviewTagSelector from "../components/review/ReviewTagSelector";
-import ReviewPhotoInput from "../components/review/ReviewPhotoInput";
-import ReviewDatePicker from "../components/review/ReviewDatePicker";
-import ReviewTimeDropdown from "../components/review/ReviewTimeDropdown";
-import ReviewTextArea from "../components/review/ReviewTextArea";
-import minilogo from "../assets/minilogo.svg";
-import { FaRegHeart } from "react-icons/fa6";
+import dummySpaces from "../../constants/dummySpaces";
+import TopHeader from "../../components/TopHeader";
+import ReviewRatingInput from "../../components/review/ReviewRatingInput";
+import ReviewCongestionInput from "../../components/review/ReviewCongestionInput";
+import ReviewTagSelector from "../../components/review/ReviewTagSelector";
+import ReviewPhotoInput from "../../components/review/ReviewPhotoInput";
+import ReviewDatePicker from "../../components/review/ReviewDatePicker";
+import ReviewTimeWheel from "../../components/review/ReviewTimeWheel"; // <-- 여기!!
+import ReviewTextArea from "../../components/review/ReviewTextArea";
+import minilogo from "../../assets/minilogo.svg";
+import LikeButton from "../../components/review/LikeButton";
+
+type AmpmType = "오전" | "오후" | "";
 
 const SpaceReviewWritePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,9 +23,9 @@ const SpaceReviewWritePage: React.FC = () => {
 
   // 날짜/시간 state
   const [date, setDate] = useState<Date | null>(null);
-  const [ampm, setAmpm] = useState<"오전" | "오후">("오전");
-  const [hour, setHour] = useState<string>("1");
-  const [minute, setMinute] = useState<string>("00");
+  const [ampm, setAmpm] = useState<AmpmType>("");
+  const [hour, setHour] = useState<string>("");
+  const [minute, setMinute] = useState<string>("");
 
   // 나머지 리뷰 입력 state
   const [rating, setRating] = useState(0);
@@ -48,7 +50,7 @@ const SpaceReviewWritePage: React.FC = () => {
           <div className="font-semibold mb-1">언제 이용하셨나요?</div>
           <div className="space-y-2">
             <ReviewDatePicker value={date} onChange={setDate} />
-            <ReviewTimeDropdown
+            <ReviewTimeWheel 
               ampm={ampm}
               setAmpm={setAmpm}
               hour={hour}
@@ -81,13 +83,7 @@ const SpaceReviewWritePage: React.FC = () => {
         <ReviewPhotoInput files={files} setFiles={setFiles} />
         {/* 좋아요 */}
         <div className="flex flex-col items-center justify-center my-3">
-          <button
-            type="button"
-            className="px-4 py-2 rounded-full border border-gray-500 flex items-center gap-2 text-gray-800 font-medium"
-          >
-            공간이 마음에 들어요!
-            <FaRegHeart className="text-xl text-gray-400" />
-          </button>
+          <LikeButton />
           <div className="text-xs text-gray-400 mt-1">
             하트를 누르면 유사한 공간을 추천받을 수 있어요!
           </div>

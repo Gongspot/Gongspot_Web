@@ -1,9 +1,9 @@
-import Nickname from "../../components/myPage/profile/Nickname";
-import Profile from "../../components/myPage/profile/Profile";
+import Nickname from "../../components/mypage/profile/Nickname";
+import Profile from "../../components/mypage/profile/Profile";
 import NextButton from "../../components/NextButton";
 import TopHeader from "../../components/TopHeader";
 import { useState } from "react";
-import ActionSheet from "../../components/myPage/profile/ActionSheet";
+import ActionSheet from "../../components/mypage/profile/ActionSheet";
 
 const nickname = "카공족";
 

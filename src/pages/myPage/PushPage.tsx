@@ -1,4 +1,4 @@
-import ToggleSwitch from "../../components/myPage/ToggleSwitch";
+import ToggleSwitch from "../../components/mypage/ToggleSwitch";
 import TopHeader from "../../components/TopHeader";
 import { useEffect, useState } from "react";
 

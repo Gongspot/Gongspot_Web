@@ -1,10 +1,10 @@
 import { useState } from "react";
 import profile from "../../assets/profile.svg";
-import MenuSection from "../../components/myPage/MenuSection";
-import MyPageItemSection from "../../components/myPage/MyPageItemSection";
-import ProfileSection from "../../components/myPage/ProfileSection";
+import MenuSection from "../../components/mypage/MenuSection";
+import MyPageItemSection from "../../components/mypage/MyPageItemSection";
+import ProfileSection from "../../components/mypage/ProfileSection";
 import TopHeader from "../../components/TopHeader";
-import ActionSheet from "../../components/myPage/account/ActionSheet";
+import ActionSheet from "../../components/mypage/account/ActionSheet";
 
 const nickname = "카공족";
 const point = 500;

@@ -1,5 +1,5 @@
 const SELECTED_COLOR = "#4CB1F1";
-const BORDER_COLOR = "#DFE2E7";
+const UNSELECTED_BORDER_COLOR = "#E5E5E5";
 
 const ReviewTagSelector = ({
   selectedTags,
@@ -19,8 +19,9 @@ const ReviewTagSelector = ({
   const tags = ["넓은", "아늑한", "깔끔한", "조용한", "음악이 나오는", "이야기를 나눌 수 있는"];
   const facilities = ["Wi-Fi", "콘센트", "넓은 좌석", "음료"];
 
-  const getBtnClass = (isSelected: boolean) =>
-    `px-4 py-1 rounded-full border-2 text-sm font-medium transition-all duration-150 bg-white`;
+  // 에러 원인인 isSelected 파라미터를 제거!
+  const getBtnClass = () =>
+    "px-4 py-1 rounded-full border-[0.3px] text-sm font-medium transition-all duration-150 bg-white";
 
   return (
     <div className="mb-4">
@@ -32,10 +33,11 @@ const ReviewTagSelector = ({
             <button
               key={label}
               type="button"
-              className={getBtnClass(isSelected)}
+              className={getBtnClass()}
               style={{
                 color: isSelected ? SELECTED_COLOR : "#868686",
-                borderColor: isSelected ? SELECTED_COLOR : BORDER_COLOR,
+                borderStyle: "solid",
+                borderColor: isSelected ? SELECTED_COLOR : UNSELECTED_BORDER_COLOR,
                 boxShadow: isSelected ? "0 0 0 2px #eaf6fd" : undefined,
                 fontWeight: isSelected ? 600 : 400,
               }}
@@ -54,10 +56,11 @@ const ReviewTagSelector = ({
             <button
               key={tag}
               type="button"
-              className={getBtnClass(isSelected)}
+              className={getBtnClass()}
               style={{
                 color: isSelected ? SELECTED_COLOR : "#868686",
-                borderColor: isSelected ? SELECTED_COLOR : BORDER_COLOR,
+                borderStyle: "solid",
+                borderColor: isSelected ? SELECTED_COLOR : UNSELECTED_BORDER_COLOR,
                 boxShadow: isSelected ? "0 0 0 2px #eaf6fd" : undefined,
                 fontWeight: isSelected ? 600 : 400,
               }}
@@ -76,10 +79,11 @@ const ReviewTagSelector = ({
             <button
               key={facility}
               type="button"
-              className={getBtnClass(isSelected)}
+              className={getBtnClass()}
               style={{
                 color: isSelected ? SELECTED_COLOR : "#868686",
-                borderColor: isSelected ? SELECTED_COLOR : BORDER_COLOR,
+                borderStyle: "solid",
+                borderColor: isSelected ? SELECTED_COLOR : UNSELECTED_BORDER_COLOR,
                 boxShadow: isSelected ? "0 0 0 2px #eaf6fd" : undefined,
                 fontWeight: isSelected ? 600 : 400,
               }}

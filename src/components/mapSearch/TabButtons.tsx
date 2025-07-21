@@ -9,7 +9,7 @@ const TabButtons = ({ onClick, selectedFilters }: TabButtonsProps) => {
   const tabs: TabLabel[] = ["이용 목적", "공간 종류", "분위기", "부가시설", "지역"];
 
   return (
-    <div className="flex gap-1 overflow-x-auto px-2 pt-3 pb-2">
+    <div className="flex justify-center gap-2 overflow-x-auto px-2 pt-3 pb-2">
       {tabs.map((tab) => {
         const selections = selectedFilters[tab] || [];
         let label: string;

@@ -1,6 +1,6 @@
 import TopHeader from "../../components/TopHeader";
-import ContentSection from "../../components/myPage/notice/ContentSection";
-import TitleSection from "../../components/myPage/notice/TitleSection";
+import ContentSection from "../../components/mypage/notice/ContentSection";
+import TitleSection from "../../components/mypage/notice/TitleSection";
 
 const NoticeDetailPage = () => {
   return (

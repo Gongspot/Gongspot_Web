@@ -198,6 +198,8 @@ const SearchPage = () => {
           space={selectedSpace}
           isOpen={isPlaceSelectSheetOpen}
           setIsOpen={setIsPlaceSelectSheetOpen}
+          onDetail={() => alert(`${selectedSpace.name} 상세 보기`)}
+          onLike={() => alert(`${selectedSpace.name} 좋아요 토글`)}
         />
       )}
     </div>

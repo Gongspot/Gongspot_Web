@@ -1,6 +1,6 @@
 import TopHeader from "../../components/TopHeader";
-import MainList from "../../components/myPage/point/MainList";
-import MyPointSection from "../../components/myPage/point/MyPointSection";
+import MainList from "../../components/mypage/point/MainList";
+import MyPointSection from "../../components/mypage/point/MyPointSection";
 
 const point = 56;
 

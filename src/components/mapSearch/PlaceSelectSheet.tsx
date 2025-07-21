@@ -15,12 +15,16 @@ interface PlaceSelectSheetProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   space: SpaceLite | null;
+  onDetail: () => void;
+  onLike: () => void;
 }
 
 const PlaceSelectSheet: React.FC<PlaceSelectSheetProps> = ({
   isOpen,
   setIsOpen,
   space,
+  onDetail,
+  onLike,
 }) => {
   return (
     <>
@@ -45,8 +49,8 @@ const PlaceSelectSheet: React.FC<PlaceSelectSheetProps> = ({
               distance={space.distance}
               tags={space.tags}
               isLiked={space.isLiked}
-              onDetail={() => alert(`${space.name} 상세보기`)}
-              onLike={() => alert(`${space.name} 좋아요 토글`)}
+              onDetail={onDetail}
+              onLike={onLike}
             />
           </div>
         </div>
