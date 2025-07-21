@@ -1,5 +1,5 @@
 import TopHeader from "../../components/TopHeader";
-import ContentSection from "../../components/myPage/notice/ContentSection";
+import ContentSection from "../../components/mypage/notice/ContentSection";
 import TitleSection from "../../components/admin/notice/TitleSection";
 import NextButton from "../../components/NextButton";
 import { useNavigate } from "react-router-dom";
