@@ -29,6 +29,7 @@ import AdminHomePage from "./pages/admin/AdminHomePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AdminNoticePage from "./pages/admin/AdminNoticePage";
 import NewNoticePage from "./pages/admin/NewNoticePage";
+import AdminNoticeDetailPage from "./pages/admin/AdminNoticeDetailPage";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -76,6 +77,7 @@ const protectedRoutes: RouteObject[] = [
       { index: true, element: <AdminHomePage/>, },
       { path: "notices", element: <AdminNoticePage/>, },
       { path: "notices/new", element: <NewNoticePage/>, },
+      { path: "notices/:id", element: <AdminNoticeDetailPage/>, },
     ],
   },
 ];

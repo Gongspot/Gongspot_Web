@@ -2,7 +2,7 @@ import TopHeader from "../../components/TopHeader";
 import ContentSection from "../../components/myPage/notice/ContentSection";
 import TitleSection from "../../components/myPage/notice/TitleSection";
 
-const NoticePage = () => {
+const NoticeDetailPage = () => {
   return (
     <div className="flex flex-col h-screen w-full bg-white">
       <TopHeader title="공지사항" backButton={true} />
@@ -13,4 +13,4 @@ const NoticePage = () => {
   );
 };
 
-export default NoticePage;
+export default NoticeDetailPage;
