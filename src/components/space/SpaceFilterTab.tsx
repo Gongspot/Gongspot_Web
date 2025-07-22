@@ -38,7 +38,7 @@ const SpaceFilterTab: React.FC<Props> = ({
         const isActive = filter === tab;
         const base =
           "px-4 py-1 rounded-full text-sm font-semibold border transition-colors duration-200 select-none";
-        const selected = "bg-[#4CB1F1] text-white font-bold border-[#4CB1F1]";
+        const selected = "bg-[#EFF7FB] text-[#4CB1F1] font-bold border-[#4CB1F1]";
         const normal = "bg-white text-gray-400 border-gray-300";
         return (
           <button

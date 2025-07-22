@@ -13,7 +13,7 @@ const SpaceCard: React.FC<SpaceCardProps> = ({
 }) => (
   <div
     className={`
-      rounded-xl overflow-hidden shadow-lg relative
+      rounded-xl overflow-hidden shadow-lg relative 
       w-[160px] h-[130px] min-w-[160px] max-w-[160px] min-h-[130px] max-h-[130px]
       ${className}
     `}
@@ -28,7 +28,7 @@ const SpaceCard: React.FC<SpaceCardProps> = ({
     />
     <div
       className="
-        absolute bottom-2 left-2 text-white text-base drop-shadow
+        absolute bottom-2 left-2 text-white drop-shadow text-[13px]
         z-10
       "
     >

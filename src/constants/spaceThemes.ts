@@ -13,14 +13,14 @@ export const themeSpaces = [
   },
   {
     id: 2,
-    title: "민간학습공간",
+    title: "카페",
     image: theme2,
     subtitle: "몰입을 위한 최적의 지원",
   },
   {
     id: 3,
-    title: "카페",
-    image: theme3,  // 카드 테마: hot 이미지 활용
+    title: "민간학습공간",
+    image: theme3, 
     subtitle: "다양한 분위기와 음료를 즐기며 공부",
   },
   {
