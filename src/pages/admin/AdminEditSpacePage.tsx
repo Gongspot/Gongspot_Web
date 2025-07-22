@@ -2,7 +2,7 @@ import TopHeader from "../../components/TopHeader";
 import SpaceInfoSimple from "../../components/detail/SpaceInfoSimple";
 import dummySpaces from "../../constants/dummySpaces";
 import { useNavigate, useLocation } from "react-router-dom";
-import FilterSection from "../../components/mapSearch/FilterSection";
+import FilterSection from "../../components/mapsearch/FilterSection";
 import type { TabLabel } from "../../hooks/useSearchFilters";
 import { useState } from "react";
 

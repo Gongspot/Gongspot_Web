@@ -1,6 +1,6 @@
 import type { RefObject } from "react";
-import TabButtons from "../mapSearch/TabButtons";
-import FilterSection from "../mapSearch/FilterSection";
+import TabButtons from "../mapsearch/TabButtons";
+import FilterSection from "../mapsearch/FilterSection";
 import type { TabLabel } from "../../hooks/useSearchFilters";
 
 interface BottomSheetProps {

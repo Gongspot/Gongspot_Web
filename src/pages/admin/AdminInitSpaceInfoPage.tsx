@@ -1,6 +1,6 @@
 // src/pages/AdminInitSpaceInfoPage.tsx
 import TopHeader from "../../components/TopHeader";
-import FilterSection from "../../components/mapSearch/FilterSection";
+import FilterSection from "../../components/mapsearch/FilterSection";
 import type { TabLabel } from "../../hooks/useSearchFilters";
 import { useState } from "react";
 
