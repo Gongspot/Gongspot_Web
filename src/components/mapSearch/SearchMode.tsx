@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Search, X } from "lucide-react";
+import { X } from "lucide-react";
 
 interface SearchModeProps {
   searchInput: string;
@@ -71,9 +71,32 @@ const SearchMode = ({
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 z-30 pointer-events-none">
       {/* 검색창 (항상 보임) */}
-      <div className="absolute top-4 left-4 right-4 z-30 pointer-events-auto">
-        <div className="flex items-center px-3 py-2 rounded-md shadow-sm border border-gray-500 bg-white">
-          <Search className="w-4 h-4 text-gray-500 mr-2" />
+      <div className="absolute h-[38px] top-4 left-4 right-4 z-30 pointer-events-auto">
+        <div
+          className={`flex items-center px-3 py-2 shadow-sm bg-white
+            ${isSearchMode && !isSearchResultSheetOpen
+              ? "border border-gray-500"
+              : "border border-gray-300"}
+            rounded-lg
+          `}
+        >
+          {/* 아이콘: 원 작게, 막대기 길게 */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="19"
+            height="19"
+            fill="none"
+            stroke="gray"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mr-2"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <line x1="16.65" y1="16.65" x2="21" y2="21" />
+          </svg>
+
           <input
             ref={inputRef}
             type="text"
@@ -84,18 +107,17 @@ const SearchMode = ({
             onKeyDown={handleSearchSubmit}
             onFocus={enterSearchMode}
           />
-          <button
-            onClick={resetToInitialState}
-          >
+          <button onClick={resetToInitialState}>
             <X className="w-6 h-6 text-gray-500" />
           </button>
         </div>
+
       </div>
 
       {/* 하얀 배경 + 최근 검색어는 검색모드이고 검색 결과 시트가 닫혀있을 때만 */}
       {isSearchMode && !isSearchResultSheetOpen && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-white z-20 p-4 pt-20 pointer-events-auto">
-          <p className="text-sm text-black mb-2">최근 검색어</p>
+          <p className="text-sm text-black mb-2 font-semibold">최근 검색어</p>
           <div className="flex gap-2 flex-wrap">
             {recentSearches.map((term, idx) => (
               <div
