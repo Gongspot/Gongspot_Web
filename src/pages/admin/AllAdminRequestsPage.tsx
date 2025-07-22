@@ -1,20 +1,20 @@
-// src/pages/admin/AllAdminRequestsPage.tsx (또는 홈 등에서)
-
 import { useState } from "react";
+import { useLocation } from "react-router-dom"; // 추가
 import TopHeader from "../../components/TopHeader";
 import AdminBottomNavBar from "../../components/AdminBottomNavBar";
 import { adminRequests } from "../../constants/adminRequests";
 import AdminRequestCard from "../../components/admin/home/AdminRequestCard";
 
 const TABS = [
-  { key: "pending", label: "미확인 요청" },
+  { key: "pending", label: "검토 전 요청" },
   { key: "reviewed", label: "검토완료 요청" },
 ];
 
 const AllAdminRequestsPage = () => {
-  const [tab, setTab] = useState<"pending" | "reviewed">("pending");
+  const location = useLocation();
+  const defaultTab = location.state?.defaultTab === "reviewed" ? "reviewed" : "pending";
+  const [tab, setTab] = useState<"pending" | "reviewed">(defaultTab); // 초기값 반영
 
-  // 탭별 데이터
   const filtered = adminRequests.filter((r) =>
     tab === "pending" ? !r.isReviewed : r.isReviewed
   );
@@ -36,7 +36,6 @@ const AllAdminRequestsPage = () => {
               onClick={() => setTab(t.key as "pending" | "reviewed")}
             >
               {t.label}
-              {/* 뱃지 */}
               <span
                 className={`ml-1 text-xs rounded-full px-2 py-[1px] ${
                   tab === t.key
@@ -51,6 +50,7 @@ const AllAdminRequestsPage = () => {
             </button>
           ))}
         </div>
+
         {/* 카드 리스트 or 없음 메시지 */}
         {filtered.length === 0 ? (
           <div className="w-full flex flex-col items-center justify-center pt-20 text-gray-400 text-sm">
@@ -61,7 +61,7 @@ const AllAdminRequestsPage = () => {
             {filtered.map((req) => (
               <AdminRequestCard
                 key={req.id}
-                id={req.id}  
+                id={req.id}
                 placeName={req.placeName}
                 date={req.date}
                 isReviewed={req.isReviewed}
