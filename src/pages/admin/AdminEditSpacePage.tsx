@@ -50,38 +50,43 @@ const AdminEditSpacePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white px-4 pt-6 pb-32 relative">
-      <TopHeader title="새 공간 등록" />
+    <div className="relative min-h-screen bg-white">
+      <TopHeader title="등록 공간 수정" />
 
       {/* 안내 문구 */}
-      <p className="mt-6 text-center text-sm text-gray-700 whitespace-pre-line mb-6">
+      <p className="absolute w-[165px] h-[28px] top-[66px] left-[105px] opacity-100 text-md text-black">
         공간 정보를 수정해주세요.
       </p>
 
-      {/* 장소명 */}
-      <h2 className="text-xl font-bold mb-2">{placeName}</h2>
+      <div className="w-full px-[15px] pt-[64px] flex flex-col gap-[34px]">
+        {/* 정보 영역 */}
+        <div className="w-[344px] flex flex-col gap-[10px]">
+          <h2 className="text-xl font-bold">{placeName}</h2>
+          <div className="border border-gray-300 bg-white rounded-lg p-4">
+            <SpaceInfoSimple space={space} />
+          </div>
+        </div>
 
-      {/* 정보 박스 */}
-      <div className="border border-gray-300 bg-white rounded-lg p-4 mb-10">
-        <SpaceInfoSimple space={space} />
+        {/* 필터 섹션 */}
+        <div className="w-[347px] flex flex-col gap-[20px]">
+          {sections.map((section) => (
+            <FilterSection
+              key={section.title}
+              title={section.title}
+              labels={section.labels}
+              selectedFilters={selectedFilters}
+              toggleFilter={toggleFilter}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* 필터 섹션 */}
-      {sections.map((section) => (
-        <FilterSection
-          key={section.title}
-          title={section.title}
-          labels={section.labels}
-          selectedFilters={selectedFilters}
-          toggleFilter={toggleFilter}
-        />
-      ))}
 
       {/* 하단 등록 버튼 */}
-      <div className="fixed bottom-0 left-0 w-full px-4 pb-6 bg-white">
+      <div className="w-full px-4 mt-[14px] mb-[20px]">
         <button
           onClick={handleConfirm}
-          className="w-full bg-[#4cb1f1] text-white py-3 rounded-lg text-sm font-semibold"
+          className="w-[320px] h-[46px] bg-[#4cb1f1] text-white rounded-[5px] text-sm mx-auto block"
         >
           수정하기
         </button>

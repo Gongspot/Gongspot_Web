@@ -44,55 +44,55 @@ const AdminCreateSpacePage = () => {
       {/* 상단 헤더 */}
       <TopHeader title="새 공간 등록" />
 
+      {/* 안내 문구 */}
+      <p className="w-[224px] h-[28px] absolute top-[66px] left-1/2 -translate-x-1/2 text-md text-black text-center opacity-100">
+        등록할 공간의 정보를 입력해주세요.
+      </p>
+
       {/* 본문 */}
-      <div className="px-4 py-6">
-        <p className="text-sm text-gray-700 mb-6 text-center">
-          등록할 공간의 정보를 입력해주세요.
-        </p>
-
-        <div className="rounded-lg border border-gray-200 p-4 bg-white">
-          <div className="mb-8">
-            <label className="block text-sm mb-1">장소명</label>
-            <input
-              type="text"
-              placeholder="공간 이름을 작성해주세요."
-              value={placeName}
-              onChange={(e) => setPlaceName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring focus:border-[#4cb1f1]"
-            />
-          </div>
-
-          <div className="mb-10">
-            <label className="block text-sm mb-1">구글 맵스 링크</label>
-            <input
-              type="text"
-              placeholder="공간 관련 정보를 입력해주세요."
-              value={googleMapsLink}
-              onChange={(e) => setGoogleMapsLink(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring focus:border-[#4cb1f1]"
-            />
-          </div>
-
-          <div className="flex justify-center mb-6">
-            <button
-              onClick={handleFetchInfo}
-              className="w-fit bg-[#4cb1f1] text-white text-sm py-2 px-6 rounded-full"
-            >
-              공간 정보 가져오기
-            </button>
-          </div>
+      <div className="absolute w-[334px] h-[316px] top-[110px] left-1/2 -translate-x-1/2 rounded-[5px] border border-gray-200 bg-white p-4">
+        <div className="mb-6">
+          <label className="block text-sm mb-1">장소명</label>
+          <input
+            type="text"
+            placeholder="공간 이름을 작성해주세요."
+            value={placeName}
+            onChange={(e) => setPlaceName(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring focus:border-[#4cb1f1]"
+          />
         </div>
 
-        {/* 실패 메시지 박스 (조건부 렌더링) */}
-        {isValidationFailed && (
-          <div className="flex justify-center w-full mt-8">
-            <div className="bg-gray-100 text-sm text-gray-700 font-semibold rounded-md px-4 py-3 text-center whitespace-pre-line w-full max-w-[640px]">
-              공간 조회에 실패했습니다.
-              {"\n"}공간명과 링크를 다시 확인해주세요.
-            </div>
-          </div>
-        )}
+        <div className="mb-8">
+          <label className="block text-sm mb-1">구글 맵스 링크</label>
+          <input
+            type="text"
+            placeholder="공간 관련 정보를 입력해주세요."
+            value={googleMapsLink}
+            onChange={(e) => setGoogleMapsLink(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring focus:border-[#4cb1f1]"
+          />
+        </div>
+
+        {/* 3. 버튼 */}
+        <div className="flex justify-center">
+          <button
+            onClick={handleFetchInfo}
+            className="absolute top-[224px] left-1/2 -translate-x-1/2 w-[146px] h-[34px] px-[34px] rounded-[20px] text-sm bg-[#4cb1f1] text-white border border-gray-300 flex items-center justify-center text-nowrap"
+          >
+            공간 정보 가져오기
+          </button>
+        </div>
       </div>
+
+      {/* 4. 실패 메시지 박스 */}
+      {isValidationFailed && (
+        <div className="absolute top-[440px] left-1/2 -translate-x-1/2 w-[335px] h-[58px] rounded-[15px] bg-gray-100 flex items-center justify-center px-4 py-3 text-center">
+          <p className="text-sm text-gray-700 font-semibold whitespace-pre-line">
+            공간 조회에 실패했습니다.
+            {"\n"}공간명과 링크를 다시 확인해주세요.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

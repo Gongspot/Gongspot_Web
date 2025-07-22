@@ -48,13 +48,13 @@ const AdminSearchSpacePage = () => {
     : [];
 
   return (
-    <div className="min-h-screen bg-white px-4 pt-4 pb-24">
+    <div className="relative min-h-screen bg-white">
       <TopHeader title="등록 공간 수정" />
 
-      {/* 검색창 */}
-      <div className="mt-4 mb-4">
-        <div className="relative">
-          <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500" />
+      {/* 검색창: TopHeader 기준 여백 조정 */}
+      <div className="mt-[13px] px-4">
+        <div className="relative w-full h-[38px] px-4 border border-gray-300 rounded-md">
+          <FaSearch className="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500" />
           <input
             type="text"
             value={searchInput}
@@ -63,31 +63,33 @@ const AdminSearchSpacePage = () => {
               if (e.key === "Enter") handleSearch();
             }}
             placeholder="수정할 공간을 검색하세요."
-            className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300  focus:ring-0 focus:outline-none"
+            className="w-full h-full pl-8 pr-4 text-sm focus:outline-none"
           />
         </div>
       </div>
 
       {/* 검색 결과 리스트 */}
-      {searchInput !== "" && filteredSpaces.length > 0 && (
-        <div className="px-4 pt-2">
-          {filteredSpaces.map((space) => (
-            <SpaceListCard
-              key={space.id}
-              name={space.name}
-              image={space.image}
-              rating={space.rating}
-              distance={space.distance}
-              tags={space.tags}
-              isLiked={space.isLiked}
-              onDetail={() => handleDetail(space)}
-              onLike={() => handleLike(space)}
-              enableWholeCardClick={false}
-              buttonText="수정하기"
-            />
-          ))}
-        </div>
-      )}
+      <div className="absolute w-[325px] h-[119px] top-[107px] left-[20px] space-y-[19px] opacity-100">
+        {searchInput !== "" && filteredSpaces.length > 0 && (
+          <div className="w-[325px]">
+            {filteredSpaces.map((space) => (
+              <SpaceListCard
+                key={space.id}
+                name={space.name}
+                image={space.image}
+                rating={space.rating}
+                distance={space.distance}
+                tags={space.tags}
+                isLiked={space.isLiked}
+                onDetail={() => handleDetail(space)}
+                onLike={() => handleLike(space)}
+                enableWholeCardClick={false}
+                buttonText="수정하기"
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
