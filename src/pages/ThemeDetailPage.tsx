@@ -30,11 +30,11 @@ const ThemeDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FB] flex flex-col">
+    <div className="min-h-screen bg-[#F7F9FB] flex flex-col ">
       <TopHeader title={theme.title} />
 
       {/* 상단 - 대표 이미지/오버레이 */}
-      <div className="px-4 pt-14 pb-4 bg-white h-96">
+      <div className="px-4 pt-8 pb-4 bg-[#FAFAFA]">
         {/* 테마 이미지 */}
         <div className="rounded-2xl overflow-hidden mb-3 relative" style={{ height: 180 }}>
           <img
@@ -45,12 +45,12 @@ const ThemeDetailPage: React.FC = () => {
           {/* 그라데이션 */}
           <div className="absolute left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black/70 to-transparent" />
           {/* 타이틀/설명 */}
-          <div className="absolute left-4 bottom-5 z-10 text-white">
-            <div className="font-bold text-xl mb-1">{theme.title}</div>
+          <div className="absolute left-5 bottom-3 z-10 text-white">
+            <div className="font-semibold text-xl mb-1">{theme.title}</div>
             <div className="text-[14px] font-medium opacity-90">{theme.subtitle}</div>
           </div>
         </div>
-        <div className="text-[14px] mb-2 mt-8">
+        <div className="text-[14px] mb-2 mt-6">
           정부와 지자체에서 지원해주는 다양한 공공학습공간<br />
           스터디카페 형태, 카페·학원식 관리제<br />
           비용 부담 없이 즐겨보자!
@@ -59,11 +59,11 @@ const ThemeDetailPage: React.FC = () => {
       
 
       {/* 하단 리스트 (고정, 스크롤) */}
-      <div className="flex-1 bg-[#F7F9FB] rounded-t-2xl -mt-4 pt-4 px-4 flex flex-col">
-        <div className="font-semibold text-gray-700 mb-2 ">
+      <div className="flex-1 flex flex-col mt-3">
+        <div className="font-semibold p-3 bg-[#FFFFFF]">
           {theme.title} 공간 살펴보기
         </div>
-        <div className="overflow-y-auto flex-1" style={{ maxHeight: "370px" }}>
+        <div className="overflow-y-auto flex-1 bg-[#EFF7FB]" style={{ maxHeight: "370px" }}>
           {filteredSpaces.length === 0 ? (
             <div className="text-gray-400 text-sm py-10 text-center">
               해당 테마의 공간이 없습니다.

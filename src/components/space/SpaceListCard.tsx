@@ -27,13 +27,14 @@ const SpaceListCard: React.FC<Props> = ({
 }) => (
   <div
     className="
-      flex items-center mb-4 relative
+      flex items-center relative
       border-b border-[#CCCCCC]
+      pr-[30px] pl-[20px] py-5
     "
     onClick={enableWholeCardClick ? onDetail : undefined} // 카드 전체 클릭 적용 여부
   >
     {/* 이미지 영역 */}
-    <div className="relative w-[180px] h-[130px] flex-shrink-0 mr-4 mb-3">
+    <div className="relative w-[180px] h-[130px] flex-shrink-0 mr-4">
       <img
         src={image}
         alt={name}
@@ -53,7 +54,7 @@ const SpaceListCard: React.FC<Props> = ({
           height={25}
           fill={isLiked ? "#FF7D8A" : "#FFFFFF"}
           stroke={isLiked ? "#FF7D8A" : "#C2C7CE"}
-          strokeWidth={2}
+          strokeWidth={1}
           viewBox="0 0 24 24"
         >
           <path d="M12 21s-6.7-5.2-8.2-7.1A5.4 5.4 0 0 1 5.5 5.5a5.5 5.5 0 0 1 6.5.7 5.5 5.5 0 0 1 6.5-.7 5.4 5.4 0 0 1 1.7 8.4C18.7 15.8 12 21 12 21z" />
@@ -62,34 +63,38 @@ const SpaceListCard: React.FC<Props> = ({
     </div>
 
     {/* 내용 영역 */}
-    <div className="flex-1 min-w-0 flex flex-col justify-center">
-      <div className="font-semibold text-base text-[#222] truncate mb-1">
+    <div className="flex-1 min-w-0 flex flex-col justify-center0">
+      <div className="font-semibold text-l text-[#222] truncate mb-2">
         {name}
       </div>
-      <div className="flex items-center gap-2 text-[15px] mb-1">
-        <span className="flex items-center gap-1">
+      <div className="flex items-center text-[15px]">
+        <span className="flex items-center">
           <svg
-            width={16}
-            height={16}
+            width={12}
+            height={12}
             viewBox="0 0 20 20"
-            fill="#FFC700"
+            fill="#FFFFFF"
+            stroke="#000000"
+            stroke-width="1"
             className="inline"
           >
             <path d="M10 15.272l-5.708 3.11 1.09-6.365L.764 7.982l6.383-.927L10 1.018l2.853 6.037 6.383.927-4.618 4.035 1.09 6.365z" />
           </svg>
-          <span className="font-medium">{rating}</span>
+          <span className="font-medium ml-2 text-[13px]">{rating}</span>
         </span>
-        <span className="text-[#555] text-[14px] ml-2">{distance}km</span>
       </div>
-      <div className="text-xs text-[#6A7A92] truncate mb-2">
+      <div>
+        <span className="text-[#000000] text-[13px]">{distance}km</span>
+      </div>
+      <div className="text-[13px] truncate mb-2">
         {tags.join(" ")}
       </div>
       <button
         onClick={(e) => {
-          e.stopPropagation(); // 카드 클릭 이벤트 방지
+          e.stopPropagation();
           onDetail();
         }}
-        className="block w-[140px] py-1.5 rounded-full bg-sky-400 text-white text-sm font-semibold active:bg-sky-500"
+        className="block w-[140px] py-1 rounded-full bg-[#4CB1F1] text-white text-[13px] font-semibold active:bg-sky-500"
       >
         {buttonText || "상세보기"}
       </button>

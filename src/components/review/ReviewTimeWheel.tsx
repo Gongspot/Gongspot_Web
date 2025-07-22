@@ -145,7 +145,7 @@ const ReviewTimeWheel: React.FC<Props> = ({
                     opacity: ampm === v ? 1 : 0.5,
                   }}
                 >
-                  {v || "선택"}
+                  {v || ""}
                 </div>
               ))}
             </div>

@@ -39,7 +39,6 @@ const RecsPage: React.FC = () => {
       </div>
       {/* 리스트 */}
       <div className="flex-1 overflow-y-auto">
-        <div className="px-4 mt-4">
           {filteredSpaces.map(space => (
             <SpaceListCard
               key={space.id}
@@ -59,7 +58,6 @@ const RecsPage: React.FC = () => {
               onDetail={() => navigate(`/space/${space.id}`)}
             />
           ))}
-        </div>
       </div>
     </div>
   );
