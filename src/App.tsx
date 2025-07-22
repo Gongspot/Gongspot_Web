@@ -7,26 +7,26 @@ import HomePage from "./pages/HomePage";
 import RecsPage from "./pages/RecsPage";
 import SearchPage from "./pages/SearchPage";
 import FavoritesPage from "./pages/FavoritesPage";
-import MyPage from "./pages/myPage/MyPage";
+import MyPage from "./pages/mypage/MyPage";
 import SpaceDetailPage from "./pages/spacedetail/SpaceDetailPage";
 import ThemeAllPage from "./pages/ThemeAllPage";
 import ThemeDetailPage from "./pages/ThemeDetailPage";
 import SignupPage from "./pages/SignupPage";
-import NoticePage from "./pages/myPage/NoticePage";
-import NoticeDetailPage from "./pages/myPage/NoticeDetailPage";
+import NoticePage from "./pages/mypage/NoticePage";
+import NoticeDetailPage from "./pages/mypage/NoticeDetailPage";
 import PointLayout from "./layouts/PointLayout";
-import MainList from "./components/myPage/point/MainList";
-import PointCharge from "./components/myPage/point/PointCharge";
-import PointDetail from "./components/myPage/point/PointDetail";
+import MainList from "./components/mypage/point/MainList";
+import PointCharge from "./components/mypage/point/PointCharge";
+import PointDetail from "./components/mypage/point/PointDetail";
 import HotSpaceListPage from "./pages/HotSpaceListPage";
-import ProfilePage from "./pages/myPage/ProfilePage";
-import WithdrawalPage from "./pages/myPage/WithdrawalPage";
-import ProposalPage from "./pages/myPage/ProposalPage";
+import ProfilePage from "./pages/mypage/ProfilePage";
+import WithdrawalPage from "./pages/mypage/WithdrawalPage";
+import ProposalPage from "./pages/mypage/ProposalPage";
 import SpaceReviewWritePage from "./pages/spacedetail/SpaceReviewWritePage";
 import LoginPage from "./pages/LoginPage";
 import OauthKakaoCallback from "./components/login/OauthKakaoCallback";
-import PushPage from "./pages/myPage/PushPage";
-import VisitPage from "./pages/myPage/VisitPage";
+import PushPage from "./pages/mypage/PushPage";
+import VisitPage from "./pages/mypage/VisitPage";
 import PublicLayout from "./layouts/PublicLayout";
 import ProtectedLayout from "./layouts/ProtectedLayout";
 import AdminHomePage from "./pages/admin/AdminHomePage";
@@ -41,6 +41,7 @@ import AdminConfirmSpacePage from "./pages/admin/AdminConfirmSpacePage";
 import AdminInitSpaceInfoPage from "./pages/admin/AdminInitSpaceInfoPage";
 import AdminSearchSpacePage from "./pages/admin/AdminSearchSpacePage";
 import AdminEditSpacePage from "./pages/admin/AdminEditSpacePage";
+import AdminNoticeDetailPage from "./pages/admin/AdminNoticeDetailPage";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -96,6 +97,10 @@ const protectedRoutes: RouteObject[] = [
       { path: "init-space-info", element: <AdminInitSpaceInfoPage /> },
       { path: "search-space", element: <AdminSearchSpacePage /> },
       { path: "edit-space", element: <AdminEditSpacePage /> },
+      { index: true, element: <AdminHomePage/>, },
+      { path: "notices", element: <AdminNoticePage/>, },
+      { path: "notices/new", element: <NewNoticePage/>, },
+      { path: "notices/:id", element: <AdminNoticeDetailPage/>, },
     ],
   },
 ];

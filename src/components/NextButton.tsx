@@ -5,7 +5,7 @@ interface NextButtonProps {
     onClick?: () => void;
 }
 
-const DEFAULT_CLASS = "w-full py-[0.875rem] bg-[#4CB1F1] text-white text-[1rem] rounded-[0.313rem]";
+const DEFAULT_CLASS = "w-full leading-[2.875rem] bg-[#4CB1F1] text-white text-[1rem] rounded-[0.313rem]";
 
 const NextButton = ({ text, className, onClick, disabled = false, ...props }: NextButtonProps) => {
     return (
