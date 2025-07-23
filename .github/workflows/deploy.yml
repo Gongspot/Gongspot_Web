@@ -21,6 +21,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}       
           script: |
             cd ~/Gongspot_Web
+            git reset --hard HEAD
+            git clean -fd
             git pull origin main
             pnpm install
             pnpm build
