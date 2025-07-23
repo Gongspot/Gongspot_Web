@@ -42,6 +42,7 @@ import AdminInitSpaceInfoPage from "./pages/admin/AdminInitSpaceInfoPage";
 import AdminSearchSpacePage from "./pages/admin/AdminSearchSpacePage";
 import AdminEditSpacePage from "./pages/admin/AdminEditSpacePage";
 import AdminNoticeDetailPage from "./pages/admin/AdminNoticeDetailPage";
+import AdminNoticeAllPage from "./pages/admin/AdminNoticeAllPage";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -97,10 +98,8 @@ const protectedRoutes: RouteObject[] = [
       { path: "init-space-info", element: <AdminInitSpaceInfoPage /> },
       { path: "search-space", element: <AdminSearchSpacePage /> },
       { path: "edit-space", element: <AdminEditSpacePage /> },
-      { index: true, element: <AdminHomePage/>, },
-      { path: "notices", element: <AdminNoticePage/>, },
-      { path: "notices/new", element: <NewNoticePage/>, },
       { path: "notices/:id", element: <AdminNoticeDetailPage/>, },
+      { path: "notices/all", element: <AdminNoticeAllPage/>, },
     ],
   },
 ];
