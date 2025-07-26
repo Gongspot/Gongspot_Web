@@ -69,17 +69,20 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
         >
           {/* 손잡이 + 탭버튼 드래그 구간 */}
           <div
-            className="select-none touch-none"
+            className="select-none touch-none pt-[8px]"
             onMouseDown={handleStart}
             onTouchStart={handleStart}
           >
             {/* 손잡이 */}
-            <div className="w-10 h-1 bg-gray-400 rounded-full mx-auto mt-2 cursor-pointer" />
+            <div className="w-[30px] h-[3px] bg-gray-400 rounded-full mx-auto cursor-pointer" />
 
             {/* 탭 버튼 */}
-            <div className="py-2 px-0.5 overflow-x-hidden">
+            <div className="mt-[1px] pb-0 pr-0 overflow-x-hidden" style={{ paddingLeft: "13px" }}>
               <TabButtons selectedFilters={selectedFilters} onClick={() => setIsOpen(true)} />
             </div>
+
+            {/* 구분선 추가 */}
+            <div className="h-px bg-gray-200" />
           </div>
 
           {/* 공간 목록 */}

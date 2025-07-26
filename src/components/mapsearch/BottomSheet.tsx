@@ -74,7 +74,7 @@ const BottomSheet = ({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="w-10 h-1 bg-gray-400 rounded-full mx-auto mt-2 cursor-pointer" />
+      <div className="w-[30px] h-[3px] bg-gray-400 rounded-full mx-auto mt-2 cursor-pointer" />
 
       {!isSheetOpen && (
         <>
@@ -84,11 +84,12 @@ const BottomSheet = ({
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           />
-          <TabButtons
-            selectedFilters={selectedFilters}
-            onClick={() => setIsSheetOpen(true)}
-          />
-
+          <div className="pl-[9px] pr-0">
+            <TabButtons
+              selectedFilters={selectedFilters}
+              onClick={() => setIsSheetOpen(true)}
+            />
+          </div>
         </>
       )}
 
