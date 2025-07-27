@@ -24,7 +24,7 @@ const BottomNavBar = () => {
     { path: "/home", label: "홈", icon: HomeSolid },
     { path: "/recommendations", label: "추천", icon: FireSolid },
     { path: "/search", label: "검색", icon: MagnifyingGlassIcon },
-    { path: "/favorites", label: "찜", icon: BookmarkIcon },
+    { path: "/likes", label: "찜", icon: BookmarkIcon },
     { path: "/mypage", label: "마이페이지", icon: UserSolid },
   ];
   const { isSearchMode, isSearchResultSheetOpen } = useSearchMode();
