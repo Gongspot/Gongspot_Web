@@ -19,7 +19,7 @@ const MyPageItemSection = ({ point }: MyPageItemSectionProps) => {
                 value={`${point}P`}
             />
             <MyPageItem
-                link="/mypage/spaces/likes"
+                link="/likes"
                 icon={
                     <img src={heart} alt="찜한 공간" className="h-[1.375rem] w-[1.375rem]" />
                 }

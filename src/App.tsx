@@ -6,7 +6,7 @@ import {
 import HomePage from "./pages/HomePage";
 import RecsPage from "./pages/RecsPage";
 import SearchPage from "./pages/SearchPage";
-import FavoritesPage from "./pages/FavoritesPage";
+import LikesPage from "./pages/LikesPage";
 import MyPage from "./pages/mypage/MyPage";
 import SpaceDetailPage from "./pages/spacedetail/SpaceDetailPage";
 import ThemeAllPage from "./pages/ThemeAllPage";
@@ -53,7 +53,7 @@ const publicRoutes: RouteObject[] = [
       { path: "home", element: <HomePage /> },
       { path: "recommendations", element: <RecsPage /> },
       { path: "search", element: <SearchPage /> },
-      { path: "favorites", element: <FavoritesPage /> },
+      { path: "likes", element: <LikesPage /> },
       { path: "mypage", element: <MyPage /> },
       { path: "space/:id", element: <SpaceDetailPage /> },
       { path: "space/:id/review", element: <SpaceReviewWritePage /> },
