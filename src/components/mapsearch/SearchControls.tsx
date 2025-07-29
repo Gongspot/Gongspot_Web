@@ -2,9 +2,15 @@ interface SearchControlsProps {
   paidFilter: "무료" | "유료" | null;
   togglePaidFilter: (label: "무료" | "유료") => void;
   enterSearchMode: () => void;
+  onClickCurrentLocation: () => void;
 }
 
-const SearchControls = ({ paidFilter, togglePaidFilter }: SearchControlsProps) => {
+const SearchControls = ({
+  paidFilter,
+  togglePaidFilter,
+  enterSearchMode: _enterSearchMode,
+  onClickCurrentLocation,
+}: SearchControlsProps) => {
   return (
     <>
 
@@ -35,7 +41,10 @@ const SearchControls = ({ paidFilter, togglePaidFilter }: SearchControlsProps) =
       </div>
 
       {/* 현재 위치 버튼 */}
-      <button className="absolute bottom-36 left-4 w-[30px] h-[30px] flex items-center justify-center bg-white border border-[#E5E5E5] rounded-full shadow-sm z-20">
+      <button 
+        onClick={onClickCurrentLocation}
+        className="absolute bottom-36 left-4 w-[30px] h-[30px] flex items-center justify-center bg-white border border-[#E5E5E5] rounded-full shadow-sm z-20"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

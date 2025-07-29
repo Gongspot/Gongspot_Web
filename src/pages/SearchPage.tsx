@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import TopHeader from "../components/TopHeader";
 import SearchControls from "../components/mapsearch/SearchControls";
 import BottomSheet from "../components/mapsearch/BottomSheet";
@@ -94,6 +94,28 @@ const SearchPage = () => {
     setIsSearchResultSheetOpen(true);       // 검색 결과 시트 열기
   };
 
+  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCurrentLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("현위치 정보를 가져오지 못했습니다:", error);
+        }
+      );
+    } else {
+      console.error("이 브라우저는 Geolocation을 지원하지 않습니다.");
+    }
+  }, []);
+
+  const mapRef = useRef<{ recenterToCurrentLocation: () => void }>(null);
+
 
   return (
     <div className="w-full h-screen bg-gray-200">
@@ -102,7 +124,11 @@ const SearchPage = () => {
 
       {/* 지도 + 검색창 */}
       <div className="absolute top-10 left-0 right-0 bottom-0 bg-gray-200">
-        <KakaoMap resetToInitialState={resetToInitialState} /> 지도 삽입
+        <KakaoMap
+          ref={mapRef}
+          currentLocation={currentLocation}
+          resetToInitialState={resetToInitialState}
+        />
 
         {/* 검색창은 항상 렌더링 */}
         <SearchMode
@@ -123,6 +149,9 @@ const SearchPage = () => {
             paidFilter={paidFilter}
             togglePaidFilter={togglePaidFilter}
             enterSearchMode={enterSearchMode}
+            onClickCurrentLocation={() => {
+              mapRef.current?.recenterToCurrentLocation();
+            }}
           />
         )}
 
