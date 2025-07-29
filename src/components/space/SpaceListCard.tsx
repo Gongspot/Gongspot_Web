@@ -75,7 +75,7 @@ const SpaceListCard: React.FC<Props> = ({
             viewBox="0 0 20 20"
             fill="#FFFFFF"
             stroke="#000000"
-            stroke-width="1"
+            strokeWidth="1"
             className="inline"
           >
             <path d="M10 15.272l-5.708 3.11 1.09-6.365L.764 7.982l6.383-.927L10 1.018l2.853 6.037 6.383.927-4.618 4.035 1.09 6.365z" />

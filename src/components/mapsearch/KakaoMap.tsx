@@ -1,12 +1,21 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 const kakaoKey = import.meta.env.VITE_KAKAO_JS_KEY;
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
 interface KakaoMapProps {
   resetToInitialState: () => void;
+  currentLocation: { lat: number; lng: number } | null;
 }
-const KakaoMap = ({ resetToInitialState }: KakaoMapProps) => {
+
+const KakaoMap = forwardRef(({ resetToInitialState, currentLocation }: KakaoMapProps, ref) => {
   const downTimeRef = useRef<number | null>(null);
   const downPosRef = useRef<{ x: number; y: number } | null>(null);
+  const mapRef = useRef<any>(null);
 
   useEffect(() => {
     const loadMap = () => {
@@ -17,7 +26,8 @@ const KakaoMap = ({ resetToInitialState }: KakaoMapProps) => {
           center: new kakao.maps.LatLng(37.5665, 126.9780),
           level: 3,
         };
-        new kakao.maps.Map(container, options);
+        const map = new kakao.maps.Map(container, options);
+        mapRef.current = map;
       });
     };
 
@@ -51,6 +61,59 @@ const KakaoMap = ({ resetToInitialState }: KakaoMapProps) => {
     }
   };
 
+  useEffect(() => {
+    if (!window.kakao || !window.kakao.maps || !mapRef.current || !currentLocation) {
+      console.log("조건 불충족", {
+        kakao: !!window.kakao,
+        maps: !!window.kakao?.maps,
+        mapRef: !!mapRef.current,
+        currentLocation,
+      });
+      return;
+    }
+
+    console.log("모든 조건 만족. 마커 생성 시작");
+
+    const markerPosition = new window.kakao.maps.LatLng(currentLocation.lat, currentLocation.lng);
+
+    // 기존 커스텀 오버레이 생성
+    const markerContent = document.createElement("div");
+    markerContent.innerHTML = `
+      <div style="
+        position: relative;
+        width: 28px;
+        height: 28px;
+        background-color: #f35343;
+        border: 4px solid white;
+        border-radius: 50%;
+        box-shadow: 0 0 6px rgba(0,0,0,0.4);
+      ">
+      </div>
+    `;
+
+    const overlay = new window.kakao.maps.CustomOverlay({
+      position: markerPosition,
+      content: markerContent,
+      yAnchor: 0.5,
+    });
+
+    overlay.setMap(mapRef.current);
+    mapRef.current.setCenter(markerPosition);
+
+    return () => {
+      overlay.setMap(null);
+    };
+  }, [currentLocation]);
+
+  useImperativeHandle(ref, () => ({
+    recenterToCurrentLocation: () => {
+      if (mapRef.current && currentLocation) {
+        const latLng = new window.kakao.maps.LatLng(currentLocation.lat, currentLocation.lng);
+        mapRef.current.setCenter(latLng);
+      }
+    },
+  }));
+
   return (
     <div
       id="map"
@@ -67,6 +130,6 @@ const KakaoMap = ({ resetToInitialState }: KakaoMapProps) => {
       }}
     />
   );
-};
+});
 
 export default KakaoMap;
