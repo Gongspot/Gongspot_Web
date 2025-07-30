@@ -21,34 +21,31 @@ const OauthKakaoCallback = () => {
     const fetchLogin = async () => {
       try {
         const response = await axiosInstance.get(
-          `/oauth/kakao/callback?code=${code}`
+          `/auth/oauth/kakao/callback?code=${code}`
         );
         const data = response.data;
-        console.log("Kakao Login Response:", data);
 
         if (data.isSuccess) {
-          const { accessToken, refreshToken } = data.result[0];
+          const { accessToken, refreshToken } = data.result;
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
 
           navigate("/home");
-        } else if (data.code === "MEMBER4001") {
-          navigate("/signup");
         } else {
           alert(data.message || "로그인에 실패했습니다.");
           navigate("/");
         }
       } catch (err) {
+        console.error("Error during Kakao OAuth callback:", err);
         if (
           axios.isAxiosError(err) &&
           err.response &&
           err.response.data &&
-          err.response.data.code === "MEMBER4001"
+          err.response.data.code === "OAUTH4003"
         ) {
           navigate("/signup");
         } else {
           alert("서버 오류가 발생했습니다.");
-          console.error("Login error:", err);
           navigate("/");
         }
       }
