@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { axiosInstance } from "../../apis/axios";
 
 const OauthKakaoCallback = () => {
   const navigate = useNavigate();
@@ -19,30 +20,28 @@ const OauthKakaoCallback = () => {
 
     const fetchLogin = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:8080/api/users/kakao/login/code",
-          { code }
+        const response = await axiosInstance.get(
+          `/auth/oauth/kakao/callback?code=${code}`
         );
         const data = response.data;
 
         if (data.isSuccess) {
-          const { accessToken, refreshToken } = data.result[0];
+          const { accessToken, refreshToken } = data.result;
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
 
           navigate("/home");
-        } else if (data.code === "USER4001") {
-          navigate("/signup");
         } else {
           alert(data.message || "로그인에 실패했습니다.");
           navigate("/");
         }
       } catch (err) {
+        console.error("Error during Kakao OAuth callback:", err);
         if (
           axios.isAxiosError(err) &&
           err.response &&
           err.response.data &&
-          err.response.data.code === "USER4001"
+          err.response.data.code === "OAUTH4003"
         ) {
           navigate("/signup");
         } else {
