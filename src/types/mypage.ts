@@ -23,3 +23,13 @@ export type ResponsePointHistoryDTO = CommonResponse<{
     pageInfo: PointHistoryPageInfo;
     result: PointHistoryResult[];
 }>;
+
+export type Notice = {
+    notificationId: number;
+    date: string;
+    title: string;
+};
+
+export type ResponseNoticeDTO = CommonResponse<{
+    notificationList: Notice[];
+}>;
