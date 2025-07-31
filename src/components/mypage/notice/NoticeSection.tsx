@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getNotice } from "../../../apis/mypage/notice";
 import type { Notice } from "../../../types/mypage";
+import { Link } from "react-router-dom";
 
 const NoticeSection = () => {
     const [notice, setNotice] = useState<Notice[] | null>(null);
@@ -22,7 +23,11 @@ const NoticeSection = () => {
     return (
         <>
             {notice?.map((item: Notice) => (
-                <div key={item.notificationId}>
+                <Link 
+                    to={`/mypage/notices/${item.notificationId}`} 
+                    key={item.notificationId} 
+                    className="block"
+                >
                     <div
                     className="flex items-center justify-between px-[1.75rem] my-[1.125rem] 
                     text-[0.938rem] text-black"
@@ -31,7 +36,7 @@ const NoticeSection = () => {
                         <p className="text-[#8F9098]">{item.date}</p>
                     </div>
                     <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
-                </div>
+                </Link>
             ))}
         </>
     );

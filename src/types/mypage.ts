@@ -24,7 +24,7 @@ export type ResponsePointHistoryDTO = CommonResponse<{
     result: PointHistoryResult[];
 }>;
 
-export type Notice = {
+export interface Notice {
     notificationId: number;
     date: string;
     title: string;
@@ -33,3 +33,9 @@ export type Notice = {
 export type ResponseNoticeDTO = CommonResponse<{
     notificationList: Notice[];
 }>;
+
+export interface NoticeDetail extends Notice {
+  content: string;
+}
+
+export type ResponseNoticeDetailDTO = CommonResponse<NoticeDetail>;
