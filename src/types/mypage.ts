@@ -39,3 +39,9 @@ export interface NoticeDetail extends Notice {
 }
 
 export type ResponseNoticeDetailDTO = CommonResponse<NoticeDetail>;
+
+export type RequestProposalDTO = {
+    name: string;
+    link: string;
+    reason: string;
+};

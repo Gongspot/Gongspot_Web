@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ProposalFormField from "./ProposalFormField";
 import { useNavigate } from "react-router-dom";
+import { postProposal } from "../../apis/mypage/mypage";
 
 const ProposalForm = () => {
     const navigate = useNavigate();
@@ -15,10 +16,16 @@ const ProposalForm = () => {
         setForm(prev => ({ ...prev, [key]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        alert("장소 등록 신청이 완료되었습니다.");
-        navigate("/mypage");
+        try {
+            await postProposal(form);
+            alert("장소 등록 신청이 완료되었습니다.");
+            navigate("/mypage");
+        } catch (e) {
+            console.error("Error fetching notices:", e);
+            alert("장소 등록 신청이 중 오류가 발생했습니다.");
+        }
     };
 
     return (
