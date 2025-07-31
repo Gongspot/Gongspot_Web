@@ -13,7 +13,7 @@ const MenuSection = ({ onLogoutClick }: MenuSectionProps) => {
 
     return (
         <>
-            <Menu text="프로필 관리" />
+            <Menu text="프로필" />
             <SubMenu text="프로필 관리" link="/mypage/profile" />
             <Divider />
 
