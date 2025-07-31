@@ -6,19 +6,19 @@ import type { PointHistoryResult } from "../../../types/mypage";
 const DetailSection = () => {
     const [chargeList, setChargeList] = useState<PointHistoryResult[]>([]);
     
-        useEffect(() => {
-            const fetchPoint = async () => {
-                try {
-                    const data = await getPointHistory();
-                    if (data.isSuccess) {
-                        setChargeList(data.result.result);
-                    }
-                } catch (e) {
-                    console.error("Error fetching total points:", e);
+    useEffect(() => {
+        const fetchPoint = async () => {
+            try {
+                const data = await getPointHistory();
+                if (data.isSuccess) {
+                    setChargeList(data.result.result);
                 }
-            };
-            fetchPoint();
-        }, []);
+            } catch (e) {
+                console.error("Error fetching total points:", e);
+            }
+        };
+        fetchPoint();
+    }, []);
         
     return (
         <div>

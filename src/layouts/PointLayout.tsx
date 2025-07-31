@@ -1,9 +1,8 @@
 import { Outlet } from "react-router-dom";
 import MyPointSection from "../components/mypage/point/MyPointSection";
 import TopHeader from "../components/TopHeader";
-
-import { axiosInstance } from "../apis/axios";
 import { useEffect, useState } from "react";
+import { getPoint } from "../apis/mypage/point";
 
 const PointLayout = () => {
     const [point, setPoint] = useState(0);
@@ -11,7 +10,7 @@ const PointLayout = () => {
     useEffect(() => {
         const fetchPoint = async () => {
             try {
-                const { data } = await axiosInstance.get('/points/total');
+                const data = await getPoint();
                 if (data.isSuccess) {
                     setPoint(data.result.totalPoints);
                 }
