@@ -1,5 +1,10 @@
 import type { CommonResponse } from "./common";
 
+export type ResponsePointDTO = CommonResponse<{
+    userId: number;
+    totalPoints: number;
+}>;
+
 export type PointHistoryPageInfo = {
     page: number;
     size: number;
