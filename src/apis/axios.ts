@@ -8,10 +8,12 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (config) => {
         const accessToken = TokenStorage.getToken();
+        console.log("보낼 accessToken:", accessToken);
 
         if (accessToken) {
             config.headers = config.headers || {};
             config.headers.Authorization = `Bearer ${accessToken}`;
+            
         }
 
         return config;
