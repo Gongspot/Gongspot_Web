@@ -5,8 +5,6 @@ import ProfileSection from "../../components/mypage/ProfileSection";
 import TopHeader from "../../components/TopHeader";
 import ActionSheet from "../../components/mypage/account/ActionSheet";
 
-const point = 500;
-
 const MyPage = () => {
   const [logout, setLogout] = useState(false);
   
@@ -14,7 +12,7 @@ const MyPage = () => {
     <div className="flex flex-col min-h-screen w-full bg-white pb-[5rem] scrollbar-hide">
       <TopHeader title="마이페이지" backButton={false} />
       <ProfileSection />
-      <MyPageItemSection point={point} />
+      <MyPageItemSection />
       <MenuSection onLogoutClick={() => setLogout(true)} />
       {logout && (
         <>
