@@ -1,16 +1,29 @@
+import { useEffect, useState } from "react";
 import DetailItem from "./DetailItem";
-
-const chargeList = [
-    { point: '-2', text: '실시간 혼잡도 기록 확인', date: '2025.05.18' },
-    { point: '+2', text: '광고 시청 보상 적립', date: '2025.05.18' },
-    { point: '+2', text: '광고 시청 보상 적립', date: '2025.05.15' },
-];
+import { getPointHistory } from "../../../apis/mypage/point";
+import type { PointHistoryResult } from "../../../types/mypage";
 
 const DetailSection = () => {
+    const [chargeList, setChargeList] = useState<PointHistoryResult[]>([]);
+    
+    useEffect(() => {
+        const fetchPoint = async () => {
+            try {
+                const data = await getPointHistory();
+                if (data.isSuccess) {
+                    setChargeList(data.result.result);
+                }
+            } catch (e) {
+                console.error("Error fetching total points:", e);
+            }
+        };
+        fetchPoint();
+    }, []);
+        
     return (
         <div>
             {chargeList.map((item, idx) => (
-                <DetailItem key={idx} point={item.point} text={item.text} date={item.date} />
+                <DetailItem key={idx} point={item.updatedPoint} text={item.content} date={item.date} />
             ))}
         </div>
     );

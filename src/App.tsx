@@ -66,7 +66,7 @@ const publicRoutes: RouteObject[] = [
       { path: "hot-all", element: <HotSpaceListPage /> },
       { path: "signup", element: <SignupPage /> },
       { path: "mypage/notices", element: <NoticePage /> },
-      { path: "mypage/notices/:id", element: <NoticeDetailPage /> },
+      { path: "mypage/notices/:notificationId", element: <NoticeDetailPage /> },
       {
         path: "mypage/point",
         element: <PointLayout />,
