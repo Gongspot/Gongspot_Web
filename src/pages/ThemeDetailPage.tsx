@@ -1,87 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { themeSpaces } from "../constants/spaceThemes";
-import dummySpaces from "../constants/dummySpaces";
 import SpaceListCard from "../components/space/SpaceListCard";
 import TopHeader from "../components/TopHeader";
+import { usePlacesByCategory } from "../hooks/usePlacesByCategory";
+import { useLikeSpace } from "../hooks/useLikeSpace";
+import type { CategoryPlaceItem } from "../types/space";
 
 const ThemeDetailPage: React.FC = () => {
   const { themeTitle } = useParams<{ themeTitle: string }>();
   const navigate = useNavigate();
 
-  // themeSpaces에서 해당 테마 정보 찾기
   const theme = themeSpaces.find(t => t.title === themeTitle) || themeSpaces[0];
+  const categoryId = theme.id;
 
-  const [spaces, setSpaces] = useState(dummySpaces);
+  const { data: initialSpaces, isLoading, isError } = usePlacesByCategory(categoryId);
+  const { mutate: toggleLike } = useLikeSpace();
 
-  // 테마별 태그로 공간 필터
-  const filterTag = `#${theme.title}`;
-  const filteredSpaces = spaces.filter(space =>
-    space.tags.includes(filterTag)
-  );
+  const [places, setPlaces] = useState<CategoryPlaceItem[]>([]);
 
-  // 좋아요 토글 핸들러
+  useEffect(() => {
+    if (initialSpaces) {
+      setPlaces(initialSpaces);
+    }
+  }, [initialSpaces]);
+
   const handleLike = (id: number) => {
-    setSpaces(prev =>
+    setPlaces(prev =>
       prev.map(space =>
-        space.id === id ? { ...space, isLiked: !space.isLiked } : space
+        space.placeId === id ? { ...space, isLike: !space.isLike } : space
       )
     );
+    const currentSpace = places.find(s => s.placeId === id);
+    if (currentSpace) {
+      toggleLike({ placeId: String(id), isLiked: currentSpace.isLike });
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#F7F9FB] flex flex-col ">
       <TopHeader title={theme.title} />
 
-      {/* 상단 - 대표 이미지/오버레이 */}
       <div className="px-4 pt-8 pb-4 bg-[#FAFAFA]">
-        {/* 테마 이미지 */}
         <div className="rounded-2xl overflow-hidden mb-3 relative" style={{ height: 180 }}>
-          <img
-            src={theme.image}
-            alt={theme.title}
-            className="w-full h-full object-cover"
-          />
-          {/* 그라데이션 */}
+          <img src={theme.image} alt={theme.title} className="w-full h-full object-cover" />
           <div className="absolute left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black/70 to-transparent" />
-          {/* 타이틀/설명 */}
           <div className="absolute left-5 bottom-3 z-10 text-white">
             <div className="font-semibold text-xl mb-1">{theme.title}</div>
             <div className="text-[14px] font-medium opacity-90">{theme.subtitle}</div>
           </div>
         </div>
-        <div className="text-[14px] mb-2 mt-6">
-          정부와 지자체에서 지원해주는 다양한 공공학습공간<br />
-          스터디카페 형태, 카페·학원식 관리제<br />
-          비용 부담 없이 즐겨보자!
+        <div className="text-[14px] mb-2 mt-6 whitespace-pre-wrap">
+          {theme.description}
         </div>
       </div>
       
-
-      {/* 하단 리스트 (고정, 스크롤) */}
       <div className="flex-1 flex flex-col mt-3">
         <div className="font-semibold p-3 bg-[#FFFFFF]">
-          {theme.title} 공간 살펴보기
+          <span>{theme.title} 공간 살펴보기</span>
         </div>
         <div className="overflow-y-auto flex-1 bg-[#EFF7FB]" style={{ maxHeight: "370px" }}>
-          {filteredSpaces.length === 0 ? (
-            <div className="text-gray-400 text-sm py-10 text-center">
-              해당 테마의 공간이 없습니다.
-            </div>
-          ) : (
-            filteredSpaces.map(space => (
-              <SpaceListCard
-                key={space.id}
-                name={space.name}
-                image={space.image}
-                rating={space.rating}
-                distance={space.distance}
-                tags={space.tags}
-                isLiked={space.isLiked}
-                onDetail={() => navigate(`/space/${space.id}`)}
-                onLike={() => handleLike(space.id)}
-              />
-            ))
+          {isLoading && <div className="text-center py-10">목록을 불러오는 중...</div>}
+          {isError && <div className="text-center py-10 text-red-500">오류가 발생했습니다.</div>}
+          
+          {!isLoading && !isError && (
+            places.length === 0 ? (
+              <div className="text-gray-400 text-sm py-10 text-center">
+                해당 테마의 공간이 없습니다.
+              </div>
+            ) : (
+              places.map(space => (
+                <SpaceListCard
+                  key={space.placeId}
+                  name={space.name}
+                  image={space.imageUrl || "https://via.placeholder.com/150"}
+                  rating={space.rating}
+                  location={space.location} // location prop만 전달하면 끝!
+                  tags={space.location ? [space.location] : []}
+                  isLiked={space.isLike}
+                  onDetail={() => navigate(`/space/${space.placeId}`)}
+                  onLike={() => handleLike(space.placeId)}
+                />
+              ))
+            )
           )}
         </div>
       </div>

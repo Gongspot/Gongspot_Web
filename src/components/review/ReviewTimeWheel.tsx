@@ -41,20 +41,9 @@ const ReviewTimeWheel: React.FC<Props> = ({
 
   useEffect(() => {
     if (open) {
-      ampmRef.current?.scrollTo({
-        top: getIndex(ampmList, ampm) * CELL_HEIGHT,
-        behavior: "auto",
-      });
-
-      hourRef.current?.scrollTo({
-        top: getIndex(hourList, hour) * CELL_HEIGHT,
-        behavior: "auto",
-      });
-
-      minuteRef.current?.scrollTo({
-        top: getIndex(minuteList, minute) * CELL_HEIGHT,
-        behavior: "auto",
-      });
+      ampmRef.current?.scrollTo({ top: getIndex(ampmList, ampm) * CELL_HEIGHT });
+      hourRef.current?.scrollTo({ top: getIndex(hourList, hour) * CELL_HEIGHT });
+      minuteRef.current?.scrollTo({ top: getIndex(minuteList, minute) * CELL_HEIGHT });
     }
   }, [open, ampm, hour, minute]);
 
@@ -92,7 +81,7 @@ const ReviewTimeWheel: React.FC<Props> = ({
         className="w-full text-left px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm flex justify-between items-center"
         style={{ minHeight: 40 }}
       >
-        <span className={ampm && hour && minute ? "text-gray-800" : "text-gray-400"}>
+        <span className={ampm && hour && minute ? "text-[#4CB1F1] font-semibold" : "text-gray-400"}>
           {valueText}
         </span>
         <svg
@@ -103,7 +92,7 @@ const ReviewTimeWheel: React.FC<Props> = ({
           viewBox="0 0 24 24"
         >
           <path
-            d="M7 10l5 5 5-5"
+            d={open ? "M7 14l5-5 5 5" : "M7 10l5 5 5-5"}
             stroke="#888"
             strokeWidth="2"
             strokeLinecap="round"
@@ -134,77 +123,33 @@ const ReviewTimeWheel: React.FC<Props> = ({
               onScroll={() => handleScroll(ampmRef, ampmList, setAmpm)}
             >
               {ampmList.map((v) => (
-                <div
-                  key={v}
-                  className="snap-center flex items-center justify-center select-none"
-                  style={{
-                    height: CELL_HEIGHT,
-                    fontWeight: ampm === v ? 700 : 400,
-                    fontSize: ampm === v ? 18 : 16,
-                    color: ampm === v ? "#31A8F7" : "#BBB",
-                    opacity: ampm === v ? 1 : 0.5,
-                  }}
-                >
+                <div key={v} className="snap-center flex items-center justify-center select-none" style={{ height: CELL_HEIGHT, fontWeight: ampm === v ? 700 : 400, /* ▼▼▼ 글자 크기 수정 ▼▼▼ */ fontSize: ampm === v ? 16 : 14, color: ampm === v ? "#31A8F7" : "#BBB", opacity: ampm === v ? 1 : 0.5 }}>
                   {v || ""}
                 </div>
               ))}
             </div>
 
-            {/* 시(hour) */}
             <div
               ref={hourRef}
               className="overflow-y-scroll snap-y snap-mandatory no-scrollbar"
-              style={{
-                height: CELL_HEIGHT * 5,
-                scrollSnapType: "y mandatory",
-                paddingTop: CELL_HEIGHT * 2,
-                paddingBottom: CELL_HEIGHT * 2,
-                width: 44,
-              }}
+              style={{ height: CELL_HEIGHT * 5, scrollSnapType: "y mandatory", paddingTop: CELL_HEIGHT * 2, paddingBottom: CELL_HEIGHT * 2, width: 44 }}
               onScroll={() => handleScroll(hourRef, hourList, setHour)}
             >
               {hourList.map((v) => (
-                <div
-                  key={v}
-                  className="snap-center flex items-center justify-center select-none"
-                  style={{
-                    height: CELL_HEIGHT,
-                    fontWeight: hour === v ? 700 : 400,
-                    fontSize: hour === v ? 18 : 16,
-                    color: hour === v ? "#31A8F7" : "#111",
-                    opacity: hour === v ? 1 : 0.5,
-                  }}
-                >
+                <div key={v} className="snap-center flex items-center justify-center select-none" style={{ height: CELL_HEIGHT, fontWeight: hour === v ? 700 : 400, /* ▼▼▼ 글자 크기 수정 ▼▼▼ */ fontSize: hour === v ? 16 : 14, color: hour === v ? "#31A8F7" : "#111", opacity: hour === v ? 1 : 0.5 }}>
                   {v}
                 </div>
               ))}
             </div>
 
-            {/* 분(minute) */}
             <div
               ref={minuteRef}
               className="overflow-y-scroll snap-y snap-mandatory no-scrollbar"
-              style={{
-                height: CELL_HEIGHT * 5,
-                scrollSnapType: "y mandatory",
-                paddingTop: CELL_HEIGHT * 2,
-                paddingBottom: CELL_HEIGHT * 2,
-                width: 44,
-              }}
+              style={{ height: CELL_HEIGHT * 5, scrollSnapType: "y mandatory", paddingTop: CELL_HEIGHT * 2, paddingBottom: CELL_HEIGHT * 2, width: 44 }}
               onScroll={() => handleScroll(minuteRef, minuteList, setMinute)}
             >
               {minuteList.map((v) => (
-                <div
-                  key={v}
-                  className="snap-center flex items-center justify-center select-none"
-                  style={{
-                    height: CELL_HEIGHT,
-                    fontWeight: minute === v ? 700 : 400,
-                    fontSize: minute === v ? 18 : 16,
-                    color: minute === v ? "#31A8F7" : "#111",
-                    opacity: minute === v ? 1 : 0.5,
-                  }}
-                >
+                <div key={v} className="snap-center flex items-center justify-center select-none" style={{ height: CELL_HEIGHT, fontWeight: minute === v ? 700 : 400, /* ▼▼▼ 글자 크기 수정 ▼▼▼ */ fontSize: minute === v ? 16 : 14, color: minute === v ? "#31A8F7" : "#111", opacity: minute === v ? 1 : 0.5 }}>
                   {v}
                 </div>
               ))}

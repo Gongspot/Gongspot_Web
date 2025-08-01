@@ -1,16 +1,21 @@
+// src/components/review/ReviewTagSelector.tsx
+
 const SELECTED_COLOR = "#4CB1F1";
 const UNSELECTED_BORDER_COLOR = "#E5E5E5";
 
-const ReviewTagSelector = ({
-  selectedTags,
-  setSelectedTags,
-  selectedFacilities,
-  setSelectedFacilities,
-}: {
+// Props를 원래대로 selectedTags와 selectedFacilities만 받도록 수정
+interface Props {
   selectedTags: string[];
   setSelectedTags: (tags: string[]) => void;
   selectedFacilities: string[];
   setSelectedFacilities: (tags: string[]) => void;
+}
+
+const ReviewTagSelector: React.FC<Props> = ({
+  selectedTags,
+  setSelectedTags,
+  selectedFacilities,
+  setSelectedFacilities,
 }) => {
   const toggle = (v: string, arr: string[], setArr: (v: string[]) => void) =>
     setArr(arr.includes(v) ? arr.filter(x => x !== v) : [...arr, v]);
@@ -19,7 +24,6 @@ const ReviewTagSelector = ({
   const tags = ["넓은", "아늑한", "깔끔한", "조용한", "음악이 나오는", "이야기를 나눌 수 있는"];
   const facilities = ["Wi-Fi", "콘센트", "넓은 좌석", "음료"];
 
-  // 에러 원인인 isSelected 파라미터를 제거!
   const getBtnClass = () =>
     "px-4 py-1 rounded-full border-[0.3px] text-sm font-medium transition-all duration-150 bg-white";
 
@@ -48,7 +52,8 @@ const ReviewTagSelector = ({
           );
         })}
       </div>
-      <div className="font-bold text-xs mt-1 mb-1">분위기</div>
+      <div className="font-semibold mb-3">어떤 점이 좋았나요?</div>
+      <div className="text-xs mt-1 mb-1">분위기</div>
       <div className="flex flex-wrap gap-2 mb-2">
         {tags.map(tag => {
           const isSelected = selectedTags.includes(tag);
@@ -71,7 +76,7 @@ const ReviewTagSelector = ({
           );
         })}
       </div>
-      <div className="font-bold text-xs mb-1">부가시설</div>
+      <div className="text-xs mb-1">부가시설</div>
       <div className="flex flex-wrap gap-2">
         {facilities.map(facility => {
           const isSelected = selectedFacilities.includes(facility);

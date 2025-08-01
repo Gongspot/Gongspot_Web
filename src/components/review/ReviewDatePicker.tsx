@@ -30,7 +30,8 @@ const ReviewDatePicker: React.FC<Props> = ({ value, onChange }) => {
         style={{ minHeight: 40 }}
         onClick={() => setOpen((prev) => !prev)}
       >
-        <span className={value ? "text-gray-800" : "text-gray-400"}>
+        {/* ▼▼▼ 날짜 선택 시 텍스트 색상 변경 ▼▼▼ */}
+        <span className={value ? "text-[#4CB1F1] font-semibold" : "text-gray-400"}>
           {value ? value.toLocaleDateString("ko-KR") : "날짜 선택하기"}
         </span>
         <svg width="16" height="16" className="ml-2" fill="none" viewBox="0 0 24 24">
@@ -59,8 +60,6 @@ const ReviewDatePicker: React.FC<Props> = ({ value, onChange }) => {
             }}
           />
           <style>{`
-            .rdp-nav_icon > svg { display: none !important; }
-            .rdp-nav_button > svg:not([stroke="#4CB1F1"]) { display: none !important; }
             .custom-selected, .custom-selected:focus, .custom-selected:hover,
             .rdp-day_selected, .rdp-day_selected:focus, .rdp-day_selected:hover {
               background: ${SKY} !important;
@@ -71,10 +70,9 @@ const ReviewDatePicker: React.FC<Props> = ({ value, onChange }) => {
               color: ${SKY} !important;
               background: #fff !important;
             }
-            .rdp-nav_button, .rdp-nav_button svg, .rdp-nav_button path {
+            .rdp-nav_button {
               color: ${SKY} !important;
               stroke: ${SKY} !important;
-              fill: none !important;
             }
           `}</style>
         </div>
