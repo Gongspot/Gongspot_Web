@@ -9,6 +9,7 @@ import SearchResultSheet from "../components/mapsearch/SearchResultSheet";
 import { useSearchMode } from "../contexts/SearchModeContext";
 import type { Space } from "../types/space";
 import PlaceSelectSheet from "../components/mapsearch/PlaceSelectSheet";
+import { searchPlaces } from "../apis/placeSearch";
 
 const SearchPage = () => {
   useEffect(() => {
@@ -116,6 +117,21 @@ const SearchPage = () => {
 
   const mapRef = useRef<{ recenterToCurrentLocation: () => void }>(null);
 
+  const fetchSearchResults = async () => {
+    const result = await searchPlaces({
+      keyword: searchInput.trim(),
+      purpose: selectedFilters["이용 목적"]?.[0],
+      type: selectedFilters["공간 종류"]?.[0],
+      mood: selectedFilters["분위기"]?.[0],
+      facilities: selectedFilters["부가시설"]?.[0],
+      location: selectedFilters["지역"]?.[0],
+      page: 0,
+    });
+
+    console.log("검색 결과:", result);
+    // setSearchResults(result); // 상태에 저장하여 화면에 표시
+  };
+
 
   return (
     <div className="w-full h-screen bg-gray-200">
@@ -134,11 +150,14 @@ const SearchPage = () => {
         <SearchMode
           searchInput={searchInput}
           setSearchInput={setSearchInput}
-          exitSearchMode={exitSearchMode}
-          enterSearchMode={enterSearchMode}
-          openSearchResultSheet={() => setIsSearchResultSheetOpen(true)}
+          openSearchResultSheet={() => {
+            fetchSearchResults(); // 이미 SearchPage에 있는 함수
+            setIsSearchResultSheetOpen(true);
+          }}
           isSearchMode={isSearchMode}
           isSearchResultSheetOpen={isSearchResultSheetOpen}
+          enterSearchMode={enterSearchMode}
+          exitSearchMode={exitSearchMode}
           resetToInitialState={resetToInitialState}
           onRecentClick={handleRecentClick}
         />

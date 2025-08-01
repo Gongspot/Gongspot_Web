@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { X } from "lucide-react";
+import { getRecentSearches, deleteRecentSearchByKeyword } from "../../apis/recentSearch";
+import { searchPlaces } from "../../apis/placeSearch";
 
 interface SearchModeProps {
   searchInput: string;
@@ -13,8 +15,6 @@ interface SearchModeProps {
   onRecentClick: (keyword: string) => void;
 }
 
-const LOCAL_STORAGE_KEY = "recentSearches";
-
 const SearchMode = ({
   searchInput,
   setSearchInput,
@@ -27,38 +27,6 @@ const SearchMode = ({
 }: SearchModeProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
-
-  // 로컬스토리지에서 불러오기
-  useEffect(() => {
-    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (saved) {
-      setRecentSearches(JSON.parse(saved));
-    }
-  }, []);
-
-  // 로컬스토리지에 저장하기
-  const saveToLocalStorage = (items: string[]) => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(items));
-  };
-
-  // 검색어 추가
-  const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && searchInput.trim() !== "") {
-      const term = searchInput.trim();
-      const updated = [term, ...recentSearches.filter((t) => t !== term)].slice(0, 10);
-      setRecentSearches(updated);
-      saveToLocalStorage(updated);
-      openSearchResultSheet(); // 바텀시트 열기
-    }
-  };
-
-  const removeSearch = (term: string) => {
-    const updated = recentSearches.filter((t) => t !== term);
-    setRecentSearches(updated);
-    saveToLocalStorage(updated);
-  };
-
   useEffect(() => {
     if (isSearchMode && !isSearchResultSheetOpen) {
       inputRef.current?.focus(); // 검색 모드에서 검색창에 커서 표시
@@ -67,6 +35,49 @@ const SearchMode = ({
     }
   }, [isSearchMode, isSearchResultSheetOpen]);
 
+  const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchInput.trim() !== "") {
+      try {
+        const result = await searchPlaces({
+          keyword: searchInput.trim(),
+          purpose: "",     // 필터 정보가 필요하면 props로 넘기도록 변경 필요
+          type: "",
+          mood: "",
+          facilities: "",
+          location: "",
+          page: 0,
+        });
+
+        console.log("🔍 검색 결과:", result); // 추후에 상태로 set 가능
+        openSearchResultSheet(); // 🔸 검색 결과 시트 열기
+      } catch (err) {
+        console.error("검색 API 호출 실패:", err);
+      }
+    }
+  };
+
+  // 최근 검색어 조회
+  useEffect(() => {
+    const fetchRecentSearches = async () => {
+      const keywordItems = await getRecentSearches(); // [{ id, keyword }, ...]
+      const keywords = keywordItems.map(item => item.keyword); // keyword만 추출
+      console.log("📦 프론트에서 받은 검색어:", keywords);
+      setRecentSearches(keywords); // ✅ string[]에 맞게 저장
+    };
+
+    fetchRecentSearches();
+  }, []);
+
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+
+  // 최근 검색어 삭제
+  const removeSearch = async (keyword: string) => {
+    const updated = recentSearches.filter((t) => t !== keyword);
+    setRecentSearches(updated);
+
+    const success = await deleteRecentSearchByKeyword(keyword);
+    if (!success) console.warn("서버에서 검색어 삭제 실패");
+  };
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 z-30 pointer-events-none">
@@ -124,14 +135,14 @@ const SearchMode = ({
                 key={idx}
                 className="flex items-center px-3 py-1 rounded-full border border-gray-300 bg-white text-xs text-gray-400 cursor-pointer"
                 onClick={() => {
-                  onRecentClick(term);           // 검색어 반영
-                  enterSearchMode();             // 검색 모드 유지
+                  onRecentClick(term);
+                  enterSearchMode();
                 }}
               >
                 <span>{term}</span>
                 <button
                   onClick={(e) => {
-                    e.stopPropagation();         // X버튼 클릭 시 부모 클릭 방지
+                    e.stopPropagation();
                     removeSearch(term);
                   }}
                   className="ml-1"
