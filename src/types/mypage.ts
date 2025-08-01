@@ -35,7 +35,7 @@ export type ResponseNoticeDTO = CommonResponse<{
 }>;
 
 export interface NoticeDetail extends Notice {
-  content: string;
+    content: string;
 }
 
 export type ResponseNoticeDetailDTO = CommonResponse<NoticeDetail>;
@@ -44,4 +44,14 @@ export type RequestProposalDTO = {
     name: string;
     link: string;
     reason: string;
+};
+
+export type ResponseProfileDTO = CommonResponse<{
+    nickname: string;
+    profileImg: string;
+}>;
+
+export type RequestProfileDTO = {
+    nickname: string;
+    profileImg: string;
 };

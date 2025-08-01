@@ -2,9 +2,10 @@ import { useState } from "react";
 
 interface NicknameProps {
   nickname: string;
+  setNickname?: (value: string) => void;
 }
 
-const Nickname = ({ nickname }: NicknameProps) => {
+const Nickname = ({ nickname, setNickname }: NicknameProps) => {
   const [inputValue, setInputValue] = useState("");
   const [message, setMessage] = useState("");
   
@@ -20,6 +21,14 @@ const Nickname = ({ nickname }: NicknameProps) => {
     ? "text-[#4CB1F1] cursor-pointer"
     : "text-[#ADAEBC] cursor-not-allowed";
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+    if (setNickname) {
+      setNickname(value);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center mt-[2.5rem] px-[1.5rem] w-full">
       <div className="text-left text-[1rem] w-full">
@@ -31,7 +40,7 @@ const Nickname = ({ nickname }: NicknameProps) => {
           className="w-full px-[0.875rem] py-[0.563rem] text-[0.75rem] text-black border border-[#E5E5E5] rounded-[0.5rem]"
           placeholder={nickname}
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={handleChange}
         />
         <button
           type="button"
