@@ -50,3 +50,8 @@ export type ResponseProfileDTO = CommonResponse<{
     nickname: string;
     profileImg: string;
 }>;
+
+export type RequestProfileDTO = {
+    nickname: string;
+    profileImg: string;
+};

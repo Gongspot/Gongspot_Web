@@ -2,19 +2,36 @@ import Nickname from "../../components/mypage/profile/Nickname";
 import Profile from "../../components/mypage/profile/Profile";
 import NextButton from "../../components/NextButton";
 import TopHeader from "../../components/TopHeader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ActionSheet from "../../components/mypage/profile/ActionSheet";
-
-const nickname = "카공족";
+import { getProfile } from "../../apis/mypage/mypage";
+import defaultProfile from "../../assets/profile.svg";
 
 const ProfilePage = () => {
   const [overlayActive, setOverlayActive] = useState(false);
+  const [nickname, setNickname] = useState<string>("");
+  const [profile, setProfile] = useState<string>(defaultProfile);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getProfile();
+        if (data.isSuccess) {
+            setNickname(data.result.nickname);
+            setProfile(data.result.profileImg);
+        }
+      } catch (e) {
+        console.error("Error fetching profile:", e);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   return (
     <div className="flex flex-col h-screen w-full bg-white">
       <div className="flex-1">
         <TopHeader title="프로필 관리" backButton={true} />
-        <Profile onClick={() => setOverlayActive(true)} />
+        <Profile profile={profile} onClick={() => setOverlayActive(true)} />
         <Nickname nickname={nickname} />
       </div>
       <NextButton
