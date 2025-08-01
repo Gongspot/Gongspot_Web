@@ -1,4 +1,5 @@
 import React from "react";
+import heartIcon from "../../assets/heart.svg"; // 찜하기 SVG 아이콘
 
 interface Props {
   rank: number;
@@ -44,7 +45,7 @@ const HotSpaceListCard: React.FC<Props> = ({
     <span className="absolute top-10 left-3 text-white text-base z-10">
       {title}
     </span>
-    {/* 좋아요(찜) 버튼: SpaceListCard 디자인과 동일, 우하단 */}
+    {/* 좋아요(찜) 버튼 */}
     <button
       type="button"
       className="absolute bottom-3 right-3 z-20"
@@ -55,16 +56,15 @@ const HotSpaceListCard: React.FC<Props> = ({
       aria-label="좋아요"
       style={{ lineHeight: 0, background: "none", border: "none" }}
     >
-      <svg
+      <img
+        src={heartIcon}
+        alt="좋아요 아이콘"
         width={25}
         height={25}
-        fill={liked ? "#FF7D8A" : "#FFFFFF"}
-        stroke={liked ? "#FF7D8A" : "#C2C7CE"}
-        strokeWidth={1}
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 21s-6.7-5.2-8.2-7.1A5.4 5.4 0 0 1 5.5 5.5a5.5 5.5 0 0 1 6.5.7 5.5 5.5 0 0 1 6.5-.7 5.4 5.4 0 0 1 1.7 8.4C18.7 15.8 12 21 12 21z" />
-      </svg>
+        // ▼▼▼ liked가 false일 때 CSS 필터로 회색조 처리 ▼▼▼
+        style={{ filter: liked ? "none" : "grayscale(100%) brightness(1.5)" }}
+        className="transition-transform duration-150 active:scale-90"
+      />
     </button>
   </div>
 );

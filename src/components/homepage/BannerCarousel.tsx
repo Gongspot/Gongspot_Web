@@ -1,7 +1,7 @@
 import React from "react";
-import banner1 from "../../assets/banner1.jpg";
-import banner2 from "../../assets/banner2.jpg";
-import banner3 from "../../assets/banner3.jpg";
+import banner1 from "../../assets/banner1.svg";
+import banner2 from "../../assets/banner2.svg";
+import banner3 from "../../assets/banner3.svg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/swiper-bundle.css";
@@ -10,7 +10,7 @@ const BannerCarousel: React.FC = () => {
   return (
     <div className="page-container">
       <Swiper
-        className="banner h-56 rounded-lg"
+        className="banner h-48 rounded-lg"
         spaceBetween={50}
         slidesPerView={1}
         navigation

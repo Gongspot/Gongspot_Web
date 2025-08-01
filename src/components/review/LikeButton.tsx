@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaHeart } from "react-icons/fa6";
 
-const LikeButton: React.FC = () => {
-  const [liked, setLiked] = useState(false);
+// Props 타입을 정의합니다.
+interface Props {
+  liked: boolean;
+  onToggle: () => void;
+}
+
+const LikeButton: React.FC<Props> = ({ liked, onToggle }) => {
+  // 컴포넌트 내부에서 관리하던 useState는 제거합니다.
 
   return (
     <button
@@ -16,7 +22,7 @@ const LikeButton: React.FC = () => {
         boxShadow: liked ? "0 0 0 2px #eaf6fd" : undefined,
         outline: "none",
       }}
-      onClick={() => setLiked(v => !v)}
+      onClick={onToggle} // props로 받은 onToggle 함수를 연결합니다.
     >
       공간이 마음에 들어요!
       <span

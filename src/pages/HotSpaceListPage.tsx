@@ -1,25 +1,40 @@
-import React, { useState } from "react";
+// src/pages/HotSpaceListPage.tsx
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import dummySpaces from "../constants/dummySpaces";
 import TopHeader from "../components/TopHeader";
 import HotSpaceListCard from "../components/space/HotSpaceListCard";
+import { useHotPlaces } from "../hooks/useHotPlaces";
+import { useLikeSpace } from "../hooks/useLikeSpace";
+import type { HotPlaceListItem } from "../types/space";
 
 const HotSpaceListPage: React.FC = () => {
-  const [spaces, setSpaces] = useState(
-    dummySpaces
-      .slice()
-      .sort((a, b) => b.reviewStats.score - a.reviewStats.score)
-      .slice(0, 10)
-  );
   const navigate = useNavigate();
+  const { data: initialSpaces, isLoading, isError } = useHotPlaces();
+  const { mutate: toggleLike } = useLikeSpace();
+
+  const [spaces, setSpaces] = useState<HotPlaceListItem[]>([]);
+
+  useEffect(() => {
+    if (initialSpaces) {
+      setSpaces(initialSpaces);
+    }
+  }, [initialSpaces]);
 
   const handleLike = (id: number) => {
-    setSpaces(prev =>
-      prev.map(space =>
-        space.id === id ? { ...space, isLiked: !space.isLiked } : space
+    setSpaces(prevSpaces =>
+      prevSpaces.map(space =>
+        space.placeId === id ? { ...space, isLike: !space.isLike } : space
       )
     );
+    
+    const currentSpace = spaces.find(s => s.placeId === id);
+    if (currentSpace) {
+      toggleLike({ placeId: String(id), isLiked: currentSpace.isLike });
+    }
   };
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (isError) return <div>오류가 발생했습니다.</div>;
 
   return (
     <div className="min-h-screen bg-[#EFF7FB] pb-20">
@@ -28,13 +43,13 @@ const HotSpaceListPage: React.FC = () => {
         <div className="grid grid-cols-2 gap-4">
           {spaces.map((space, idx) => (
             <HotSpaceListCard
-              key={space.id}
+              key={space.placeId}
               rank={idx + 1}
-              image={space.image}
+              image={space.imageUrl || "https://via.placeholder.com/200"}
               title={space.name}
-              liked={space.isLiked}
-              onLike={() => handleLike(space.id)}
-              onClick={() => navigate(`/space/${space.id}`)}
+              liked={space.isLike}
+              onLike={() => handleLike(space.placeId)}
+              onClick={() => navigate(`/space/${space.placeId}`)}
               className="h-44"
             />
           ))}

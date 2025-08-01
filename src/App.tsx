@@ -1,3 +1,4 @@
+// src/App.tsx
 import {
   createBrowserRouter,
   type RouteObject,
@@ -43,6 +44,7 @@ import AdminSearchSpacePage from "./pages/admin/AdminSearchSpacePage";
 import AdminEditSpacePage from "./pages/admin/AdminEditSpacePage";
 import AdminNoticeDetailPage from "./pages/admin/AdminNoticeDetailPage";
 import AdminNoticeAllPage from "./pages/admin/AdminNoticeAllPage";
+import AllReviewsPage from "./pages/spacedetail/AllReviewsPage"; // AllReviewsPage 임포트 추가
 
 const publicRoutes: RouteObject[] = [
   {
@@ -56,6 +58,7 @@ const publicRoutes: RouteObject[] = [
       { path: "likes", element: <LikesPage /> },
       { path: "mypage", element: <MyPage /> },
       { path: "space/:id", element: <SpaceDetailPage /> },
+      { path: "space/:id/reviews", element: <AllReviewsPage /> }, // 전체 리뷰 페이지 라우트 추가
       { path: "space/:id/review", element: <SpaceReviewWritePage /> },
       { path: "space/:id/congestion", element: <SpaceCongestionDetailPage /> },
       { path: "theme-all", element: <ThemeAllPage /> },
