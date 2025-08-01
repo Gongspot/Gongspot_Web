@@ -115,7 +115,6 @@ const SearchPage = () => {
     }
   }, []);
   
-
   const mapRef = useRef<{ recenterToCurrentLocation: () => void }>(null);
 
   const fetchSearchResults = async () => {
