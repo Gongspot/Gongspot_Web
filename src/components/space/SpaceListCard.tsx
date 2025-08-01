@@ -13,11 +13,10 @@ interface Props {
   isLiked: boolean;
   onDetail: () => void;
   onLike: () => void;
-  enableWholeCardClick?: boolean; // Admin 페이지 에러 방지를 위해 추가
+  enableWholeCardClick?: boolean; 
   buttonText?: string;
 }
 
-// ▼▼▼ 1. address 타입에 undefined를 추가해주세요. ▼▼▼
 const isValidAddressFormat = (address: string | null | undefined): boolean => {
   if (!address) return false;
   const keywords = ["특별시", "광역시", "도", "시", "군", "구", "로", "길", "읍", "면", "동"];
@@ -45,7 +44,6 @@ const SpaceListCard: React.FC<Props> = ({
       return;
     }
 
-    // ▼▼▼ 2. myLocation.loaded 체크를 myLocation.coordinates 체크 뒤로 옮깁니다. ▼▼▼
     if (myLocation.coordinates && isValidAddressFormat(location)) {
       const calculate = async () => {
         try {

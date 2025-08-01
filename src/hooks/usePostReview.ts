@@ -1,7 +1,7 @@
 // src/hooks/usePostReview.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postReview } from '../apis/places';
-import type { ReviewPayload } from '../types/review.types'; // 타입 경로 확인 필요
+import type { ReviewPayload } from '../types/space';
 
 export const usePostReview = (placeId?: string) => {
   const queryClient = useQueryClient();
@@ -15,7 +15,6 @@ export const usePostReview = (placeId?: string) => {
       return postReview({ placeId, reviewData, photos });
     },
     onSuccess: () => {
-      // 성공 시, 해당 공간의 리뷰 목록과 혼잡도 캐시를 무효화하여 새로고침 유도
       queryClient.invalidateQueries({ queryKey: ['spaceReviews', placeId] });
       queryClient.invalidateQueries({ queryKey: ['congestions', placeId] });
       queryClient.invalidateQueries({ queryKey: ['latestCongestions', placeId] });

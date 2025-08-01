@@ -28,7 +28,7 @@ const SpaceDetailReviewStats: React.FC<Props> = ({
   ];
 
   return (
-    <div className="px-5 py-4 border-b bg-white">
+    <div className="px-5 py-2 border-b bg-white">
       <div className="flex justify-between items-start">
           <div className="flex items-center gap-4 mb-4">
             <div>

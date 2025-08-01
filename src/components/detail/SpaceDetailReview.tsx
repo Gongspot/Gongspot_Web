@@ -16,7 +16,7 @@ const SpaceDetailReview: React.FC<{ reviews: ReviewListItem[] }> = ({ reviews })
     return <div className="p-8 text-center text-gray-400">작성된 리뷰가 없습니다.</div>;
   }
   return (
-    <div className="px-5 py-4 divide-y">
+    <div className="px-5 divide-y">
       {reviews.map((r) => (
         <div key={r.reviewId} className="py-4">
           <div className="flex items-center mb-2">
