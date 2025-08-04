@@ -30,16 +30,20 @@ interface PlaceSearchParams {
 
 export const searchPlaces = async (params: PlaceSearchParams): Promise<PlaceItem[]> => {
   try {
-    const response = await axiosInstance.get<PlaceSearchResponse>("/places", { params });
+    console.log("📤 searchPlaces 요청 파라미터:", params);
+
+    const response = await axiosInstance.get<PlaceSearchResponse>("/places/", { params });
+
+    console.log("📥 searchPlaces 응답 전체:", response.data);
 
     if (response.data.isSuccess) {
       return response.data.result.placeList;
     } else {
-      console.warn("공간 검색 실패:", response.data.message);
+      console.warn("❌ 공간 검색 실패:", response.data.message);
       return [];
     }
   } catch (error) {
-    console.error("공간 검색 중 오류 발생:", error);
+    console.error("🚨 공간 검색 중 오류 발생:", error);
     return [];
   }
 };

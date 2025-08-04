@@ -1,12 +1,31 @@
 // src/types/space.ts
+export interface PlaceItem {
+  placeId: number;
+  name: string;
+  rating: number;
+  hashtag: string[] | string;
+  imageUrl: string;
+  isLike: boolean;
+}
+
+export interface SearchPlacesResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    placeList: PlaceItem[];
+  };
+}
+
 export interface Space {
   id: number;
   name: string;
   image: string;
   rating: number;
-  distance: number;
   tags: string[];
   isLiked: boolean;
+  distance: number;
+  location?: string | null;
 }
 
 // /places/{placeId} API 응답의 result 객체 타입

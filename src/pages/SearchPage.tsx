@@ -117,20 +117,76 @@ const SearchPage = () => {
 
   const mapRef = useRef<{ recenterToCurrentLocation: () => void }>(null);
 
+  // 검색 결과 상태 정의
+  const [searchResults, setSearchResults] = useState<Space[]>([]);
+
+  // const fetchSearchResults = async () => {
+  //   const raw = await searchPlaces({
+  //     keyword: searchInput.trim(),
+  //     purpose: selectedFilters["이용 목적"]?.[0],
+  //     type: selectedFilters["공간 종류"]?.[0],
+  //     mood: selectedFilters["분위기"]?.[0],
+  //     facilities: selectedFilters["부가시설"]?.[0],
+  //     location: selectedFilters["지역"]?.[0],
+  //     page: 0,
+  //   });
+
+  //   console.log("📦 API 원본 응답값:", raw);
+
+  //   const placeList = await searchPlaces({
+  //     keyword: searchInput.trim(),
+  //     purpose: selectedFilters["이용 목적"]?.[0],
+  //     type: selectedFilters["공간 종류"]?.[0],
+  //     mood: selectedFilters["분위기"]?.[0],
+  //     facilities: selectedFilters["부가시설"]?.[0],
+  //     location: selectedFilters["지역"]?.[0],
+  //     page: 0,
+  //   });
+
+  //   const converted: Space[] = placeList.map((item) => ({
+  //     id: item.placeId,
+  //     name: item.name,
+  //     rating: item.rating,
+  //     image: item.imageUrl,
+  //     tags: Array.isArray(item.hashtag) ? item.hashtag : [item.hashtag],
+  //     isLiked: item.isLike,
+  //     distance: 0,
+  //   }));
+
+  //   setSearchResults(converted);
+  // };
+
+  // 테스트
   const fetchSearchResults = async () => {
-    const result = await searchPlaces({
-      keyword: searchInput.trim(),
-      purpose: selectedFilters["이용 목적"]?.[0],
-      type: selectedFilters["공간 종류"]?.[0],
-      mood: selectedFilters["분위기"]?.[0],
-      facilities: selectedFilters["부가시설"]?.[0],
-      location: selectedFilters["지역"]?.[0],
+    const keywordOnly = searchInput.trim();
+
+    console.log("🧪 keywordOnly 테스트:", keywordOnly);
+
+    const placeList = await searchPlaces({
+      keyword: keywordOnly,
       page: 0,
     });
 
-    console.log("검색 결과:", result);
-    // setSearchResults(result); // 상태에 저장하여 화면에 표시
+    console.log("📦 API 응답 placeList:", placeList);
+
+    const converted: Space[] = placeList.map((item) => ({
+      id: item.placeId,
+      name: item.name,
+      rating: item.rating,
+      image: item.imageUrl,
+      tags: Array.isArray(item.hashtag) ? item.hashtag : [item.hashtag],
+      isLiked: item.isLike,
+      distance: 0, // 기본값
+    }));
+
+    console.log("🧩 변환된 데이터:", converted);
+
+    setSearchResults(converted);
   };
+
+  useEffect(() => {
+    console.log("🔍 변환된 검색결과:", searchResults);
+  }, [searchResults]);
 
 
   return (
@@ -239,6 +295,7 @@ const SearchPage = () => {
         selectedFilters={selectedFilters}
         setSelectedSpace={setSelectedSpace}
         setIsPlaceSelectSheetOpen={setIsPlaceSelectSheetOpen}
+        searchResults={searchResults}
       />
 
       {isPlaceSelectSheetOpen && selectedSpace && (

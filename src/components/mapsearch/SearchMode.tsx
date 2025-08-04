@@ -37,32 +37,16 @@ const SearchMode = ({
 
   const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchInput.trim() !== "") {
-      try {
-        const result = await searchPlaces({
-          keyword: searchInput.trim(),
-          purpose: "",     // 필터 정보가 필요하면 props로 넘기도록 변경 필요
-          type: "",
-          mood: "",
-          facilities: "",
-          location: "",
-          page: 0,
-        });
-
-        console.log("🔍 검색 결과:", result); // 추후에 상태로 set 가능
-        openSearchResultSheet(); // 🔸 검색 결과 시트 열기
-      } catch (err) {
-        console.error("검색 API 호출 실패:", err);
-      }
+      openSearchResultSheet();
     }
   };
 
   // 최근 검색어 조회
   useEffect(() => {
     const fetchRecentSearches = async () => {
-      const keywordItems = await getRecentSearches(); // [{ id, keyword }, ...]
-      const keywords = keywordItems.map(item => item.keyword); // keyword만 추출
+      const keywords = await getRecentSearches();
       console.log("📦 프론트에서 받은 검색어:", keywords);
-      setRecentSearches(keywords); // ✅ string[]에 맞게 저장
+      setRecentSearches(keywords);
     };
 
     fetchRecentSearches();

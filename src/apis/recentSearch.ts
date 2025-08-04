@@ -8,7 +8,7 @@ export interface RecentSearchItem {
   keyword: string;
 }
 
-export const getRecentSearches = async (): Promise<RecentSearchItem[]> => {
+export const getRecentSearches = async (): Promise<string[]> => {
   try {
     const response = await axiosInstance.get("/recent-search");
     console.log("🔍 전체 응답 데이터:", response.data);
@@ -17,7 +17,7 @@ export const getRecentSearches = async (): Promise<RecentSearchItem[]> => {
     const { isSuccess, result } = response.data;
 
     if (isSuccess && result?.keywords) {
-      return result.keywords; // [{ id, keyword }, ...] 형식이라고 가정
+      return result.keywords;
     } else {
       console.warn("최근 검색어 조회 실패:", response.data.message);
       return [];
