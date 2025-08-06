@@ -11,8 +11,6 @@ const OauthKakaoCallback = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
 
-    console.log("Kakao OAuth code:", code);
-
     if (!code) {
       navigate("/");
       return;
