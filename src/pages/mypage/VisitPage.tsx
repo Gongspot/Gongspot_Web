@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import { getVisit } from "../../apis/mypage/mypage";
 import type { VisitedPlaces } from "../../types/mypage";
 import VisitSpaceCard from "../../components/mypage/visit/VisitSpaceCard";
+import { useLikeSpace } from "../../hooks/useLikeSpace";
 
 const VisitPage = () => {
   const [visitedPlaces, setVisitedPlaces] = useState<VisitedPlaces[]>([]);
+  const { mutate: toggleLike } = useLikeSpace();
 
   useEffect(() => {
     const fetchVisit = async () => {
@@ -13,6 +15,7 @@ const VisitPage = () => {
         const data = await getVisit();
         if (data.isSuccess) {
           setVisitedPlaces(data.result.visitedPlaces);
+          console.log("방문 공간 데이터:", data.result.visitedPlaces);
         }
       } catch (e) {
         console.error("Error fetching visited places:", e);
@@ -20,6 +23,21 @@ const VisitPage = () => {
     };
     fetchVisit();
   }, []);
+
+  const handleLikeClick = (placeId: number, currentLiked: boolean) => {
+    toggleLike(
+      { placeId: String(placeId), isLiked: currentLiked },
+      {
+        onSuccess: () => {
+          setVisitedPlaces(prev =>
+            prev.map(place =>
+              place.placeId === placeId ? { ...place, isLiked: !currentLiked } : place
+            )
+          );
+        }
+      }
+    );
+  };
   
   return (
     <div className="flex flex-col h-screen w-full bg-[#EFF7FB]">
@@ -35,6 +53,7 @@ const VisitPage = () => {
             visitedDate={item.visitedDate}
             type={item.type}
             isLiked={item.isLiked}
+            onLike={handleLikeClick}
           />
         ))}
       </div>

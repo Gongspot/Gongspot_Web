@@ -9,24 +9,20 @@ interface VisitSpaceCardProps {
   visitedDate: string;
   type: string;
   isLiked: boolean;
+  onLike: (placeId: number, currentLiked: boolean) => void;
 }
 
-const VisitSpaceCard = ({
-  placeId,
-  name,
-  image,
-  rate,
-  visitedDate,
-  type,
-  isLiked
-}: VisitSpaceCardProps) => {
+const VisitSpaceCard = ({ placeId, name, image, rate, visitedDate, type, isLiked, onLike }: VisitSpaceCardProps) => {
   const navigate = useNavigate();
   const formatDate = (dateStr: string) => {
     const [year, month, day] = dateStr.split('-');
     return `${year.slice(2)}.${month}.${day}`;
   };
-
   const formattedDate = formatDate(visitedDate);
+
+  const handleLike = () => {
+    onLike(placeId, isLiked);
+  }
 
   return (
     <div className="flex flex-col pl-[1.25rem] mb-[0.375rem] py-[0.875rem] bg-white">
@@ -37,7 +33,9 @@ const VisitSpaceCard = ({
               src={image}
               alt={name}
               className="w-[10rem] h-[7.5rem] bg-[#B1B8C180] rounded-[0.938rem] border-[0.063rem] border-[#B1B8C180]" />
-            <Likes className={`absolute top-[0.625rem] right-[0.625rem] ${isLiked ? 'text-[#4CB1F1]' : 'text-white'}`} />
+            <Likes 
+              className={`absolute top-[0.625rem] right-[0.625rem] ${isLiked ? 'text-[#4CB1F1]' : 'text-white'}`}
+              onClick={handleLike} />
           </div>
           <div className="flex flex-col pl-[1.125rem] text-[0.813rem]">
             <p className="text-[0.938rem] font-semibold">{name}</p>
