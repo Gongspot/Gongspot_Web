@@ -55,3 +55,17 @@ export type RequestProfileDTO = {
     nickname: string;
     profileImg: string;
 };
+
+export type VisitedPlaces = {
+    placeId: number;
+    name: string;
+    rate: number;
+    visitedDate: string;
+    type: string;
+    isLiked: boolean;
+};
+
+export type ResponseVisitDTO = CommonResponse<{
+    totalCount: number;
+    visitedPlaces: VisitedPlaces[];
+}>;
