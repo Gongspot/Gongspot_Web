@@ -1,4 +1,4 @@
-import type { RequestProfileDTO, RequestProposalDTO, ResponseProfileDTO } from "../../types/mypage";
+import type { RequestProfileDTO, RequestProposalDTO, ResponseProfileDTO, ResponseVisitDTO } from "../../types/mypage";
 import { axiosInstance } from "../axios";
 
 export const postProposal = async (body: RequestProposalDTO) => {
@@ -13,5 +13,10 @@ export const getProfile = async (): Promise<ResponseProfileDTO> => {
 
 export const patchProfile = async (body: RequestProfileDTO) => {
     const { data } = await axiosInstance.patch('/users/profile', body);
+    return data;
+};
+
+export const getVisit = async (): Promise<ResponseVisitDTO> => {
+    const { data } = await axiosInstance.get('/places/visited');
     return data;
 };

@@ -1,0 +1,53 @@
+import Likes from '../../../assets/likes.svg?react';
+
+interface VisitSpaceCardProps {
+  name: string;
+  image: string;
+  rate: number | null;
+  visitedDate: string;
+  type: string;
+  isLiked: boolean;
+}
+
+const VisitSpaceCard = ({
+  name,
+  image,
+  rate,
+  visitedDate,
+  type,
+}: VisitSpaceCardProps) => {
+  const formatDate = (dateStr: string) => {
+    const [year, month, day] = dateStr.split('-');
+    return `${year.slice(2)}.${month}.${day}`;
+  };
+
+  const formattedDate = formatDate(visitedDate);
+
+  return (
+    <div className="flex flex-col pl-[1.25rem] py-[0.875rem] bg-white">
+        <p className="text-[1rem] font-medium">{formattedDate}</p>
+        <div className="flex items-center justify-start mt-[0.625rem]">
+          <div className="flex relative">
+            <img
+              src={image}
+              alt={name}
+              className="w-[10rem] h-[7.5rem] bg-[#B1B8C180] rounded-[0.938rem] border-[0.063rem] border-[#B1B8C180]" />
+            <Likes className="absolute top-[0.625rem] right-[0.625rem] text-[#4CB1F1]" />
+          </div>
+          <div className="flex flex-col pl-[1.125rem] text-[0.813rem]">
+            <p className="text-[0.938rem] font-semibold">{name}</p>
+            <p>☆ {rate}</p>
+            <p>0.2km</p>
+            <p>#{type}</p>
+            <button
+                className="mt-[0.5rem] px-[3.125rem] py-[0.5rem] bg-[#4CB1F1] text-white text-[0.813rem] font-medium rounded-[1.25rem]"
+            >
+              상세보기
+            </button>
+          </div>
+        </div>
+      </div>
+  );
+};
+
+export default VisitSpaceCard;
