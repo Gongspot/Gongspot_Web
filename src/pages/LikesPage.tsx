@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import TopHeader from "../components/TopHeader";
 import FilterSelect from "../components/likes/FilterSelect";
 import SpaceSection from "../components/likes/SpaceSection";
@@ -7,22 +7,22 @@ import type { LikedPlace } from "../types/space";
 import { useLikeSpace } from "../hooks/useLikeSpace";
 
 const filters = ['전체', '무료', '유료'];
+const filterMap: Record<string, "ALL" | "FREE" | "PAID"> = {
+  "전체": "ALL",
+  "무료": "FREE",
+  "유료": "PAID",
+};
 
 const LikesPage = () => {
   const [selected, setSelected] = useState<string>('전체');
   const [likedPlaces, setLikedPlaces] = useState<LikedPlace[]>([]);
 
   const { mutate: toggleLike } = useLikeSpace();
-  
-  const filteredSpaces = useMemo(() => {
-    if (selected === "전체") return likedPlaces;
-    return likedPlaces.filter((space) => space.isFree === (selected === "무료"));
-  }, [selected, likedPlaces]);
 
   useEffect(() => {
     const fetchLikes = async () => {
       try {
-        const data = await getLikes();
+        const data = await getLikes(filterMap[selected]);
         if (data.isSuccess) {
           setLikedPlaces(data.result.likedPlace);
           console.log("좋아요 공간 데이터:", data.result.likedPlace);
@@ -32,7 +32,7 @@ const LikesPage = () => {
       }
     };
     fetchLikes();
-  }, []);
+  }, [selected]);
 
   const handleLikeClick = (placeId: number, currentLiked: boolean) => {
     toggleLike(
@@ -64,9 +64,9 @@ const LikesPage = () => {
           ))}
         </div>
         <p className="text-[0.813rem]">
-          총 {filteredSpaces.length}개
+          총 {likedPlaces.length}개
         </p>
-        <SpaceSection spaces={filteredSpaces} onLike={handleLikeClick} />
+        <SpaceSection spaces={likedPlaces} onLike={handleLikeClick} />
       </div>
     </div>
   );
