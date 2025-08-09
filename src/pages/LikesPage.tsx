@@ -66,7 +66,7 @@ const LikesPage = () => {
         <p className="text-[0.813rem]">
           총 {filteredSpaces.length}개
         </p>
-        <SpaceSection spaces={filteredSpaces} />
+        <SpaceSection spaces={filteredSpaces} onLike={handleLikeClick} />
       </div>
     </div>
   );
