@@ -15,7 +15,7 @@ const ActionSheet = ({ onTake, onSelect, onRemove, onCancel }: ActionSheetProps)
     return (
         <div className="fixed bottom-0 w-full px-[1rem] pb-[1.5rem] z-50">
             <button
-                className="w-full bg-[#EFEFEF] text-[#007AFF] rounded-[0.75rem]"
+                className="w-full bg-[#F0F0F0FA] text-[#007AFF] rounded-[0.75rem]"
             >
             <ActionSheetButton text="지금 촬영하기" onClick={onTake} />
             <Divider />

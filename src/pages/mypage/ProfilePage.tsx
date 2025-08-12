@@ -71,7 +71,7 @@ const ProfilePage = () => {
       {overlayActive && (
         <>
           <div
-            className="fixed inset-0 bg-black opacity-15 z-40"
+            className="fixed inset-0 bg-black opacity-20 z-40"
           />
           <ActionSheet
             onTake={() => {
