@@ -30,7 +30,12 @@ interface PlaceSearchParams {
 
 export const searchPlaces = async (params: PlaceSearchParams): Promise<PlaceItem[]> => {
   try {
-    const response = await axiosInstance.get<PlaceSearchResponse>("/places", { params });
+    console.log("📤 searchPlaces 요청 파라미터:", params);
+
+    const response = await axiosInstance.get<PlaceSearchResponse>("/places/", { params });
+
+    console.log("📥 searchPlaces 응답 전체:", response.data);
+    console.log("📥 응답 내 placeList:", response.data.result.placeList); 
 
     if (response.data.isSuccess) {
       return response.data.result.placeList;
