@@ -20,3 +20,8 @@ export const getVisit = async (): Promise<ResponseVisitDTO> => {
     const { data } = await axiosInstance.get('/places/visited');
     return data;
 };
+
+export const postLogout = async () => {
+    const { data } = await axiosInstance.post('/auth/logout');
+    return data;
+};
