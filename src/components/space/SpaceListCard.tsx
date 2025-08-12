@@ -66,54 +66,50 @@ const SpaceListCard: React.FC<Props> = ({
   }, [distanceProp, location, myLocation.coordinates, myLocation.loaded, name]);
   
   return (
-    <div
-      className="
-        flex items-center relative
-        border-b border-[#CCCCCC]
-        pr-[30px] pl-[20px] py-5
-      "
-    >
-      <div className="relative w-[180px] h-[130px] flex-shrink-0 mr-4">
-        <img src={image} alt={name} className="w-full h-full object-cover rounded-xl border border-[#E5ECF2]" />
-        <button
-          className="absolute top-2 right-2 z-10"
-          onClick={(e) => { e.stopPropagation(); onLike(); }}
-          aria-label="좋아요"
-          style={{ lineHeight: 0, background: "none", border: "none" }}
-        >
-          <img
-            src={heartIcon}
-            alt="좋아요 아이콘"
-            width={25}
-            height={25}
-            style={{ filter: isLiked ? "none" : "grayscale(100%) brightness(1.5)" }}
-            className="transition-transform duration-150 active:scale-90"
-          />
-        </button>
-      </div>
+    <div className="-mx-4 border-b border-[#CCCCCC]">
+      <div className="flex items-center relative pr-[30px] pl-[20px] py-5">
+        <div className="relative w-[180px] h-[130px] flex-shrink-0 mr-4">
+          <img src={image} alt={name} className="w-full h-full object-cover rounded-xl border border-[#E5ECF2]" />
+          <button
+            className="absolute top-2 right-2 z-10"
+            onClick={(e) => { e.stopPropagation(); onLike(); }}
+            aria-label="좋아요"
+            style={{ lineHeight: 0, background: "none", border: "none" }}
+          >
+            <img
+              src={heartIcon}
+              alt="좋아요 아이콘"
+              width={25}
+              height={25}
+              style={{ filter: isLiked ? "none" : "grayscale(100%) brightness(1.5)" }}
+              className="transition-transform duration-150 active:scale-90"
+            />
+          </button>
+        </div>
 
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <div className="font-semibold text-lg text-[#222] truncate mb-2">{name}</div>
-        <div className="flex items-center text-[15px]">
-          <span className="flex items-center">
-            <svg width={12} height={12} viewBox="0 0 20 20" fill="#FFFFFF" stroke="#000000" strokeWidth="1" className="inline">
-              <path d="M10 15.272l-5.708 3.11 1.09-6.365L.764 7.982l6.383-.927L10 1.018l2.853 6.037 6.383.927-4.618 4.035 1.09 6.365z" />
-            </svg>
-            <span className="font-medium ml-2 text-[13px]">{rating}</span>
-          </span>
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <div className="font-semibold text-lg text-[#222] truncate mb-2">{name}</div>
+          <div className="flex items-center text-[15px]">
+            <span className="flex items-center">
+              <svg width={12} height={12} viewBox="0 0 20 20" fill="#FFFFFF" stroke="#000000" strokeWidth="1" className="inline">
+                <path d="M10 15.272l-5.708 3.11 1.09-6.365L.764 7.982l6.383-.927L10 1.018l2.853 6.037 6.383.927-4.618 4.035 1.09 6.365z" />
+              </svg>
+              <span className="font-medium ml-2 text-[13px]">{rating}</span>
+            </span>
+          </div>
+          <div>
+            <span className="text-[#000000] text-[13px]">
+              {distanceText}
+            </span>
+          </div>
+          <div className="text-[13px] text-gray-500 truncate mb-2">{tags.join(" ")}</div>
+          <button
+            onClick={(e) => { e.stopPropagation(); onDetail(); }}
+            className="block w-[140px] py-1 rounded-full bg-[#4CB1F1] text-white text-[13px] font-semibold active:bg-sky-500"
+          >
+            {buttonText || "상세보기"}
+          </button>
         </div>
-        <div>
-          <span className="text-[#000000] text-[13px]">
-            {distanceText}
-          </span>
-        </div>
-        <div className="text-[13px] text-gray-500 truncate mb-2">{tags.join(" ")}</div>
-        <button
-          onClick={(e) => { e.stopPropagation(); onDetail(); }}
-          className="block w-[140px] py-1 rounded-full bg-[#4CB1F1] text-white text-[13px] font-semibold active:bg-sky-500"
-        >
-          {buttonText || "상세보기"}
-        </button>
       </div>
     </div>
   );

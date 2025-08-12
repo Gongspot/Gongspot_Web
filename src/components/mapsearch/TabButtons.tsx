@@ -31,7 +31,7 @@ const TabButtons = ({ onClick, selectedFilters }: TabButtonsProps) => {
             key={tab}
             onClick={onClick}
             style={{ borderStyle: "solid" }}
-            className={`flex items-center px-2 py-1 text-xs rounded-full border whitespace-nowrap flex-shrink-0
+            className={`flex items-center px-3 py-1 text-[10px] leading-4 rounded-full border whitespace-nowrap flex-shrink-0
               ${isSelected
                 ? "bg-[#eff7fb] text-[#4cb1f1] border-[#4cb1f1]"
                 : "bg-white text-gray-400 border-gray-300"}
