@@ -101,7 +101,7 @@ const protectedRoutes: RouteObject[] = [
       { path: "init-space-info", element: <AdminInitSpaceInfoPage /> },
       { path: "search-space", element: <AdminSearchSpacePage /> },
       { path: "edit-space", element: <AdminEditSpacePage /> },
-      { path: "notices/:id", element: <AdminNoticeDetailPage/>, },
+      { path: "notices/:notificationId", element: <AdminNoticeDetailPage/>, },
       { path: "notices/all", element: <AdminNoticeAllPage/>, },
     ],
   },

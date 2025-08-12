@@ -1,14 +1,14 @@
 import Cloud from '../../../assets/cloud.svg?react';
 
 interface DragDropProps {
-  file: File | null;
-  onFileChange: (file: File | null) => void;
+    files: File[] | null;
+    onFileChange: (files: File[] | null) => void;
 }
 
-const DragDrop = ({ file, onFileChange }: DragDropProps) => {
+const DragDrop = ({ files, onFileChange }: DragDropProps) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = e.target.files ? e.target.files[0] : null;
-        onFileChange(selectedFile);
+        const selectedFiles = e.target.files ? Array.from(e.target.files) : null;
+        onFileChange(selectedFiles);
     };
 
     return (
@@ -26,12 +26,13 @@ const DragDrop = ({ file, onFileChange }: DragDropProps) => {
                     type="file"
                     name="noticeFile"
                     className="hidden"
+                    multiple
                     onChange={handleFileChange}
                 />
             </label>
-            {file && (
+            {files && (
                 <div className="text-[0.75rem] text-black">
-                    <p>선택된 파일: {file.name}</p>
+                    <p>선택된 파일: {files.map(file => file.name).join(", ")}</p>
                 </div>
             )}
         </div>
