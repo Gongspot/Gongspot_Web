@@ -14,14 +14,23 @@ const typeMap: Record<string, string> = {
 const AdminNoticeSection = ({ notices }: NoticeSectionProps) => {
     return (
         <>
-            {notices.map((item) => (
-                <div key={item.notificationId}>
+            {notices.map((item, idx) => {
+                let path = "";
+                if (item.notificationId == null && item.bannerId != null) {
+                    path = `/admin/banners/${item.bannerId}`;
+                } else if (item.bannerId == null && item.notificationId != null) {
+                    path = `/admin/notices/${item.notificationId}`;
+                }
+                
+                return (
+                <div key={idx}>
+
                     <div className="flex items-center justify-between px-[1.25rem] my-[1.125rem] w-full">
                         <div className="flex items-center">
                             <div className="mr-[0.375rem]">
                                 <Category text={typeMap[item.type]} />
                             </div>
-                            <Link to={`/admin/notices/${item.notificationId}`}>
+                            <Link to={path}>
                                 <span>{item.title}</span>
                             </Link>
                         </div>
@@ -29,7 +38,8 @@ const AdminNoticeSection = ({ notices }: NoticeSectionProps) => {
                     </div>
                     <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
                 </div>
-            ))}
+                );
+            })}
         </>
     );
 };

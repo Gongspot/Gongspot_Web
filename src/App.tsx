@@ -45,6 +45,7 @@ import AdminEditSpacePage from "./pages/admin/AdminEditSpacePage";
 import AdminNoticeDetailPage from "./pages/admin/AdminNoticeDetailPage";
 import AdminNoticeAllPage from "./pages/admin/AdminNoticeAllPage";
 import AllReviewsPage from "./pages/spacedetail/AllReviewsPage"; // AllReviewsPage 임포트 추가
+import AdminBannerDetailPage from "./pages/admin/AdminBannerDetailPage";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -103,6 +104,7 @@ const protectedRoutes: RouteObject[] = [
       { path: "edit-space", element: <AdminEditSpacePage /> },
       { path: "notices/:notificationId", element: <AdminNoticeDetailPage/>, },
       { path: "notices/all", element: <AdminNoticeAllPage/>, },
+      { path: "banners/:bannerId", element: <AdminBannerDetailPage/>, },
     ],
   },
 ];
