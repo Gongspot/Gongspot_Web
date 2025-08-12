@@ -1,12 +1,26 @@
 import MyPageItem from "./MyPageItem";
 import heart from '../../assets/heart.svg';
 import notice from '../../assets/notice.svg';
+import { useEffect, useState } from "react";
+import { getPoint } from "../../apis/mypage/point";
 
-interface MyPageItemSectionProps {
-    point: number;
-}
+const MyPageItemSection = () => {
+    const [point, setPoint] = useState<number | null>(null);
 
-const MyPageItemSection = ({ point }: MyPageItemSectionProps) => {
+    useEffect(() => {
+        const fetchPoint = async () => {
+            try {
+                const data = await getPoint();
+                if (data.isSuccess) {
+                    setPoint(data.result.totalPoints);
+                }
+            } catch (e) {
+                console.error("Error fetching point:", e);
+            }
+        };
+        fetchPoint();
+    }, []);
+    
     return (
         <div className="flex items-center justify-between space-x-[1.625rem] bg-[#EFF7FB] px-[1.625rem] py-[1.625rem] font-medium">
             <MyPageItem

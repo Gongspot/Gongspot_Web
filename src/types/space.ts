@@ -1,3 +1,5 @@
+import type { CommonResponse } from "./common";
+
 // src/types/space.ts
 export interface Space {
   id: number;
@@ -146,3 +148,18 @@ export interface ReviewPayload {
   content: string;
   like: boolean;
 }
+
+export type LikedPlace = {
+  placeId: number;
+  name: string;
+  rating: number;
+  hashtag: string;
+  imageUrl: string;
+  isLiked: boolean;
+  isFree: boolean;
+};
+
+export type ResponseLikesDTO = CommonResponse<{
+  totalCount: number;
+  likedPlace: LikedPlace[];
+}>;
