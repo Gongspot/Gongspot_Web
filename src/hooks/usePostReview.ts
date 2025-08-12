@@ -7,12 +7,13 @@ export const usePostReview = (placeId?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ reviewData }: {
+    mutationFn: ({ reviewData, photos }: {
       reviewData: ReviewPayload;
       photos: File[];
     }) => {
       if (!placeId) throw new Error("Place ID is not provided");
-      return postReview({ placeId, reviewData });
+      // postReview 함수에 photos를 함께 전달
+      return postReview({ placeId, reviewData, photos });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['spaceReviews', placeId] });

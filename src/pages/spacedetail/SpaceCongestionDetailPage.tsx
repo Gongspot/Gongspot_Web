@@ -11,14 +11,15 @@ const SpaceCongestionDetailPage: React.FC = () => {
     isLoading,
     isError,
     fetchNextPage,
-    hasNextPage, 
+    hasNextPage,
     isFetchingNextPage,
   } = useCongestions(id);
+
 
   const allCongestionGroups = data?.pages.flatMap(page => page.result.congestionList) || [];
 
   return (
-    <div className="max-w-[400px] mx-auto min-h-screen bg-white flex flex-col pb-10">
+    <div className="max-w-[400px] mx-auto min-h-screen bg-gray-50 flex flex-col pb-14">
       <TopHeader title="실시간 혼잡도" />
       <div className="px-4 py-4 flex-1 overflow-y-auto">
         {isLoading && <div className="text-center pt-20">로딩 중...</div>}
@@ -32,19 +33,17 @@ const SpaceCongestionDetailPage: React.FC = () => {
               <div className="font-semibold text-[15px] mb-2 mt-2">{group.date}</div>
               <div className="flex flex-col gap-2">
                 {group.dateCongestionList.map((item) => (
-                   <div key={item.reviewId} className="flex items-center border border-gray-100 rounded-lg p-3 text-sm bg-white shadow-sm">
+                   <div key={item.reviewId} className="flex items-center border border-gray-200 rounded-xl p-3 text-sm bg-white shadow-sm">
                     {item.profileImageUrl ? (
                       <img src={item.profileImageUrl} alt={item.nickname} className="w-8 h-8 rounded-full mr-3"/>
                     ) : (
-                      <FaUserCircle size={32} className="text-gray-400 mr-3" />
+                      <FaUserCircle size={32} className="text-gray-300 mr-3" />
                     )}
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-gray-800">{item.nickname}</span>
-                        <span className="text-xs text-gray-400">{item.daytime} {item.datetime}</span>
-                      </div>
-                      <p className="text-gray-600 mt-1">{item.congestion}</p>
-                    </div>
+                    <span className="font-semibold text-gray-800 w-16 truncate">{item.nickname}</span>
+                    <span className="flex-1 text-gray-700 mx-2 truncate">{item.congestion}</span>
+                    <span className="text-xs text-gray-400 whitespace-nowrap">
+                      {item.daytime} {item.datetime}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -58,7 +57,7 @@ const SpaceCongestionDetailPage: React.FC = () => {
             <button
               onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
-              className="w-full py-2.5 bg-sky-500 text-white rounded-lg font-semibold hover:bg-sky-600 transition disabled:bg-gray-300"
+              className="w-full py-2.5 bg-white text-[#8F9098] border border-[#CCCCCC] rounded-lg font-semibold transition hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-200"
             >
               {isFetchingNextPage ? '불러오는 중...' : '더보기'}
             </button>

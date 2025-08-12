@@ -61,7 +61,6 @@ const HotSpaceListCard: React.FC<Props> = ({
         alt="좋아요 아이콘"
         width={25}
         height={25}
-        // ▼▼▼ liked가 false일 때 CSS 필터로 회색조 처리 ▼▼▼
         style={{ filter: liked ? "none" : "grayscale(100%) brightness(1.5)" }}
         className="transition-transform duration-150 active:scale-90"
       />

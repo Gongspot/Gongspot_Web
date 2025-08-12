@@ -1,4 +1,3 @@
-// src/pages/spacedetail/SpaceDetailPage.tsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaHeart, FaRegClock, FaStar } from "react-icons/fa";
@@ -30,7 +29,6 @@ const getOpenStatus = (hoursString: string): "영업중" | "영업종료" => {
       return "영업종료";
     }
 
-    // 시간 파싱 (예: "오전 9:00 ~ 오후 5:00")
     const timeParts = todayInfo.hours.match(/(\d{1,2}:\d{2}).*?(\d{1,2}:\d{2})/);
     if (!timeParts) return "영업종료";
 
@@ -38,7 +36,6 @@ const getOpenStatus = (hoursString: string): "영업중" | "영업종료" => {
     const [startHour, startMinute] = startTime.split(':').map(Number);
     const [endHourRaw, endMinute] = endTime.split(':').map(Number);
     
-    // "오후" 시간을 24시간 형식으로 변환
     let endHour = endHourRaw;
     if (todayInfo.hours.includes("오후") && endHour !== 12) {
       endHour += 12;
@@ -55,7 +52,7 @@ const getOpenStatus = (hoursString: string): "영업중" | "영업종료" => {
     }
     return "영업종료";
   } catch {
-    return "영업종료"; // 파싱 실패 시
+    return "영업종료";
   }
 };
 
@@ -83,7 +80,6 @@ const SpaceDetailPage: React.FC = () => {
     toggleLike({ placeId: id, isLiked: isLikedUI });
   };
   
-  // ▼▼▼ useMemo를 사용해 openStatus 계산 최적화 ▼▼▼
   const openStatus = useMemo(() => {
     if (!space?.openingHours) return "영업종료";
     return getOpenStatus(space.openingHours);
@@ -94,6 +90,7 @@ const SpaceDetailPage: React.FC = () => {
 
   return (
     <div className="max-w-[400px] mx-auto bg-white min-h-screen flex flex-col relative pb-20">
+      {/* 상단 고정 영역: 이미지, 이름, 탭까지만 고정 */}
       <div className="sticky top-0 left-0 z-20 bg-white shadow-sm">
         <TopHeader title="" />
         <img src={space.photoUrl} alt={space.name} className="w-full h-[180px] object-cover" />
@@ -122,28 +119,39 @@ const SpaceDetailPage: React.FC = () => {
           <button className={`flex-1 pb-2 ${tab === "info" ? "border-b-2 border-blue-400 font-bold" : "text-gray-500"}`} onClick={() => setTab("info")}>상세정보</button>
           <button className={`flex-1 pb-2 ${tab === "review" ? "border-b-2 border-blue-400 font-bold" : "text-gray-500"}`} onClick={() => setTab("review")}>공간리뷰</button>
         </div>
-        {tab === "review" && (
-          <SpaceDetailReviewStats
-            placeId={space.placeId}
-            averageRating={reviewData.averageRating}
-            reviewCount={reviewData.reviewCount}
-            ratingPercentages={reviewData.ratingPercentages}
-            categoryList={reviewData.categoryList}
-          />
-        )}
       </div>
 
+      {/* 스크롤 영역 */}
       <div className="flex-1 overflow-y-auto">
         {tab === "info" ? (
           <SpaceDetailInfo space={space} />
         ) : (
-          <SpaceDetailReview reviews={reviewData.reviewList.slice(0, 10)} />
+          <>
+            {/* ▼▼▼ 리뷰 통계를 스크롤 영역으로 이동시켰습니다. ▼▼▼ */}
+            <SpaceDetailReviewStats
+              placeId={space.placeId}
+              averageRating={reviewData.averageRating}
+              reviewCount={reviewData.reviewCount}
+              ratingPercentages={reviewData.ratingPercentages}
+              categoryList={reviewData.categoryList}
+            />
+            <SpaceDetailReview 
+              reviews={reviewData.reviewList} 
+              placeId={id} 
+            />
+          </>
         )}
       </div>
 
-      <button className="fixed z-50 bottom-24 right-5 w-[50px] h-[50px] flex items-center justify-center rounded-full bg-white shadow-lg border" onClick={() => navigate(`/space/${id}/review`)}>
-        <img src={pencilIcon} alt="리뷰 작성" className="w-8 h-8"/>
-      </button>
+      {/* 리뷰 작성 버튼 */}
+      {tab === 'review' && (
+        <button 
+          className="fixed z-50 bottom-24 right-5 w-[50px] h-[50px] flex items-center justify-center rounded-full bg-white shadow-lg border" 
+          onClick={() => navigate(`/space/${id}/review`)}
+        >
+          <img src={pencilIcon} alt="리뷰 작성" className="w-8 h-8"/>
+        </button>
+      )}
     </div>
   );
 };

@@ -1,44 +1,41 @@
-// src/components/detail/SpaceDetailReview.tsx
 import React from 'react';
-import { FaStar } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import type { ReviewListItem } from '../../types/space';
+import ReviewCard from '../review/ReviewCard';
 
-const StarRating: React.FC<{ rating: number }> = ({ rating }) => (
-  <div className="flex items-center">
-    {[...Array(5)].map((_, i) => (
-      <FaStar key={i} className={i < rating ? "text-yellow-400" : "text-gray-300"} />
-    ))}
-  </div>
-);
+// Props에 placeId를 추가하여 "전체보기" 링크에 사용합니다.
+interface Props {
+  reviews: ReviewListItem[];
+  placeId?: string;
+}
 
-const SpaceDetailReview: React.FC<{ reviews: ReviewListItem[] }> = ({ reviews }) => {
+const SpaceDetailReview: React.FC<Props> = ({ reviews, placeId }) => {
+  const navigate = useNavigate();
+
   if (!reviews || reviews.length === 0) {
-    return <div className="p-8 text-center text-gray-400">작성된 리뷰가 없습니다.</div>;
+    return (
+      <div className="p-12 text-center text-gray-500 bg-gray-50 rounded-b-lg">
+        <p className="font-semibold">아직 방문자 리뷰가 없습니다.</p>
+        <p className="text-sm mt-1">첫 번째 리뷰를 남겨보세요!</p>
+      </div>
+    );
   }
   return (
-    <div className="px-5 divide-y">
-      {reviews.map((r) => (
-        <div key={r.reviewId} className="py-4">
-          <div className="flex items-center mb-2">
-            <img src={r.profileImageUrl} alt={r.nickname} className="w-8 h-8 rounded-full mr-3"/>
-            <div>
-              <span className="font-medium mr-2">{r.nickname}</span>
-              <p className="text-xs text-gray-400">{r.datetime}</p>
-            </div>
-          </div>
-          <div className="ml-11 mb-2">
-            <StarRating rating={r.rating} />
-          </div>
-          <p className="text-sm ml-11 mb-2 whitespace-pre-wrap">{r.content}</p>
-          {r.reviewImageUrl?.length > 0 && (
-            <div className="flex gap-2 ml-11">
-              {r.reviewImageUrl.map((url, idx) => (
-                <img key={idx} src={url} alt={`review-image-${idx}`} className="w-20 h-20 rounded-md object-cover"/>
-              ))}
-            </div>
-          )}
-        </div>
+    <div className="px-4 py-4 space-y-3 bg-gray-50 rounded-b-lg">
+      {/* 리뷰를 5개만 잘라서 보여줍니다. */}
+      {reviews.slice(0, 5).map((review) => (
+        review && <ReviewCard key={review.reviewId} review={review} />
       ))}
+
+      {/* 리뷰가 5개보다 많을 경우 '전체보기' 버튼을 표시합니다. */}
+      {reviews.length > 5 && placeId && (
+        <button
+          onClick={() => navigate(`/space/${placeId}/reviews`)}
+          className="w-full mt-2 py-3 text-center text-gray-600 font-semibold bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+        >
+          전체보기
+        </button>
+      )}
     </div>
   );
 };
