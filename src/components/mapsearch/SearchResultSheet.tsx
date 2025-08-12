@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import SpaceListCard from "../space/SpaceListCard";
-import dummySpaces from "../../constants/dummySpaces";
+import type { PlaceItem } from "../../apis/placeSearch";
 import type { TabLabel } from "../../hooks/useSearchFilters";
 import TabButtons from "./TabButtons";
 import type { Space } from "../../types/space";
@@ -13,6 +13,7 @@ interface SearchResultSheetProps {
   selectedFilters: Record<TabLabel, string[]>;
   setSelectedSpace: (space: Space) => void;
   setIsPlaceSelectSheetOpen: (open: boolean) => void;
+  places: PlaceItem[];
 }
 
 const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
@@ -23,7 +24,18 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
   selectedFilters,
   setSelectedSpace,
   setIsPlaceSelectSheetOpen,
+  places,
 }) => {
+  const toCard = (p: PlaceItem) => ({
+    id: p.placeId,
+    name: p.name,
+    image: p.imageUrl,
+    rating: p.rating ?? 0,         // null 방어
+    distance: 0,                   // TODO: 서버 연결되면 교체
+    tags: p.hashtag ? [p.hashtag] : [],
+    isLiked: !!p.isLike,
+  });
+  
   const startYRef = useRef(0);
   const startHeightRef = useRef(0);
 
@@ -88,7 +100,9 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
           {/* 공간 목록 */}
           <div className="h-full overflow-y-auto pb-24">
             <div className="px-4">
-              {dummySpaces.map((space) => (
+              {places.map((p) => {
+                const space = toCard(p);
+                return (
                 <SpaceListCard
                   key={space.id}
                   name={space.name}
@@ -115,7 +129,7 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
                   }}
                 />
 
-              ))}
+              );})}
 
             </div>
           </div>

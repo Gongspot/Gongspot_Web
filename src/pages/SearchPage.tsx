@@ -10,6 +10,7 @@ import { useSearchMode } from "../contexts/SearchModeContext";
 import type { Space } from "../types/space";
 import PlaceSelectSheet from "../components/mapsearch/PlaceSelectSheet";
 import { searchPlaces } from "../apis/placeSearch";
+import type { PlaceItem } from "../apis/placeSearch";
 
 const SearchPage = () => {
   useEffect(() => {
@@ -91,9 +92,21 @@ const SearchPage = () => {
   };
 
   const handleRecentClick = (keyword: string) => {
-    setSearchInput(keyword);                 // 검색창에 키워드 반영
-    setIsSearchResultSheetOpen(true);       // 검색 결과 시트 열기
-  };
+    setSearchInput(keyword); // 입력창 반영
+    void (async () => {
+     const result = await searchPlaces({
+       keyword,
+       purpose: selectedFilters["이용 목적"]?.[0],
+       type: selectedFilters["공간 종류"]?.[0],
+       mood: selectedFilters["분위기"]?.[0],
+       facilities: selectedFilters["부가시설"]?.[0],
+       location: selectedFilters["지역"]?.[0],
+       page: 0,
+     });
+     setPlaces(result);                 // 결과 반영
+     setIsSearchResultSheetOpen(true); // 시트 열기
+   })();
+ };
 
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
 
@@ -117,20 +130,7 @@ const SearchPage = () => {
   
   const mapRef = useRef<{ recenterToCurrentLocation: () => void }>(null);
 
-  const fetchSearchResults = async () => {
-    const result = await searchPlaces({
-      keyword: searchInput.trim(),
-      purpose: selectedFilters["이용 목적"]?.[0],
-      type: selectedFilters["공간 종류"]?.[0],
-      mood: selectedFilters["분위기"]?.[0],
-      facilities: selectedFilters["부가시설"]?.[0],
-      location: selectedFilters["지역"]?.[0],
-      page: 0,
-    });
-
-    console.log("검색 결과:", result);
-    // setSearchResults(result); // 상태에 저장하여 화면에 표시
-  };
+  const [places, setPlaces] = useState<PlaceItem[]>([]);
 
 
   return (
@@ -151,9 +151,9 @@ const SearchPage = () => {
           searchInput={searchInput}
           setSearchInput={setSearchInput}
           openSearchResultSheet={() => {
-            fetchSearchResults(); // 이미 SearchPage에 있는 함수
             setIsSearchResultSheetOpen(true);
           }}
+          setPlaceResults={setPlaces}
           isSearchMode={isSearchMode}
           isSearchResultSheetOpen={isSearchResultSheetOpen}
           enterSearchMode={enterSearchMode}
@@ -239,6 +239,7 @@ const SearchPage = () => {
         selectedFilters={selectedFilters}
         setSelectedSpace={setSelectedSpace}
         setIsPlaceSelectSheetOpen={setIsPlaceSelectSheetOpen}
+        places={places}  
       />
 
       {isPlaceSelectSheetOpen && selectedSpace && (
