@@ -89,7 +89,7 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
             <div className="w-[30px] h-[3px] bg-gray-400 rounded-full mx-auto cursor-pointer" />
 
             {/* 탭 버튼 */}
-            <div className="mt-[1px] pb-0 pr-0 overflow-x-hidden" style={{ paddingLeft: "13px" }}>
+            <div className="mt-[1px] pb-0 pr-0 overflow-x-hidden" style={{ paddingLeft: "7px" }}>
               <TabButtons selectedFilters={selectedFilters} onClick={() => setIsOpen(true)} />
             </div>
 
@@ -98,7 +98,7 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
           </div>
 
           {/* 공간 목록 */}
-          <div className="h-full overflow-y-auto pb-24">
+          <div className="h-full overflow-y-auto pb-36">
             <div className="px-4">
               {places.map((p) => {
                 const space = toCard(p);
