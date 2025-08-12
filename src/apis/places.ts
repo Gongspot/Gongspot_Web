@@ -36,10 +36,23 @@ export const unlikeSpace = async (placeId: string) => {
   return response.data;
 };
 
-export const postReview = async ({ placeId, reviewData }: {
+export const postReview = async ({ placeId, reviewData, photos }: {
   placeId: string;
   reviewData: ReviewPayload;
+  photos: File[];
 }) => {
-  const response = await axiosInstance.post(`/reviews/${placeId}`, reviewData);
+  const formData = new FormData();
+  
+  formData.append('review', new Blob([JSON.stringify(reviewData)], { type: 'application/json' }));
+  
+  photos.forEach((file) => {
+    formData.append('photos', file);
+  });
+  
+  const response = await axiosInstance.post(`/reviews/${placeId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 };

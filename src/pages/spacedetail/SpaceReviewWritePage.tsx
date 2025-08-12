@@ -73,9 +73,10 @@ const SpaceReviewWritePage: React.FC = () => {
       mood: selectedMood.map(tag => moodMap[tag]),
       facility: selectedFacilities.map(fac => facilityMap[fac]),
       content,
-      like: isLike, // isLike에서 like로 수정
+      like: isLike,
     };
     
+    // ▼▼▼ photos: files를 함께 전달합니다. ▼▼▼
     submitReview({ reviewData, photos: files }, {
       onSuccess: () => {
         alert("리뷰가 등록되었습니다!");

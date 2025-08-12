@@ -114,7 +114,7 @@ const SearchPage = () => {
       console.error("이 브라우저는 Geolocation을 지원하지 않습니다.");
     }
   }, []);
-
+  
   const mapRef = useRef<{ recenterToCurrentLocation: () => void }>(null);
 
   const fetchSearchResults = async () => {

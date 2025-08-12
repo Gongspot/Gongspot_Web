@@ -4,7 +4,6 @@ const SCRIPT_ID = 'kakao-map-script-services';
 
 let isLoading = false;
 let isLoaded = false;
-// ▼▼▼ 이 줄의 타입을 수정하여 에러를 해결합니다. ▼▼▼
 let waitingQueue: ((value: void | PromiseLike<void>) => void)[] = [];
 
 export const loadKakaoScript = (): Promise<void> => {

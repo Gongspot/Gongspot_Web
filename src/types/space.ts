@@ -163,3 +163,19 @@ export type ResponseLikesDTO = CommonResponse<{
   totalCount: number;
   likedPlace: LikedPlace[];
 }>;
+
+
+export interface BannerItem {
+  bannerId: number;
+  thumbnailUrl: string | null;
+}
+
+// /banners API의 전체 응답 구조 타입
+export interface BannersApiResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    bannerList: BannerItem[];
+  };
+}
