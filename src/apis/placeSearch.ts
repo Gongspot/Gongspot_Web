@@ -1,9 +1,9 @@
 import { axiosInstance } from "./axios";
 
-interface PlaceItem {
+export interface PlaceItem {
   placeId: number;
   name: string;
-  rating: number;
+  rating: number | null;
   hashtag: string;
   imageUrl: string;
   isLike: boolean;

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { X } from "lucide-react";
-import { getRecentSearches, deleteRecentSearchByKeyword } from "../../apis/recentSearch";
+import { getRecentSearches, deleteRecentSearchById } from "../../apis/recentSearch";
+import type { RecentSearchItem } from "../../apis/recentSearch";
 import { searchPlaces } from "../../apis/placeSearch";
 
 interface SearchModeProps {
@@ -13,6 +14,7 @@ interface SearchModeProps {
   enterSearchMode: () => void;
   resetToInitialState: () => void;
   onRecentClick: (keyword: string) => void;
+  setPlaceResults: (items: import("../../apis/placeSearch").PlaceItem[]) => void;
 }
 
 const SearchMode = ({
@@ -24,8 +26,12 @@ const SearchMode = ({
   enterSearchMode,
   resetToInitialState,
   onRecentClick,
+  setPlaceResults,
 }: SearchModeProps) => {
+  const cap3 = <T,>(arr: T[]) => arr.slice(0, 3);
+
   const inputRef = useRef<HTMLInputElement>(null);
+  const submittingRef = useRef(false); // 중복 호출 방지
 
   useEffect(() => {
     if (isSearchMode && !isSearchResultSheetOpen) {
@@ -35,11 +41,33 @@ const SearchMode = ({
     }
   }, [isSearchMode, isSearchResultSheetOpen]);
 
+  const [recentSearches, setRecentSearches] = useState<RecentSearchItem[]>([]);
+  const loadedRef = useRef(false);
+
+  // 최초 로딩(최근 검색어 조회)
+  useEffect(() => {
+    const fetchRecent = async () => {
+      if (loadedRef.current) return; // 중복 초기로딩 방지
+      loadedRef.current = true;
+      
+      const items = await getRecentSearches();
+      console.log("[recent] normalized:", items);
+      setRecentSearches(cap3(items));
+    };
+    fetchRecent();
+  }, []);
+
   const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && searchInput.trim() !== "") {
+    // 키보드 자동 반복이나 진행 중 재진입 방지
+    if (e.key !== "Enter" || e.repeat || submittingRef.current) return;
+
+    if (searchInput.trim() !== "") {
+      submittingRef.current = true; // 락 걸기
+      const keyword = searchInput.trim();
+
       try {
         const result = await searchPlaces({
-          keyword: searchInput.trim(),
+          keyword,
           purpose: "",     // 필터 정보가 필요하면 props로 넘기도록 변경 필요
           type: "",
           mood: "",
@@ -49,35 +77,45 @@ const SearchMode = ({
         });
 
         console.log("🔍 검색 결과:", result); // 추후에 상태로 set 가능
-        openSearchResultSheet(); // 🔸 검색 결과 시트 열기
+        setPlaceResults(result);      // 검색 결과 상태 전달
+
+        // 검색 직후 재조회하되, 새 키워드만 반영하고 기존 화면 항목만 유지(백필 차단)
+        const server = await getRecentSearches();
+        setRecentSearches((prev) => {
+          const norm = (s: string) => s.trim().toLowerCase();
+          const k = norm(keyword);
+          // 서버에서 "이번에 검색한 키워드"만 뽑음
+          const newEntry = server.find((it) => norm(it.keyword) === k);
+          // 기존 화면에서 같은 키워드는 제거(최신 한 개만 위에 두기)
+          const keep = prev.filter((it) => norm(it.keyword) !== k);
+          const next = newEntry ? [newEntry, ...keep] : keep;
+          return cap3(next);
+        });
+
+        openSearchResultSheet(); // 검색 결과 시트 열기
       } catch (err) {
         console.error("검색 API 호출 실패:", err);
+      } finally {
+        submittingRef.current = false; // 성공/실패와 무관하게 락 해제
       }
     }
   };
 
-  // 최근 검색어 조회
-  useEffect(() => {
-    const fetchRecentSearches = async () => {
-      const keywordItems = await getRecentSearches(); // [{ id, keyword }, ...]
-      const keywords = keywordItems.map(item => item.keyword); // keyword만 추출
-      console.log("📦 프론트에서 받은 검색어:", keywords);
-      setRecentSearches(keywords); // ✅ string[]에 맞게 저장
-    };
-
-    fetchRecentSearches();
-  }, []);
-
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
-
   // 최근 검색어 삭제
-  const removeSearch = async (keyword: string) => {
-    const updated = recentSearches.filter((t) => t !== keyword);
-    setRecentSearches(updated);
+  const removeSearch = async (item: RecentSearchItem) => {
+    const prev = recentSearches;
+    const next = prev.filter((t) => t.id !== item.id);
+    setRecentSearches(next); // 낙관적 업데이트
 
-    const success = await deleteRecentSearchByKeyword(keyword);
-    if (!success) console.warn("서버에서 검색어 삭제 실패");
+    const ok = await deleteRecentSearchById(item.id);
+    if (!ok) {
+      console.warn("서버에서 검색어 삭제 실패 → 롤백");
+      setRecentSearches(prev); // 실패 시 롤백
+    }
   };
+
+  const stopAll = (e: React.SyntheticEvent) => { e.preventDefault(); e.stopPropagation(); };
+  const stopTouch = (e: React.TouchEvent) => { e.stopPropagation(); };
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 z-30 pointer-events-none">
@@ -130,21 +168,21 @@ const SearchMode = ({
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-white z-20 p-4 pt-20 pointer-events-auto">
           <p className="text-sm text-black mb-2 font-semibold">최근 검색어</p>
           <div className="flex gap-2 flex-wrap">
-            {recentSearches.map((term, idx) => (
+            {recentSearches.map((term) => (
               <div
-                key={idx}
+                key={`${term.id}-${term.keyword}`}
                 className="flex items-center px-3 py-1 rounded-full border border-gray-300 bg-white text-xs text-gray-400 cursor-pointer"
                 onClick={() => {
-                  onRecentClick(term);
+                  onRecentClick(term.keyword);
                   enterSearchMode();
                 }}
               >
-                <span>{term}</span>
+                <span>{term.keyword}</span>
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeSearch(term);
-                  }}
+                  type="button"
+                  onMouseDown={stopAll}
+                  onClick={(e) => { stopAll(e); removeSearch(term); }}
+                  onTouchStart={stopTouch}
                   className="ml-1"
                 >
                   <X className="w-3 h-3 text-gray-400" />
