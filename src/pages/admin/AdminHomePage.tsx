@@ -76,7 +76,7 @@ const AdminHomePage = () => {
           {unreviewed.slice(0, 4).map((req) => (
             <AdminRequestCard
               key={req.id}
-              id={req.id}  // ★ 반드시 추가!
+              id={req.id} 
               placeName={req.placeName}
               date={req.date}
               isReviewed={req.isReviewed}

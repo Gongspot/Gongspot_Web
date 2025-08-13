@@ -1,42 +1,49 @@
-// src/pages/AdminCreateSpacePage.tsx
 import TopHeader from "../../components/TopHeader";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 추가
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AdminCreateSpacePage = () => {
-  const [placeName, setPlaceName] = useState("");
-  const [googleMapsLink, setGoogleMapsLink] = useState("");
-  const [isValidationFailed, setIsValidationFailed] = useState(false); // 실패 상태
+  // 추가된 코드: useLocation 훅을 사용해 이전 페이지에서 보낸 state를 받음
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); // 함수 내부에 추가
+  // 추가된 코드: location.state에서 초기값을 가져오고, 없으면 빈 문자열로 설정
+  const initialPlaceName = location.state?.placeName || "";
+  const initialGoogleMapsLink = location.state?.googleMapsLink || "";
+
+  // 추가된 코드: useState의 초기값으로 위에서 받은 값
+  const [placeName, setPlaceName] = useState(initialPlaceName);
+  const [googleMapsLink, setGoogleMapsLink] = useState(initialGoogleMapsLink);
+  const [isValidationFailed, setIsValidationFailed] = useState(false);
 
   const handleFetchInfo = () => {
-    // 항상 성공 처리
-    setIsValidationFailed(false);
+    // 항상 성공 처리 (이 부분은 원래 주석 처리된 로직으로 되돌릴 수 있습니다)
+    // setIsValidationFailed(false);
 
-    navigate("/admin/confirm-space", {
-      state: {
-        placeName,
-        googleMapsLink,
-      },
-    });
+    // navigate("/admin/confirm-space", {
+    //   state: {
+    //     placeName,
+    //     googleMapsLink,
+    //   },
+    // });
     
-    // const normalizedPlaceName = placeName.trim().toLowerCase();
-    // const normalizedLink = googleMapsLink.trim().toLowerCase();
+    // 원래 있던 유효성 검사 로직입니다.
+    const normalizedPlaceName = placeName.trim().toLowerCase();
+    const normalizedLink = googleMapsLink.trim().toLowerCase();
 
-    // if (!normalizedLink.includes(normalizedPlaceName) || !normalizedPlaceName) {
-    //   setIsValidationFailed(true);
-    // } else {
-    //   setIsValidationFailed(false);
+    if (!normalizedLink.includes(normalizedPlaceName) || !normalizedPlaceName) {
+      setIsValidationFailed(true);
+    } else {
+      setIsValidationFailed(false);
 
-    //   // 성공 시 확인 페이지로 이동 + state로 정보 전달
-    //   navigate("/admin/confirm-space", {
-    //     state: {
-    //       placeName,
-    //       googleMapsLink,
-    //     },
-    //   });
-    // }
+      // 성공 시 확인 페이지로 이동 + state로 정보 전달
+      navigate("/admin/confirm-space", {
+        state: {
+          placeName,
+          googleMapsLink,
+        },
+      });
+    }
   };
 
   return (

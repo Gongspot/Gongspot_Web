@@ -4,7 +4,7 @@ import { FaStar } from 'react-icons/fa';
 
 interface Props {
   placeId: number;
-  averageRating: number;
+  averageRating: number | null; // 타입을 number | null로 수정
   reviewCount: number;
   ratingPercentages: RatingPercentages;
   categoryList: CategoryCount[];
@@ -24,26 +24,27 @@ const SpaceDetailReviewStats: React.FC<Props> = ({
   ];
 
   return (
-    <div className="px-5 py-2 border-b bg-white">
+    <div className="px-5 py-4 border-b bg-white">
       <div className="flex items-center gap-6 mb-4">
         {/* 전체 평점 섹션 */}
         <div className="flex flex-col items-center flex-shrink-0 w-24">
-          <span className="text-sm mb-1">전체 평점</span>
-          <FaStar size={32} className="text-sky-400 my-1" />
-          <span className="text-gray-800 font-bold text-xl mt-1">
-            {averageRating.toFixed(1)}점
+          <span className="text-sm text-gray-500 mb-1">전체 평점</span>
+          <FaStar size={48} className="text-sky-400 my-1" />
+          <span className="text-gray-800 font-bold text-2xl mt-1">
+            {/* ▼▼▼ averageRating이 null일 경우 0을 사용하도록 수정 ▼▼▼ */}
+            {(averageRating ?? 0).toFixed(1)}점
           </span>
         </div>
 
         {/* 별점별 비율 섹션 */}
         <div className="w-full">
           {percentages.map((p, i) => (
-            <div key={i} className="flex items-center text-xs mb-1">
-              <span className="w-6 text- mr-2">{5 - i}점</span>
-              <div className="w-full flex-1 mx-2 hover:*:-1.5 rounded bg-gray-200">
-                <div className="bg-[#737373] h-1.5 rounded" style={{ width: `${p}%` }} />
+            <div key={i} className="flex items-center text-xs text-gray-600 mb-1">
+              <span className="w-6 text-right mr-2">{5 - i}점</span>
+              <div className="w-full flex-1 mx-2 h-2 rounded bg-gray-200">
+                <div className="bg-gray-400 h-2 rounded" style={{ width: `${p}%` }} />
               </div>
-              <span className="w-8 text-lef">{Math.round(p)}%</span>
+              <span className="w-8 text-left text-gray-500">{Math.round(p)}%</span>
             </div>
           ))}
         </div>
