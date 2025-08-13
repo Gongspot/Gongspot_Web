@@ -1,4 +1,3 @@
-// src/hooks/usePostReview.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postReview } from '../apis/places';
 import type { ReviewPayload } from '../types/space';
@@ -7,6 +6,7 @@ export const usePostReview = (placeId?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    // mutationFn이 photos도 받도록 수정합니다.
     mutationFn: ({ reviewData, photos }: {
       reviewData: ReviewPayload;
       photos: File[];

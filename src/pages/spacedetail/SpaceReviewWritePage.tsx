@@ -1,5 +1,3 @@
-// src/pages/spacedetail/SpaceReviewWritePage.tsx
-
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TopHeader from "../../components/TopHeader";
@@ -76,7 +74,7 @@ const SpaceReviewWritePage: React.FC = () => {
       like: isLike,
     };
     
-    // ▼▼▼ photos: files를 함께 전달합니다. ▼▼▼
+    // photos: files를 함께 전달합니다.
     submitReview({ reviewData, photos: files }, {
       onSuccess: () => {
         alert("리뷰가 등록되었습니다!");

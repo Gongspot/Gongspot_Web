@@ -1,9 +1,12 @@
-import React, { useRef } from "react";
+// src/components/mapsearch/SearchResultSheet.tsx
+import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SpaceListCard from "../space/SpaceListCard";
 import type { PlaceItem } from "../../apis/placeSearch";
 import type { TabLabel } from "../../hooks/useSearchFilters";
 import TabButtons from "./TabButtons";
 import type { Space } from "../../types/space";
+import { useLikeSpace } from "../../hooks/useLikeSpace";
 
 interface SearchResultSheetProps {
   isOpen: boolean;
@@ -26,12 +29,36 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
   setIsPlaceSelectSheetOpen,
   places,
 }) => {
+  const navigate = useNavigate();
+  const { mutate: toggleLike } = useLikeSpace();
+
+  const [placeList, setPlaceList] = useState<PlaceItem[]>(places);
+
+  useEffect(() => {
+    setPlaceList(places);
+  }, [places]);
+
+  const handleLike = (placeId: number) => {
+    setPlaceList(currentPlaces =>
+      currentPlaces.map(p =>
+        p.placeId === placeId ? { ...p, isLike: !p.isLike } : p
+      )
+    );
+
+    const currentPlace = placeList.find(p => p.placeId === placeId);
+    if (currentPlace) {
+      toggleLike({ placeId: String(placeId), isLiked: currentPlace.isLike });
+    }
+  };
+
+  // ▼▼▼ toCard 함수를 수정합니다 ▼▼▼
   const toCard = (p: PlaceItem) => ({
     id: p.placeId,
     name: p.name,
     image: p.imageUrl,
-    rating: p.rating ?? 0,         // null 방어
-    distance: 0,                   // TODO: 서버 연결되면 교체
+    rating: p.rating ?? 0,
+    distance: null,
+    location: p.locationInfo || null, // locationInfo 값을 location prop으로 전달
     tags: p.hashtag ? [p.hashtag] : [],
     isLiked: !!p.isLike,
   });
@@ -45,14 +72,9 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
     startHeightRef.current = parseInt(height);
 
     const handleMove = (moveEvent: MouseEvent | TouchEvent) => {
-      const moveY =
-        "touches" in moveEvent
-          ? moveEvent.touches[0].clientY
-          : (moveEvent as MouseEvent).clientY;
-
+      const moveY = "touches" in moveEvent ? moveEvent.touches[0].clientY : (moveEvent as MouseEvent).clientY;
       const diffY = moveY - startYRef.current;
       const newHeight = startHeightRef.current - diffY;
-
       const minHeight = window.innerHeight * 0.3;
       const maxHeight = 740;
       const clampedHeight = Math.min(Math.max(newHeight, minHeight), maxHeight);
@@ -79,65 +101,40 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
           className="fixed bottom-0 left-0 w-full bg-white rounded-t-2xl shadow-lg z-30 transform transition-transform duration-300"
           style={{ height }}
         >
-          {/* 손잡이 + 탭버튼 드래그 구간 */}
           <div
             className="select-none touch-none pt-[8px]"
             onMouseDown={handleStart}
             onTouchStart={handleStart}
           >
-            {/* 손잡이 */}
             <div className="w-[30px] h-[3px] bg-gray-400 rounded-full mx-auto cursor-pointer" />
-
-            {/* 탭 버튼 */}
             <div className="mt-[1px] pb-0 pr-0 overflow-x-hidden" style={{ paddingLeft: "7px" }}>
               <TabButtons selectedFilters={selectedFilters} onClick={() => setIsOpen(true)} />
             </div>
-
-            {/* 구분선 추가 */}
             <div className="h-px bg-gray-200" />
           </div>
 
-          {/* 공간 목록 */}
           <div className="h-full overflow-y-auto pb-36">
-            <div className="px-4">
-              {places.map((p) => {
+              {placeList.map((p) => {
                 const space = toCard(p);
                 return (
-                <SpaceListCard
-                  key={space.id}
-                  name={space.name}
-                  image={space.image}
-                  rating={space.rating}
-                  distance={space.distance}
-                  tags={space.tags}
-                  isLiked={space.isLiked}
-                  onDetail={() => {
-                    setSelectedSpace({
-                      id: space.id,
-                      name: space.name,
-                      image: space.image,
-                      rating: space.rating,
-                      distance: space.distance,
-                      tags: space.tags,
-                      isLiked: space.isLiked,
-                    }); // 필요한 필드만 전달
-                    setIsPlaceSelectSheetOpen(true);
-                    setIsOpen(false);
-                  }}
-                  onLike={() => {
-                    // 좋아요 토글 로직이 있다면 여기에
-                  }}
-                />
-
-              );})}
-
-            </div>
+                  <SpaceListCard
+                    key={space.id}
+                    name={space.name}
+                    image={space.image}
+                    rating={space.rating}
+                    distance={space.distance}
+                    location={space.location} 
+                    tags={space.tags}
+                    isLiked={space.isLiked}
+                    onDetail={() => navigate(`/space/${space.id}`)}
+                    onLike={() => handleLike(space.id)}
+                  />
+                );})}
           </div>
         </div>
       )}
     </>
   );
-
 };
 
 export default SearchResultSheet;
