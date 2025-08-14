@@ -2,26 +2,33 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import TopHeader from "../../components/TopHeader";
 import AdminBottomNavBar from "../../components/AdminBottomNavBar";
 import { useProposalDetail } from "../../hooks/useProposalDetail";
+import { useDeleteProposal } from "../../hooks/useDeleteProposal"; // 삭제 훅 임포트
 import { format } from 'date-fns';
 
 const AdminRequestDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
-  const navigate = useNavigate(); // useNavigate 훅 추가
+  const navigate = useNavigate();
   const isReviewed = location.state?.isReviewed;
 
   const { data: request, isLoading, isError } = useProposalDetail(id);
+  const { mutate: rejectProposal, isPending: isDeleting } = useDeleteProposal(); // 삭제 mutate 함수
 
-  // '승인' 버튼 클릭 시 실행될 함수
   const handleApprove = () => {
     if (!request) return;
-    // /admin/create-space 경로로 이동하면서 state에 정보 전달
     navigate('/admin/create-space', {
       state: {
         placeName: request.name,
         googleMapsLink: request.link,
       },
     });
+  };
+
+  // '거절' 버튼 클릭 시 실행될 함수
+  const handleReject = () => {
+    if (id && window.confirm("정말로 이 요청을 거절(삭제)하시겠습니까?")) {
+      rejectProposal(id);
+    }
   };
 
   if (isLoading) {
@@ -92,8 +99,12 @@ const AdminRequestDetailPage = () => {
         
         {/* 하단 버튼 */}
         <div className="flex gap-3">
-          <button className="flex-1 py-3 bg-white border border-[#DFE2E7] rounded-lg font-semibold text-gray-500">
-            거절
+          <button 
+            onClick={handleReject}
+            disabled={isDeleting}
+            className="flex-1 py-3 bg-white border border-[#DFE2E7] rounded-lg font-semibold text-gray-500 disabled:opacity-50"
+          >
+            {isDeleting ? '삭제 중...' : '거절'}
           </button>
           <button 
             onClick={handleApprove}
@@ -105,6 +116,7 @@ const AdminRequestDetailPage = () => {
       </div>
       <AdminBottomNavBar />
     </div>
+ 
   );
 };
 

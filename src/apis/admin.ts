@@ -1,4 +1,4 @@
-import type { ResponseNoticeAdminDTO, ProposalApiResponse, ProposalDetailApiResponse } from "../types/admin";
+import type { ResponseNoticeAdminDTO, ProposalApiResponse, ProposalDetailApiResponse, ProposalHomeApiResponse } from "../types/admin";
 import { axiosInstance } from "./axios";
 
 export const postNotice = async (formData: FormData, category: string) => {
@@ -28,5 +28,17 @@ export const getProposals = async ({ approve, page, size = 20 }: {
 
 export const getProposalDetail = async (proposalId: string): Promise<ProposalDetailApiResponse> => {
   const { data } = await axiosInstance.get(`/request/proposal/${proposalId}`);
+  return data;
+};
+
+export const getProposalHome = async (): Promise<ProposalHomeApiResponse> => {
+  const { data } = await axiosInstance.get('/request/proposalHome', {
+    params: { page: 0 },
+  });
+  return data;
+};
+
+export const deleteProposal = async (proposalId: string) => {
+  const { data } = await axiosInstance.delete(`/request/proposal/${proposalId}`);
   return data;
 };
