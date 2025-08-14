@@ -25,8 +25,8 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
   height,
   setHeight,
   selectedFilters,
-  setSelectedSpace,
-  setIsPlaceSelectSheetOpen,
+  //setSelectedSpace,
+  //setIsPlaceSelectSheetOpen,
   places,
 }) => {
   const navigate = useNavigate();
