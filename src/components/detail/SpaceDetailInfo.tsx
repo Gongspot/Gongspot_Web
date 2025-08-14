@@ -1,17 +1,30 @@
-// src/components/detail/SpaceDetailInfo.tsx
-import React from "react";
+import React, { useState, useEffect } from "react"; 
 import { useNavigate } from "react-router-dom";
 import type { SpaceDetail } from "../../types/space";
 import SpaceDetailMap from "./SpaceDetailMap";
 import OperatingHours from "./OperatingHours";
-import { useLatestCongestions } from "../../hooks/useLatestCongestions"; // 새로 만든 훅 임포트
+import { useLatestCongestions } from "../../hooks/useLatestCongestions";
 import { FaUserCircle } from "react-icons/fa";
+import { loadKakaoScript } from "../../utils/kakaoMapLoader"; 
 
 const SpaceDetailInfo: React.FC<{ space: SpaceDetail }> = ({ space }) => {
   const navigate = useNavigate();
-
-  // 새로 만든 전용 훅을 사용합니다.
   const { data: latestCongestions, isLoading: isCongestionLoading } = useLatestCongestions(String(space.placeId));
+
+  const [isMapScriptLoaded, setIsMapScriptLoaded] = useState(false);
+
+  useEffect(() => {
+    const initializeMap = async () => {
+      try {
+        await loadKakaoScript(); // 스크립트 로딩이 끝날 때까지 기다립니다.
+        setIsMapScriptLoaded(true); // 로딩이 완료되면 상태를 true로 변경합니다.
+      } catch (error) {
+        console.error("지도 스크립트 로딩에 실패했습니다:", error);
+      }
+    };
+
+    initializeMap();
+  }, []); // 이 컴포넌트가 처음 렌더링될 때 한 번만 실행합니다.
 
   const handleCopyAddress = async () => {
     try {
@@ -43,7 +56,15 @@ const SpaceDetailInfo: React.FC<{ space: SpaceDetail }> = ({ space }) => {
       {/* 위치정보 */}
       <div className="mt-10">
         <div className="font-semibold mb-2">위치정보</div>
-        <SpaceDetailMap address={space.locationInfo} />
+
+        {isMapScriptLoaded ? (
+          <SpaceDetailMap address={space.locationInfo} />
+        ) : (
+          <div className="w-full h-[200px] flex items-center justify-center bg-gray-100">
+            지도 로딩 중...
+          </div>
+        )}
+        
         <div className="text-sm flex items-center gap-2 mt-2">
           <span>{space.locationInfo}</span>
           <button
