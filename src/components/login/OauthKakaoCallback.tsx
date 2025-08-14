@@ -5,14 +5,11 @@ import { axiosInstance } from "../../apis/axios";
 
 const OauthKakaoCallback = () => {
   const navigate = useNavigate();
-  const MODE = import.meta.env.VITE_MODE;
-  console.log("카카오 OAuth 콜백 컴포넌트 렌더링");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
     const state = urlParams.get("state");
-    console.log("OAuth 콜백 URL 파라미터:", state);
 
     if (!code) {
       navigate("/");
@@ -21,6 +18,7 @@ const OauthKakaoCallback = () => {
 
     const fetchLogin = async () => {
       try {
+        console.log("state 값:", state);
         const { data } = await axiosInstance.get(
           `/auth/oauth/kakao/callback?code=${code}`
         );
@@ -28,10 +26,10 @@ const OauthKakaoCallback = () => {
 
         if (data.isSuccess) {
           const { accessToken, refreshToken } = data.result;
-          console.log("로그인 성공:", accessToken, refreshToken);
 
-          if (MODE === "local") {
+          if (state === "local") {
             const redirectUrl = new URL("http://localhost:5182/home");
+            redirectUrl.searchParams.append("state", state);
             redirectUrl.searchParams.append("accessToken", accessToken);
             redirectUrl.searchParams.append("refreshToken", refreshToken);
             window.location.href = redirectUrl.toString();
@@ -61,7 +59,7 @@ const OauthKakaoCallback = () => {
     };
 
     fetchLogin();
-  }, [navigate, MODE]);
+  }, [navigate]);
 
   return (
     <div className="flex justify-center items-center h-screen">
