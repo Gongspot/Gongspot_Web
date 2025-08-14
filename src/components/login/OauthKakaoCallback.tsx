@@ -1,4 +1,3 @@
-// src/pages/OauthKakaoCallback.jsx
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,10 +5,14 @@ import { axiosInstance } from "../../apis/axios";
 
 const OauthKakaoCallback = () => {
   const navigate = useNavigate();
+  const MODE = import.meta.env.VITE_MODE;
+  console.log("카카오 OAuth 콜백 컴포넌트 렌더링");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
+    const state = urlParams.get("state");
+    console.log("OAuth 콜백 URL 파라미터:", state);
 
     if (!code) {
       navigate("/");
@@ -18,17 +21,25 @@ const OauthKakaoCallback = () => {
 
     const fetchLogin = async () => {
       try {
-        const response = await axiosInstance.get(
+        const { data } = await axiosInstance.get(
           `/auth/oauth/kakao/callback?code=${code}`
         );
-        const data = response.data;
+        console.log("카카오 OAuth 콜백 응답 데이터:", data);
 
         if (data.isSuccess) {
           const { accessToken, refreshToken } = data.result;
-          localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken", refreshToken);
+          console.log("로그인 성공:", accessToken, refreshToken);
 
-          navigate("/home");
+          if (MODE === "local") {
+            const redirectUrl = new URL("http://localhost:5182/home");
+            redirectUrl.searchParams.append("accessToken", accessToken);
+            redirectUrl.searchParams.append("refreshToken", refreshToken);
+            window.location.href = redirectUrl.toString();
+          } else {
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+            navigate("/home");
+          }
         } else {
           alert(data.message || "로그인에 실패했습니다.");
           navigate("/");
@@ -50,7 +61,7 @@ const OauthKakaoCallback = () => {
     };
 
     fetchLogin();
-  }, [navigate]);
+  }, [navigate, MODE]);
 
   return (
     <div className="flex justify-center items-center h-screen">
