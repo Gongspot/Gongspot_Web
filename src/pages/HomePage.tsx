@@ -11,24 +11,25 @@ import { useHotPlaces } from "../hooks/useHotPlaces"; // 핫플레이스 훅 임
 const HomePage: React.FC = () => {
   // React Query 훅을 사용해 핫플레이스 데이터 가져오기
   const { data: hotSpaces, isLoading, isError } = useHotPlaces();
-  const MODE = import.meta.env.VITE_MODE;
 
   useEffect(() => {
-    if (MODE === "local") {
-      const urlParams = new URLSearchParams(window.location.search);
-      const accessToken = urlParams.get("accessToken");
-      const refreshToken = urlParams.get("refreshToken");
+    const urlParams = new URLSearchParams(window.location.search);
+    const state = urlParams.get("state");
 
-      if (accessToken && refreshToken) {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+    if (state !== "local") return;
+    
+    const accessToken = urlParams.get("accessToken");
+    const refreshToken = urlParams.get("refreshToken");
 
-        // 쿼리 파라미터 삭제
-        const cleanUrl = window.location.origin + window.location.pathname;
-        window.history.replaceState({}, document.title, cleanUrl);
-      }
+    if (accessToken && refreshToken) {
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      // 쿼리 파라미터 삭제
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
     }
-  }, [MODE]);
+  }, []);
 
   return (
     <div className="bg-[#EFF7FB] pb-16 min-h-screen scrollbar-hide">
