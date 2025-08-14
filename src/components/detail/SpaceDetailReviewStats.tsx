@@ -1,6 +1,6 @@
-import React from 'react';
-import type { RatingPercentages, CategoryCount } from '../../types/space';
-import { FaStar } from 'react-icons/fa';
+import React from "react";
+import type { RatingPercentages, CategoryCount } from "../../types/space";
+import { FaStar } from "react-icons/fa";
 
 interface Props {
   placeId: number;
@@ -39,12 +39,20 @@ const SpaceDetailReviewStats: React.FC<Props> = ({
         {/* 별점별 비율 섹션 */}
         <div className="w-full">
           {percentages.map((p, i) => (
-            <div key={i} className="flex items-center text-xs text-gray-600 mb-1">
+            <div
+              key={i}
+              className="flex items-center text-xs text-gray-600 mb-1"
+            >
               <span className="w-6 text-right mr-2">{5 - i}점</span>
               <div className="w-full flex-1 mx-2 h-2 rounded bg-gray-200">
-                <div className="bg-gray-400 h-2 rounded" style={{ width: `${p}%` }} />
+                <div
+                  className="bg-gray-400 h-2 rounded"
+                  style={{ width: `${p}%` }}
+                />
               </div>
-              <span className="w-8 text-left text-gray-500">{Math.round(p)}%</span>
+              <span className="w-8 text-left text-gray-500">
+                {Math.round(p)}%
+              </span>
             </div>
           ))}
         </div>
@@ -53,9 +61,16 @@ const SpaceDetailReviewStats: React.FC<Props> = ({
       {/* 태그 섹션 */}
       <div className="flex flex-wrap gap-2">
         {categoryList.map((cat, i) => (
-          <span key={i} className="px-3 py-1 bg-white rounded-full border border-gray-300 flex items-baseline">
-            <span className="text-xs font-semibold text-gray-800">{cat.category}</span>
-            <span className="ml-1 text-[10px] text-gray-400">({cat.count})</span>
+          <span
+            key={i}
+            className="px-3 py-1 bg-white rounded-full border border-gray-300 flex items-baseline"
+          >
+            <span className="text-xs font-semibold text-gray-800">
+              {cat.category}
+            </span>
+            <span className="ml-1 text-[10px] text-gray-400">
+              ({cat.count})
+            </span>
           </span>
         ))}
       </div>
