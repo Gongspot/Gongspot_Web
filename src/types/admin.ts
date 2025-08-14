@@ -40,3 +40,9 @@ export type ProposalApiResponse = CommonResponse<{
 }>;
 
 export type ProposalDetailApiResponse = CommonResponse<ProposalItem>;
+
+export type ProposalHomeApiResponse = CommonResponse<{
+  totalAllProposalsCount: number;
+  totalUnapprovedProposalsCount: number;
+  unapprovedProposals: ProposalItem[];
+}>;
