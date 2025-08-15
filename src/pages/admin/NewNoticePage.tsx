@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import TopHeader from "../../components/TopHeader";
-import DragDrop from "../../components/admin/notice/DragDrop";
-import NoticeForm from "../../components/admin/notice/NoticeForm";
 import { useState } from "react";
 import { postNotice } from "../../apis/admin";
+import NoticeEditor from "../../components/admin/notice/NoticeEditor";
 
 const NewNoticePage = () => {
   const navigate = useNavigate();
@@ -68,31 +66,15 @@ const NewNoticePage = () => {
   };
   
   return (
-    <form 
+    <NoticeEditor
+      navTitle="공지사항 작성"
+      form={form}
+      onChange={handleChange}
+      attachments={attachments}
+      onFileChange={setAttachments}
       onSubmit={handleSubmit}
-      className="flex flex-col min-h-screen bg-white"
-    >
-      <TopHeader title="공지사항 작성" backButton={true} />
-
-      <div className="flex flex-col h-full mt-[1rem] mb-[1.25rem] mx-[1.25rem] 
-        px-[1.25rem] py-[1.5rem] bg-white border border-[#E5E7EB] rounded-[0.313rem]">
-        <NoticeForm form={form} onChange={handleChange} />
-      </div>
-
-      <div className="flex flex-col h-full mt-[1.125rem] mb-[1rem] mx-[1.25rem] 
-        px-[1.25rem] py-[1.5rem] bg-white border border-[#E5E7EB] rounded-[0.313rem]">
-        <p className="mb-[0.625rem] text-[1rem] text-black">첨부파일</p>
-        <DragDrop files={attachments} onFileChange={setAttachments} />
-      </div>
-
-      <button 
-        type="submit"
-        className="mb-[1.5rem] mx-[1.25rem] py-[0.875rem] rounded-[0.313rem] 
-        bg-[#4CB1F1] text-white text-[1rem]"
-        >
-        게시하기
-      </button>
-    </form>
+      submitText="게시하기"
+    />
   );
 };
 
