@@ -51,11 +51,6 @@ export type ResponseProfileDTO = CommonResponse<{
     profileImg: string;
 }>;
 
-export type RequestProfileDTO = {
-    nickname: string;
-    profileImg: string;
-};
-
 export type VisitedPlaces = {
     placeId: number;
     name: string;
