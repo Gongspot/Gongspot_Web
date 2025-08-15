@@ -48,6 +48,7 @@ import AllReviewsPage from "./pages/spacedetail/AllReviewsPage"; // AllReviewsPa
 import AdminBannerDetailPage from "./pages/admin/AdminBannerDetailPage";
 import BannerDetailPage from "./pages/mypage/BannerDetailPage";
 import AdminNoticeEditPage from "./pages/admin/AdminNoticeEditPage";
+import AdminBannerEditPage from "./pages/admin/AdminBannerEditPage";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -109,6 +110,7 @@ const protectedRoutes: RouteObject[] = [
       { path: "notices/all", element: <AdminNoticeAllPage />, },
       { path: "banners/:bannerId", element: <AdminBannerDetailPage />, },
       { path: "notices/edit/:notificationId", element: <AdminNoticeEditPage />, },
+      { path: "banners/edit/:bannerId", element: <AdminBannerEditPage />, },
     ],
   },
 ];
