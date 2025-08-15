@@ -5,6 +5,7 @@ import TitleSection from "../../components/mypage/notice/TitleSection";
 import { getNoticeDetail } from "../../apis/mypage/notice";
 import { useEffect, useState } from "react";
 import type { NoticeDetail } from "../../types/mypage";
+import AttachmentSection from "../../components/mypage/notice/AttachmentSection";
 
 const NoticeDetailPage = () => {
   const { notificationId } = useParams();
@@ -25,12 +26,15 @@ const NoticeDetailPage = () => {
   }, [notificationId]);
 
   return (
-    <div className="flex flex-col h-screen w-full bg-white">
-      <TopHeader title="공지사항" backButton={true} />
-      <TitleSection title={notice?.title} date={notice?.date} />
-      <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
-      <ContentSection content={notice?.content} />
-    </div>
+    <>
+      <div className="flex flex-col h-screen w-full bg-white">
+        <TopHeader title="공지사항" backButton={true} />
+        <TitleSection title={notice?.title} date={notice?.date} />
+        <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
+        <ContentSection content={notice?.content} />
+      </div>
+      <AttachmentSection attachments={notice?.attachments} />
+    </>
   );
 };
 

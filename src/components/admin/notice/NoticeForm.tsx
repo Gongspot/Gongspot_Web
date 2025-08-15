@@ -4,23 +4,22 @@ import DropDown from "../../../assets/dropDown.svg?react";
 import DropDownUp from "../../../assets/dropDownUp.svg?react";
 
 interface NoticeFormProps {
-    form: {
-        title: string;
-        category: string;
-        content: string;
-    };
+    form: { title: string; category: string; content: string };
     onChange: (key: string, value: string) => void;
+    isCategoryEditable?: boolean;
 }
 
-const NoticeForm = ({ form, onChange }: NoticeFormProps) => {
+const NoticeForm = ({ form, onChange, isCategoryEditable = true }: NoticeFormProps) => {
     const [showCategory, setShowCategory] = useState(false);
     const categories = ["일반", "배너",];
 
     const toggleCategory = () => {
+        if (!isCategoryEditable) return;
         setShowCategory(prev => !prev);
     };
 
     const handleCategorySelect = (category: string) => {
+        if (!isCategoryEditable) return;
         onChange("category", category);
         setShowCategory(false);
     };

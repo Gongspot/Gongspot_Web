@@ -6,29 +6,41 @@ import { useEffect, useState } from "react";
 import ActionSheet from "../../components/mypage/profile/ActionSheet";
 import { getProfile, patchProfile } from "../../apis/mypage/mypage";
 import defaultProfile from "../../assets/profile.svg";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const [overlayActive, setOverlayActive] = useState(false);
   const [nickname, setNickname] = useState<string>("");
   const [profile, setProfile] = useState<string>(defaultProfile);
+  const [attachment, setAttachment] = useState<File | null>(null);
+  const navigate = useNavigate();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files ? e.target.files[0] : null;
+    const selectedFile = e.target.files && e.target.files[0];
     if (selectedFile) {
-      const fileUrl = URL.createObjectURL(selectedFile);
-      setProfile(fileUrl);
+      setAttachment(selectedFile);
+      const imageUrl = URL.createObjectURL(selectedFile);
+      setProfile(imageUrl);
     }
     setOverlayActive(false);
   };
 
   const handleUpdateProfile = async () => {
     try {
-      const body = {
-        nickname: nickname,
-        profileImg: profile,
-      };
-      await patchProfile(body);
+      const formData = new FormData();
+      formData.append("nickname", nickname);
+
+      if (attachment) {
+        formData.append("profileImg", attachment);
+      }
+console.log("FormData:", formData);
+
+      for (const value of formData.values()) {
+        console.log(value);
+      }
+      await patchProfile(formData);
       alert("프로필이 변경되었습니다.");
+      navigate("/mypage");
     } catch (error) {
       console.error("프로필 변경 실패:", error);
       alert("프로필 변경에 실패했습니다.");
