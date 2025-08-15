@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getBannerDetail } from "../../apis/mypage/notice";
 import type { Banner } from "../../types/mypage";
+import AttachmentSection from "../../components/mypage/notice/AttachmentSection";
 
 const BannerDetailPage = () => {
   const { bannerId } = useParams();
@@ -34,6 +35,8 @@ const BannerDetailPage = () => {
         <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
         <ContentSection content={banner?.content} />
       </div>
+      <AttachmentSection attachments={banner?.attachments} />
+      <div className="mb-[1.125rem]" />
       <NextButton
         text="목록으로 돌아가기"
         className="w-full leading-[2.875rem] border-[1px] border-solid border-[#CCCCCC] text-[#8F9098] text-[1rem] rounded-[0.313rem]"
