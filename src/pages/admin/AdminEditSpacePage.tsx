@@ -6,30 +6,48 @@ import FilterSection from "../../components/mapsearch/FilterSection";
 import type { TabLabel } from "../../hooks/useSearchFilters";
 import { useState } from "react";
 
+const emptyFilters: Record<TabLabel, string[]> = {
+  "이용 목적": [],
+  "공간 종류": [],
+  분위기: [],
+  부가시설: [],
+  지역: [],
+};
+
 const AdminEditSpacePage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const { placeName, space } = location.state || {
-    placeName: "공간명 없음",
-    space: dummySpaces[0], // fallback
+  const location = useLocation() as {
+    state?: {
+      placeName?: string;
+      space?: any;
+      selectedFilters?: Record<TabLabel, string[]>;
+    };
   };
 
-  const [selectedFilters, setSelectedFilters] = useState<Record<TabLabel, string[]>>({
-    "이용 목적": [],
-    "공간 종류": [],
-    분위기: [],
-    부가시설: [],
-    지역: [],
+  const placeName = location.state?.placeName ?? "공간명 없음";
+  const space = location.state?.space ?? dummySpaces[0];
+
+  // 초기 선택값: 우선순위 (router state) → (localStorage) → (빈 값)
+  const [selectedFilters, setSelectedFilters] = useState<Record<TabLabel, string[]>>(() => {
+    const fromState = location.state?.selectedFilters;
+    if (fromState) return fromState;
+
+    const saved = localStorage.getItem(`admin:filters:${space.id}`);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {}
+    }
+    return emptyFilters;
   });
 
   const toggleFilter = (category: TabLabel, label: string) => {
     setSelectedFilters((prev) => {
-      const hasLabel = prev[category]?.includes(label);
-      const updated = hasLabel
-        ? prev[category].filter((item) => item !== label)
+      const has = prev[category]?.includes(label);
+      const next = has
+        ? prev[category].filter((v) => v !== label)
         : [...(prev[category] || []), label];
-      return { ...prev, [category]: updated };
+      return { ...prev, [category]: next };
     });
   };
 
@@ -42,11 +60,10 @@ const AdminEditSpacePage = () => {
   ];
 
   const handleConfirm = () => {
-    navigate("/admin/search-space", {  // AdminSearchSpacePage로 이동
-      state: {
-        placeName: space.name,
-      },
-    });
+    // 덮어쓰기 저장
+    localStorage.setItem(`admin:filters:${space.id}`, JSON.stringify(selectedFilters));
+
+    navigate("/admin/search-space", { state: { placeName: space.name } });
   };
 
   return (

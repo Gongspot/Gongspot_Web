@@ -16,35 +16,49 @@ const AdminCreateSpacePage = () => {
   const [googleMapsLink, setGoogleMapsLink] = useState(initialGoogleMapsLink);
   const [isValidationFailed, setIsValidationFailed] = useState(false);
 
-  const handleFetchInfo = () => {
-    // 항상 성공 처리 (이 부분은 원래 주석 처리된 로직으로 되돌릴 수 있습니다)
-    // setIsValidationFailed(false);
+  // const handleFetchInfo = () => {
+  //   // 항상 성공 처리 (이 부분은 원래 주석 처리된 로직으로 되돌릴 수 있습니다)
+  //   // setIsValidationFailed(false);
 
-    // navigate("/admin/confirm-space", {
-    //   state: {
-    //     placeName,
-    //     googleMapsLink,
-    //   },
-    // });
+  //   // navigate("/admin/confirm-space", {
+  //   //   state: {
+  //   //     placeName,
+  //   //     googleMapsLink,
+  //   //   },
+  //   // });
     
-    // 원래 있던 유효성 검사 로직입니다.
-    const normalizedPlaceName = placeName.trim().toLowerCase();
-    const normalizedLink = googleMapsLink.trim().toLowerCase();
+  //   // 원래 있던 유효성 검사 로직입니다.
+  //   const normalizedPlaceName = placeName.trim().toLowerCase();
+  //   const normalizedLink = googleMapsLink.trim().toLowerCase();
 
-    if (!normalizedLink.includes(normalizedPlaceName) || !normalizedPlaceName) {
+  //   if (!normalizedLink.includes(normalizedPlaceName) || !normalizedPlaceName) {
+  //     setIsValidationFailed(true);
+  //   } else {
+  //     setIsValidationFailed(false);
+
+  //     // 성공 시 확인 페이지로 이동 + state로 정보 전달
+  //     navigate("/admin/confirm-space", {
+  //       state: {
+  //         placeName,
+  //         googleMapsLink,
+  //       },
+  //     });
+  //   }
+  // };
+
+  const handleFetchInfo = () => {
+    const nameOk = !!placeName.trim();
+    const linkOk = !!googleMapsLink.trim();
+
+    if (!nameOk || !linkOk) {
       setIsValidationFailed(true);
-    } else {
-      setIsValidationFailed(false);
-
-      // 성공 시 확인 페이지로 이동 + state로 정보 전달
-      navigate("/admin/confirm-space", {
-        state: {
-          placeName,
-          googleMapsLink,
-        },
-      });
+      return;
     }
+
+    setIsValidationFailed(false);
+    navigate("/admin/confirm-space", { state: { placeName, googleMapsLink } });
   };
+
 
   return (
     <div className="min-h-screen bg-white">

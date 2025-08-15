@@ -16,7 +16,8 @@ const BottomNavBar = () => {
   if (
     location.pathname === "/signup" ||
     location.pathname === "/" ||
-    location.pathname.startsWith("/mypage/")
+    location.pathname.startsWith("/mypage/") ||
+    location.pathname.startsWith("/banners/")
   ) {
     return null;
   }

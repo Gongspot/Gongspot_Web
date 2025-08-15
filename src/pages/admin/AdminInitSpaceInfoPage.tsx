@@ -6,7 +6,8 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const AdminInitSpaceInfoPage = () => {
-  const location = useLocation();
+  const location = useLocation() as { state?: { placeName?: string; spaceFromKakao?: any } };
+  const spaceFromKakao = location.state?.spaceFromKakao;
   const navigate = useNavigate();
   const { placeName } = location.state || { placeName: "공간명 없음" };
 
@@ -36,10 +37,18 @@ const AdminInitSpaceInfoPage = () => {
     { title: "지역" as TabLabel, labels: ["강남권", "강북권", "도심권", "서남권", "서북권", "동남권", "성동·광진권"] },
   ];
 
+  // 등록완료 핸들러에서 localStorage에 저장
   const handleComplete = () => {
-    navigate("/admin/all-requests", {
-      state: { defaultTab: "reviewed" },
-    });
+    if (spaceFromKakao) {
+      localStorage.setItem(
+        "admin:newSpaceDraft",
+        JSON.stringify({
+          space: spaceFromKakao,         // 카카오에서 받은 공간
+          filters: selectedFilters,      // 이 페이지에서 고른 필터들
+        })
+      );
+    }
+    navigate("/admin/all-requests", { state: { defaultTab: "reviewed" } });
   };
 
   return (

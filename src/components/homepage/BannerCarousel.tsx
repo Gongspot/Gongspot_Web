@@ -3,9 +3,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 import { useBanners } from "../../hooks/useBanners"; // API 호출을 위한 훅
+import { useNavigate } from "react-router-dom";
 
 const BannerCarousel: React.FC = () => {
   const { data: banners, isLoading, isError } = useBanners();
+  const navigate = useNavigate();
 
   // 로딩 중일 때 보여줄 UI
   if (isLoading) {
@@ -44,7 +46,8 @@ const BannerCarousel: React.FC = () => {
             <img 
               className="home-img w-full h-full object-cover" 
               src={banner.thumbnailUrl!}
-              alt={`이벤트 배너 ${banner.bannerId}`} 
+              alt={`이벤트 배너 ${banner.bannerId}`}
+              onClick={() => navigate(`/banners/${banner.bannerId}`)}
             />
           </SwiperSlide>
         ))}
