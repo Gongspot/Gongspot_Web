@@ -44,6 +44,7 @@ const BannerDetailPage = () => {
           navigate("/mypage/notices");
         }}
       />
+      <AttachmentSection attachments={banner?.attachments} />
     </div>
   );
 };
