@@ -10,6 +10,24 @@ export const postNotice = async (formData: FormData, category: string) => {
   return data;
 };
 
+export const patchNotice = async (formData: FormData, notificationId: number) => {
+  const { data } = await axiosInstance.patch(`/notifications/${notificationId}`, formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
+  return data;
+};
+
+export const patchBanner = async (formData: FormData, bannerId: number) => {
+  const { data } = await axiosInstance.patch(`/banners/${bannerId}`, formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
+  return data;
+};
+
 export const getNoticeAdmin = async (type: 'ALL' | 'B' | 'N'): Promise<ResponseNoticeAdminDTO> => {
   const { data } = await axiosInstance.get(`/notifications/admin?type=${type}`);
   return data;

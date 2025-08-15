@@ -36,6 +36,7 @@ export type ResponseNoticeDTO = CommonResponse<{
 
 export interface NoticeDetail extends Notice {
     content: string;
+    attachments: Attachments[];
 }
 
 export type ResponseNoticeDetailDTO = CommonResponse<NoticeDetail>;
