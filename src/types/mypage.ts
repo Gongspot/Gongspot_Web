@@ -69,3 +69,20 @@ export type ResponseVisitDTO = CommonResponse<{
     totalCount: number;
     visitedPlaces: VisitedPlaces[];
 }>;
+
+export type Attachments = {
+    attachmentId: number;
+    url: string;
+    fileName: string;
+};
+
+export type Banner = {
+    bannerId: number;
+    title: string;
+    content: string;
+    datetime: string;
+    thumbnailUrl: string;
+    attachments: Attachments[];
+};
+
+export type ResponseBannerDetailDTO = CommonResponse<Banner>;

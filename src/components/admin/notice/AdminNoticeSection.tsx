@@ -14,31 +14,30 @@ const typeMap: Record<string, string> = {
 const AdminNoticeSection = ({ notices }: NoticeSectionProps) => {
     return (
         <>
-            {notices.map((item) => {
-                const key = `${item.type}-${item.notificationId || item.bannerId}`;
+            {notices.map((item, idx) => {
+                let path = "";
+                if (item.notificationId == null && item.bannerId != null) {
+                    path = `/admin/banners/${item.bannerId}`;
+                } else if (item.bannerId == null && item.notificationId != null) {
+                    path = `/admin/notices/${item.notificationId}`;
+                }
                 
-                // '일반' 공지(N)일 경우에만 Link로 감싸고, '배너'(B)는 텍스트만 표시
-                const titleElement = item.type === 'N' ? (
-                    <Link to={`/admin/notices/${item.notificationId}`}>
-                        <span className="text-gray-800 hover:underline">{item.title}</span>
-                    </Link>
-                ) : (
-                    <span className="text-gray-800">{item.title}</span>
-                );
-
                 return (
-                    <div key={key}>
-                        <div className="flex items-center justify-between px-[1.25rem] my-[1.125rem] w-full">
-                            <div className="flex items-center">
-                                <div className="mr-[0.375rem]">
-                                    <Category text={typeMap[item.type]} />
-                                </div>
-                                {titleElement}
+                <div key={idx}>
+
+                    <div className="flex items-center justify-between px-[1.25rem] my-[1.125rem] w-full">
+                        <div className="flex items-center">
+                            <div className="mr-[0.375rem]">
+                                <Category text={typeMap[item.type]} />
                             </div>
-                            <p className="text-[#8F9098]">{item.date}</p>
+                            <Link to={path}>
+                                <span>{item.title}</span>
+                            </Link>
                         </div>
-                        <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
+                        <p className="text-[#8F9098]">{item.date}</p>
                     </div>
+                    <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
+                </div>
                 );
             })}
         </>

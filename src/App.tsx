@@ -45,6 +45,8 @@ import AdminEditSpacePage from "./pages/admin/AdminEditSpacePage";
 import AdminNoticeDetailPage from "./pages/admin/AdminNoticeDetailPage";
 import AdminNoticeAllPage from "./pages/admin/AdminNoticeAllPage";
 import AllReviewsPage from "./pages/spacedetail/AllReviewsPage"; // AllReviewsPage 임포트 추가
+import AdminBannerDetailPage from "./pages/admin/AdminBannerDetailPage";
+import BannerDetailPage from "./pages/mypage/BannerDetailPage";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -82,6 +84,7 @@ const publicRoutes: RouteObject[] = [
       { path: "oauth/kakao/callback", element: <OauthKakaoCallback /> },
       { path: "mypage/push", element: <PushPage /> },
       { path: "mypage/spaces/visit", element: <VisitPage /> },
+      { path: "banners/:bannerId", element: <BannerDetailPage />, },
     ],
   },
 ];
@@ -101,8 +104,9 @@ const protectedRoutes: RouteObject[] = [
       { path: "init-space-info", element: <AdminInitSpaceInfoPage /> },
       { path: "search-space", element: <AdminSearchSpacePage /> },
       { path: "edit-space", element: <AdminEditSpacePage /> },
-      { path: "notices/:notificationId", element: <AdminNoticeDetailPage/>, },
-      { path: "notices/all", element: <AdminNoticeAllPage/>, },
+      { path: "notices/:notificationId", element: <AdminNoticeDetailPage />, },
+      { path: "notices/all", element: <AdminNoticeAllPage />, },
+      { path: "banners/:bannerId", element: <AdminBannerDetailPage />, },
     ],
   },
 ];
