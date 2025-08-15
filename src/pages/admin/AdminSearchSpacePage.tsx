@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import TopHeader from "../../components/TopHeader";
@@ -16,10 +16,44 @@ interface SpaceLite {
   isLiked: boolean;
 }
 
+type TabLabel = "이용 목적" | "공간 종류" | "분위기" | "부가시설" | "지역";
+
+interface Draft {
+  space: any;
+  filters: Record<TabLabel, string[]>;
+}
+
+const toLite = (s: any): SpaceLite => ({
+  id: s.id ?? Date.now(),
+  name: s.name ?? "",
+  image: s.image ?? "",
+  rating: s.rating ?? 0,
+  distance: s.distance ?? 0,
+  tags: Array.isArray(s.tags) ? s.tags : [],
+  isLiked: !!s.isLiked,
+});
+
 const AdminSearchSpacePage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [_, setSelectedSpace] = useState<SpaceLite | null>(null);
+  const [draft, setDraft] = useState<Draft | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const raw = localStorage.getItem("admin:newSpaceDraft");
+    if (raw) {
+      try { setDraft(JSON.parse(raw)); } catch {}
+    }
+  }, []);
+
+  const source = [
+    ...(draft?.space ? [toLite(draft.space)] : []), // ✅ 새로 등록한 공간을 맨 위에
+    ...dummySpaces,
+  ];
+
+  const filteredSpaces = searchInput
+    ? source.filter((s) => s.name.includes(searchInput))
+    : [];
 
   const handleSearch = () => {
     const result = dummySpaces.find((space) =>
@@ -34,7 +68,11 @@ const AdminSearchSpacePage = () => {
 
   const handleDetail = (space: SpaceLite) => {
     navigate("/admin/edit-space", {
-      state: { placeName: space.name, space }, // 공간 정보 함께 전달
+      state: {
+        placeName: space.name,
+        space,
+        selectedFilters: draft?.filters ?? {}, // 초기 필터도 같이 전달
+      },
     });
   };
 
@@ -42,10 +80,6 @@ const AdminSearchSpacePage = () => {
     alert(`${space.name} 좋아요 토글`);
     // 좋아요 토글 로직 추가 예정
   };
-
-  const filteredSpaces = searchInput
-    ? dummySpaces.filter((space) => space.name.includes(searchInput))
-    : [];
 
   return (
     <div className="relative min-h-screen bg-white">
