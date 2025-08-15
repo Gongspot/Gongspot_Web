@@ -5,7 +5,7 @@ import dummySpaces from "../../constants/dummySpaces";
 import type { Space } from "../../constants/dummySpaces";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { loadKakaoScript } from "../../utils/kakaoMapLoader"; // ✅ 카카오 스크립트 로더만 사용
+import { loadKakaoScript } from "../../utils/kakaoMapLoader"; // 카카오 스크립트 로더만 사용
 
 declare global {
   interface Window { kakao: any; }
@@ -37,7 +37,6 @@ const AdminConfirmSpacePage = () => {
       address: k.road_address_name || k.address_name || base.address,
       phone: k.phone || base.phone,
       opening: base.opening,       // 카카오는 영업시간 미제공 → 더미 유지
-      closedDays: base.closedDays, // 필요 시 별도 입력 단계에서 수정
       isFree: base.isFree,
     };
   };
