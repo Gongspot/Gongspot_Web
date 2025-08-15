@@ -38,10 +38,12 @@ const ThemeDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FB] flex flex-col ">
+    // 1. 전체 레이아웃을 화면 높이에 맞게 설정
+    <div className="h-screen bg-[#F7F9FB] flex flex-col">
       <TopHeader title={theme.title} />
 
-      <div className="px-4 pt-8 pb-4 bg-[#FAFAFA]">
+      {/* 2. 상단 고정 영역 (테마 정보) */}
+      <div className="px-4 pt-8 pb-2 bg-[#FAFAFA]">
         <div className="rounded-2xl overflow-hidden mb-3 relative" style={{ height: 180 }}>
           <img src={theme.image} alt={theme.title} className="w-full h-full object-cover" />
           <div className="absolute left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black/70 to-transparent" />
@@ -50,18 +52,19 @@ const ThemeDetailPage: React.FC = () => {
             <div className="text-[14px] font-medium opacity-90">{theme.subtitle}</div>
           </div>
         </div>
-        <div className="text-[14px] mb-2 mt-6 whitespace-pre-wrap">
+        <div className="text-[14px] mb-2 mt-2 whitespace-pre-wrap">
           {theme.description}
         </div>
       </div>
       
-      <div className="flex-1 flex flex-col mt-3">
+      {/* 3. 하단 스크롤 영역 */}
+      <div className="flex-1 flex flex-col min-h-0 pb-14">
         <div className="font-semibold p-3 bg-[#FFFFFF]">
           <span>{theme.title} 공간 살펴보기</span>
         </div>
-        <div className="overflow-y-auto flex-1 bg-[#EFF7FB]" style={{ maxHeight: "370px" }}>
-          {isLoading && <div className="text-center py-10">목록을 불러오는 중...</div>}
-          {isError && <div className="text-center py-10 text-red-500">오류가 발생했습니다.</div>}
+        <div className="overflow-y-auto flex-1 bg-[#EFF7FB]">
+          {isLoading && <div className="text-center py-16">목록을 불러오는 중...</div>}
+          {isError && <div className="text-center text-red-500">오류가 발생했습니다.</div>}
           
           {!isLoading && !isError && (
             places.length === 0 ? (
@@ -75,7 +78,7 @@ const ThemeDetailPage: React.FC = () => {
                   name={space.name}
                   image={space.imageUrl || "https://via.placeholder.com/150"}
                   rating={space.rating}
-                  location={space.location} // location prop만 전달하면 끝!
+                  location={space.location}
                   tags={space.location ? [space.location] : []}
                   isLiked={space.isLike}
                   onDetail={() => navigate(`/space/${space.placeId}`)}

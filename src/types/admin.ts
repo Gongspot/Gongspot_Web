@@ -8,13 +8,41 @@ export type RequestNoticeDTO = {
 };
 
 export interface NoticeAdmin {
-    type: string;
-    bannerId: number;
-    notificationId: number;
+    type: 'B' | 'N';
+    bannerId: number | null;
+    notificationId: number | null;
     date: string;
     title: string;
 };
 
 export type ResponseNoticeAdminDTO = CommonResponse<{
     notificationBannerList: NoticeAdmin[];
+}>;
+
+export interface PageInfo {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface ProposalItem {
+  proposalId: number;
+  name: string;
+  link: string;
+  reason: string;
+  createdAt: string;
+}
+
+export type ProposalApiResponse = CommonResponse<{
+  pageInfo: PageInfo;
+  result: ProposalItem[];
+}>;
+
+export type ProposalDetailApiResponse = CommonResponse<ProposalItem>;
+
+export type ProposalHomeApiResponse = CommonResponse<{
+  totalAllProposalsCount: number;
+  totalUnapprovedProposalsCount: number;
+  unapprovedProposals: ProposalItem[];
 }>;

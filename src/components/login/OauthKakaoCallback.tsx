@@ -1,4 +1,3 @@
-// src/pages/OauthKakaoCallback.jsx
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -10,6 +9,7 @@ const OauthKakaoCallback = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
+    const state = urlParams.get("state");
 
     if (!code) {
       navigate("/");
@@ -18,17 +18,26 @@ const OauthKakaoCallback = () => {
 
     const fetchLogin = async () => {
       try {
-        const response = await axiosInstance.get(
+        console.log("state 값:", state);
+        const { data } = await axiosInstance.get(
           `/auth/oauth/kakao/callback?code=${code}`
         );
-        const data = response.data;
+        console.log("카카오 OAuth 콜백 응답 데이터:", data);
 
         if (data.isSuccess) {
           const { accessToken, refreshToken } = data.result;
-          localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken", refreshToken);
 
-          navigate("/home");
+          if (state === "local") {
+            const redirectUrl = new URL("http://localhost:5182/home");
+            redirectUrl.searchParams.append("state", state);
+            redirectUrl.searchParams.append("accessToken", accessToken);
+            redirectUrl.searchParams.append("refreshToken", refreshToken);
+            window.location.href = redirectUrl.toString();
+          } else {
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+            navigate("/home");
+          }
         } else {
           alert(data.message || "로그인에 실패했습니다.");
           navigate("/");

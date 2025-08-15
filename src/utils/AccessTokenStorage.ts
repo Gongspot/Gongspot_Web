@@ -1,12 +1,11 @@
 import { LOCAL_STORAGE_KEY } from "../constants/key";
 
-class TokenStorage {
-
+class AccessTokenStorage {
     static setToken = (token: string): void => {
         try {
             localStorage.setItem(LOCAL_STORAGE_KEY.accessToken, token);
         } catch (error) {
-            console.error("Failed to set token to localStorage:", error);
+            console.error("Failed to set access token:", error);
         }
     };
 
@@ -14,7 +13,7 @@ class TokenStorage {
     try {
         return localStorage.getItem(LOCAL_STORAGE_KEY.accessToken);
     } catch (error) {
-        console.error("Failed to get token from localStorage:", error);
+        console.error("Failed to get access token:", error);
         return null;
     }
     };
@@ -23,9 +22,9 @@ class TokenStorage {
         try {
             localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken);
         } catch (error) {
-            console.error("Failed to remove token from localStorage:", error);
+            console.error("Failed to remove access token:", error);
         }
     };
 };
 
-export default TokenStorage;
+export default AccessTokenStorage;
