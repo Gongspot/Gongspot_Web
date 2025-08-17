@@ -34,7 +34,9 @@ const NoticeForm = ({ form, onChange, isCategoryEditable = true }: NoticeFormPro
             />
             <div>
                 <p className="mb-[0.625rem] text-[1rem] text-black">카테고리</p>
-                <div className="flex relative items-center">
+                <div 
+                    className="flex relative items-center"
+                    onClick={toggleCategory}>
                     <input
                         type="text"
                         className={`w-full px-[0.75rem] py-[0.625rem] text-[0.75rem]
@@ -44,7 +46,7 @@ const NoticeForm = ({ form, onChange, isCategoryEditable = true }: NoticeFormPro
                         value={form.category}
                         readOnly
                     />
-                    <div onClick={toggleCategory} className="absolute right-[1rem]">
+                    <div className="absolute right-[1rem]">
                         {showCategory ? <DropDownUp /> : <DropDown />}
                     </div>
                 </div>
