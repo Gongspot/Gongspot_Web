@@ -1,12 +1,15 @@
 import Cloud from '../../../assets/cloud.svg?react';
 import Delete from '../../../assets/delete.svg?react';
+import type { Attachments } from '../../../types/mypage';
 
 interface DragDropProps {
+    existingAttachments?: Attachments[];
     files: File[] | null;
     onFileChange: (files: File[] | null) => void;
+    onDeleteExistingAttachment?: (attachmentId: number) => void;
 }
 
-const DragDrop = ({ files, onFileChange }: DragDropProps) => {
+const DragDrop = ({ existingAttachments = [], files, onFileChange, onDeleteExistingAttachment }: DragDropProps) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = e.target.files ? Array.from(e.target.files) : null;
         onFileChange(selectedFiles);
@@ -39,27 +42,43 @@ const DragDrop = ({ files, onFileChange }: DragDropProps) => {
                     />
                 </label>
             </div>
-            {files && (
-                <div className="mt-[1rem]">
-                    <ul className="flex flex-wrap gap-x-[0.5rem] gap-y-[1rem]">
-                        {files.map((file, idx) => (
-                            <li 
-                                key={idx}
-                                className="flex items-center py-[0.25rem] border border-[#E5E5E5] rounded-[1.25rem] 
-                                    text-[#8F9098] text-[0.75rem] text-center break-words"
+            {(existingAttachments.length > 0 || (files && files.length > 0)) && (
+            <div className="mt-[1rem]">
+                <ul className="flex flex-wrap gap-x-[0.5rem] gap-y-[1rem]">
+                    {existingAttachments.map((file) => (
+                        <li 
+                            key={file.attachmentId}
+                            className="flex items-center py-[0.25rem] border border-[#E5E5E5] rounded-[1.25rem] 
+                                text-[#8F9098] text-[0.75rem] text-center break-words"
+                        >
+                            <span className="ml-[1rem]">{file.fileName}</span>
+                            <button
+                                type="button"
+                                onClick={() => onDeleteExistingAttachment?.(file.attachmentId)}
+                                className="flex items-center mx-[0.625rem]"
                             >
-                                <span className="ml-[1rem]">{file.name}</span>
-                                <button
-                                    type="button"
-                                    onClick={() => handleDelete(idx)}
-                                    className="flex items-center mx-[0.625rem]"
-                                >
-                                    <Delete />
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                                <Delete />
+                            </button>
+                        </li>
+                    ))}
+                    {files?.map((file, idx) => (
+                        <li 
+                            key={idx}
+                            className="flex items-center py-[0.25rem] border border-[#E5E5E5] rounded-[1.25rem] 
+                                text-[#8F9098] text-[0.75rem] text-center break-words"
+                        >
+                            <span className="ml-[1rem]">{file.name}</span>
+                            <button
+                                type="button"
+                                onClick={() => handleDelete(idx)}
+                                className="flex items-center mx-[0.625rem]"
+                            >
+                                <Delete />
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
             )}
         </>
     );
