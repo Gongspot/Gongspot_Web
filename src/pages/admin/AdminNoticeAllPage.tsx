@@ -16,6 +16,7 @@ const typeMap: Record<string, "ALL" | "B" | "N"> = {
 const AdminNoticeAllPage = () => {
   const [selected, setSelected] = useState<string>('전체');
   const [notices, setNotices] = useState<NoticeAdmin[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -23,7 +24,6 @@ const AdminNoticeAllPage = () => {
         const data = await getNoticeAdmin(typeMap[selected]);
         if (data.isSuccess) {
           setNotices(data.result.notificationBannerList);
-          console.log("공지사항 데이터:", data.result.notificationBannerList);
         }
       } catch (e) {
         console.error("Error fetching notice data:", e);
@@ -31,12 +31,16 @@ const AdminNoticeAllPage = () => {
     };
     fetchNotices();
   }, [selected]);
+
+  const filteredNotices = notices.filter((item) =>
+    (item.title ?? "").toLowerCase().includes(searchTerm.toLowerCase())
+  );
   
   return (
     <div className="flex flex-col h-screen w-full bg-white">
       <TopHeader title="공지사항" backButton={true} />
       <div className="flex flex-col items-start mx-[0.75rem] mt-[0.875rem] mb-[0.625rem] gap-y-[0.375rem]">
-        <Search />
+        <Search value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         <div className="flex gap-x-[0.5rem]">
           {types.map((type) => (
             <CategorySelect
@@ -48,7 +52,7 @@ const AdminNoticeAllPage = () => {
           ))}
         </div>
       </div>
-      <AdminNoticeSection notices={notices} />
+      <AdminNoticeSection notices={filteredNotices} />
     </div>
   );
 };

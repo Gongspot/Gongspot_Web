@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { getNoticeDetail } from "../../apis/mypage/notice";
 import { patchNotice } from "../../apis/admin";
 import NoticeEditor from "../../components/admin/notice/NoticeEditor";
+import type { Attachments } from "../../types/mypage";
 
 const AdminNoticeEditPage = () => {
   const { notificationId } = useParams();
   const navigate = useNavigate();
   const [attachments, setAttachments] = useState<File[] | null>(null);
+  const [existingAttachments, setExistingAttachments] = useState<Attachments[]>([]);
+  const [attachmentIdsToDelete, setAttachmentIdsToDelete] = useState<number[]>([]);
   const [form, setForm] = useState({ title: "", category: "", content: "" });
 
   useEffect(() => {
@@ -20,6 +23,9 @@ const AdminNoticeEditPage = () => {
             category: "일반",
             content: data.result.content,
           });
+          if (data.result.attachments) {
+            setExistingAttachments(data.result.attachments);
+          }
         }
       } catch (e) {
         console.error("Error fetching notices:", e);
@@ -34,6 +40,13 @@ const AdminNoticeEditPage = () => {
 
   const handleFileChange = (files: File[] | null) => setAttachments(files);
 
+    const handleDeleteExistingAttachment = (attachmentId: number) => {
+      setExistingAttachments((prev) =>
+        prev.filter((file) => file.attachmentId !== attachmentId)
+      );
+      setAttachmentIdsToDelete((prev) => [...prev, attachmentId]);
+    };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -44,6 +57,15 @@ const AdminNoticeEditPage = () => {
         "request",
         new Blob([JSON.stringify(json)], { type: "application/json" })
       );
+
+      if (attachmentIdsToDelete.length > 0) {
+        formData.append(
+          "attachmentIdsToDelete",
+          new Blob([JSON.stringify(attachmentIdsToDelete)], {
+            type: "application/json",
+          })
+        );
+      }
 
       if (attachments && attachments.length > 0) {
         attachments.forEach(file => formData.append("attachments", file));
@@ -68,6 +90,8 @@ const AdminNoticeEditPage = () => {
       onSubmit={handleSubmit}
       submitText="저장하기"
       isCategoryEditable={false}
+      existingAttachments={existingAttachments}
+      onDeleteExistingAttachment={handleDeleteExistingAttachment}
     />
   );
 };

@@ -3,7 +3,10 @@ import { getNotice } from "../../../apis/mypage/notice";
 import type { Notice } from "../../../types/mypage";
 import { Link } from "react-router-dom";
 
-const NoticeSection = () => {
+interface NoticeSectionProps {
+    searchTerm: string;
+}
+const NoticeSection = ({ searchTerm }: NoticeSectionProps) => {
     const [notice, setNotice] = useState<Notice[] | null>(null);
 
     useEffect(() => {
@@ -20,9 +23,13 @@ const NoticeSection = () => {
         fetchNotice();
     }, []);
 
+    const filteredNotices = notice?.filter((item) =>
+        (item.title ?? "").toLowerCase().includes(searchTerm.toLowerCase())
+);
+
     return (
         <>
-            {notice?.map((item: Notice) => (
+            {filteredNotices?.map((item: Notice) => (
                 <Link 
                     to={`/mypage/notices/${item.notificationId}`} 
                     key={item.notificationId} 

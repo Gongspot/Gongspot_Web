@@ -17,6 +17,7 @@ const NoticeDetailPage = () => {
         const data = await getNoticeDetail(Number(notificationId));
         if (data.isSuccess) {
           setNotice(data.result);
+          console.log("Notice data fetched successfully:", data.result);
         }
       } catch (e) {
         console.error("Error fetching notices:", e);
@@ -27,13 +28,15 @@ const NoticeDetailPage = () => {
 
   return (
     <>
-      <div className="flex flex-col h-screen w-full bg-white">
+      <div className="flex flex-col min-h-screen w-full bg-white">
         <TopHeader title="공지사항" backButton={true} />
         <TitleSection title={notice?.title} date={notice?.date} />
         <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
-        <ContentSection content={notice?.content} />
+        <div className="flex-1">
+          <ContentSection content={notice?.content} />
+        </div>
+        <AttachmentSection attachments={notice?.attachments} />
       </div>
-      <AttachmentSection attachments={notice?.attachments} />
     </>
   );
 };

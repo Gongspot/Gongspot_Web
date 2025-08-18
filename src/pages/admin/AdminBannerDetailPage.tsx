@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getBannerDetail } from "../../apis/mypage/notice";
 import type { Banner } from "../../types/mypage";
 import BannerDetailView from "../../components/admin/notice/BannerDetailView";
+import { deleteBanner } from "../../apis/admin";
 
 const AdminBannerDetailPage = () => {
   const { bannerId } = useParams();
@@ -22,6 +23,27 @@ const AdminBannerDetailPage = () => {
     };
     fetchBanner();
   }, [bannerId]);
+  
+  const handleDelete = async () => {
+    if (!bannerId) return;
+
+    const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+
+    try {
+      const res = await deleteBanner(Number(bannerId));
+      console.log("Delete response:", res);
+      if (res.isSuccess) {
+        alert("삭제되었습니다.");
+        navigate("/admin/notices");
+      } else {
+        alert("삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Error deleting notice:", error);
+      alert("삭제 중 오류가 발생했습니다.");
+    }
+  };
 
   if (!banner) return null;
 
@@ -30,7 +52,7 @@ const AdminBannerDetailPage = () => {
       <BannerDetailView
         banner={banner}
         onEditClick={() => navigate(`/admin/banners/edit/${bannerId}`)}
-        onDeleteClick={() => alert("삭제 기능 구현 필요")}
+        onDeleteClick={handleDelete}
       />
     </>
 
