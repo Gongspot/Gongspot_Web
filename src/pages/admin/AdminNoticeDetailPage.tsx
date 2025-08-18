@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getNoticeDetail } from "../../apis/mypage/notice";
 import type { NoticeDetail } from "../../types/mypage";
 import NoticeDetailView from "../../components/admin/notice/NoticeDetailView";
+import { deleteNotice } from "../../apis/admin";
 
 const AdminNoticeDetailPage = () => {
   const { notificationId } = useParams();
@@ -23,6 +24,27 @@ const AdminNoticeDetailPage = () => {
     fetchNotice();
   }, [notificationId]);
 
+  const handleDelete = async () => {
+    if (!notificationId) return;
+
+    const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+
+    try {
+      const res = await deleteNotice(Number(notificationId));
+      console.log("Delete response:", res);
+      if (res.isSuccess) {
+        alert("삭제되었습니다.");
+        navigate("/admin/notices");
+      } else {
+        alert("삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Error deleting notice:", error);
+      alert("삭제 중 오류가 발생했습니다.");
+    }
+  };
+
   if (!notice) return null;
 
   return (
@@ -30,7 +52,7 @@ const AdminNoticeDetailPage = () => {
       <NoticeDetailView
         notice={notice}
         onEditClick={() => navigate(`/admin/notices/edit/${notificationId}`)}
-        onDeleteClick={() => alert("삭제 기능 구현 필요")}
+        onDeleteClick={handleDelete}
       />
     </>
   );
