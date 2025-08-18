@@ -60,3 +60,13 @@ export const deleteProposal = async (proposalId: string) => {
   const { data } = await axiosInstance.delete(`/request/proposal/${proposalId}`);
   return data;
 };
+
+export const deleteNotice = async (notificationId: number) => {
+  const { data } = await axiosInstance.delete(`/notifications/${notificationId}`);
+  return data;
+};
+
+export const deleteBanner = async (bannerId: number) => {
+  const { data } = await axiosInstance.delete(`/banners/${bannerId}`);
+  return data;
+};

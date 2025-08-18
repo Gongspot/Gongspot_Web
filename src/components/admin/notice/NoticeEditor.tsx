@@ -1,3 +1,4 @@
+import type { Attachments } from "../../../types/mypage";
 import TopHeader from "../../TopHeader";
 import DragDrop from "./DragDrop";
 import NoticeForm from "./NoticeForm";
@@ -11,9 +12,22 @@ interface NoticeEditorProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   submitText: string;
   isCategoryEditable?: boolean;
+  existingAttachments?: Attachments[];
+  onDeleteExistingAttachment?: (attachmentId: number) => void;
 }
 
-const NoticeEditor = ({ navTitle, form, onChange, attachments, onFileChange, onSubmit, submitText, isCategoryEditable = true }: NoticeEditorProps) => {
+const NoticeEditor = ({
+  navTitle,
+  form,
+  onChange,
+  attachments,
+  onFileChange,
+  onSubmit,
+  submitText,
+  isCategoryEditable = true,
+  existingAttachments = [],
+  onDeleteExistingAttachment,
+}: NoticeEditorProps) => {
 
   return (
     <form 
@@ -30,7 +44,12 @@ const NoticeEditor = ({ navTitle, form, onChange, attachments, onFileChange, onS
       <div className="flex flex-col h-full mt-[1.125rem] mb-[1rem] mx-[1.25rem] 
         px-[1.25rem] py-[1.5rem] bg-white border border-[#E5E7EB] rounded-[0.313rem]">
         <p className="mb-[0.625rem] text-[1rem] text-black">첨부파일</p>
-        <DragDrop files={attachments} onFileChange={onFileChange} />
+        <DragDrop 
+          existingAttachments={existingAttachments}
+          files={attachments}
+          onFileChange={onFileChange}
+          onDeleteExistingAttachment={onDeleteExistingAttachment}
+        />
       </div>
 
       <button 

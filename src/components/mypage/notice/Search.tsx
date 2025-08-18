@@ -1,6 +1,11 @@
 import search from '../../../assets/search.svg';
 
-const Search = () => {
+interface SearchProps {
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const Search = ({ value, onChange }: SearchProps) => {
     return (
         <div
             className="flex items-center border border-[#E5E5E5] rounded-[0.5rem] 
@@ -10,6 +15,8 @@ const Search = () => {
             <input
                 type="text"
                 placeholder="검색"
+                value={value}
+                onChange={onChange}
                 className="ml-[0.5rem] w-full text-[0.875rem] text-black
                 outline-none placeholder:text-[#ADAEBC]"
             />
