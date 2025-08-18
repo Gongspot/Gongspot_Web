@@ -44,7 +44,7 @@ const DragDrop = ({ existingAttachments = [], files, onFileChange, onDeleteExist
             </div>
             {(existingAttachments.length > 0 || (files && files.length > 0)) && (
             <div className="mt-[1rem]">
-                <ul className="flex flex-wrap gap-x-[0.5rem] gap-y-[1rem]">
+                <ul className="flex flex-wrap gap-x-[0.5rem] gap-y-[0.5rem]">
                     {existingAttachments.map((file) => (
                         <li 
                             key={file.attachmentId}
