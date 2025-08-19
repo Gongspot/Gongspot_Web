@@ -1,13 +1,15 @@
 import Cloud from '../../../assets/cloud.svg?react';
 import Delete from '../../../assets/delete.svg?react';
+import type { Thumbnail } from '../../../types/mypage';
 
 interface DragDropProps {
-    existingThumbnail?: string;
+    existingThumbnail?: Thumbnail | null;
     file: File | null;
     onFileChange: (file: File | null) => void;
+    onDelete?: () => void;
 }
 
-const DragDropThumbnail = ({ existingThumbnail, file, onFileChange }: DragDropProps) => {
+const DragDropThumbnail = ({ existingThumbnail, file, onFileChange, onDelete }: DragDropProps) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = e.target.files ? e.target.files[0] : null;
         onFileChange(selectedFiles);
@@ -47,10 +49,10 @@ const DragDropThumbnail = ({ existingThumbnail, file, onFileChange }: DragDropPr
                             className="flex items-center py-[0.25rem] border border-[#E5E5E5] rounded-[1.25rem] 
                                 text-[#8F9098] text-[0.75rem] text-center break-words"
                         >
-                            <span className="ml-[1rem]">썸네일</span>
+                            <span className="ml-[1rem]">{existingThumbnail?.fileName}</span>
                             <button
                                 type="button"
-                                onClick={handleDelete}
+                                onClick={onDelete}
                                 className="flex items-center mx-[0.625rem]"
                             >
                                 <Delete />

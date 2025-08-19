@@ -3,12 +3,16 @@ import { useEffect, useState } from "react";
 import { getBannerDetail } from "../../apis/mypage/notice";
 import { patchBanner } from "../../apis/admin";
 import NoticeEditor from "../../components/admin/notice/NoticeEditor";
+import type { Attachments, Thumbnail } from "../../types/mypage";
 
 const AdminBannerEditPage = () => {
   const { bannerId } = useParams();
   const navigate = useNavigate();
   const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [existingThumbnail, setExistingThumbnail] = useState<Thumbnail | null>(null);
   const [attachments, setAttachments] = useState<File[] | null>(null);
+  const [existingAttachments, setExistingAttachments] = useState<Attachments[]>([]);
+  const [attachmentIdsToDelete, setAttachmentIdsToDelete] = useState<number[]>([]);
   const [form, setForm] = useState({ title: "", category: "", content: "" });
 
   useEffect(() => {
@@ -21,6 +25,12 @@ const AdminBannerEditPage = () => {
             category: "배너",
             content: data.result.content,
           });
+          if (data.result.thumbnail) {
+            setExistingThumbnail(data.result.thumbnail);
+          }
+          if (data.result.attachments) {
+            setExistingAttachments(data.result.attachments);
+          }
         }
       } catch (e) {
         console.error("Error fetching banners:", e);
@@ -35,6 +45,23 @@ const AdminBannerEditPage = () => {
 
   const handleFileChange = (files: File[] | null) => setAttachments(files);
 
+  const handleDeleteExistingAttachment = (attachmentId: number) => {
+    setExistingAttachments((prev) =>
+      prev.filter((file) => file.attachmentId !== attachmentId)
+    );
+    setAttachmentIdsToDelete((prev) => [...prev, attachmentId]);
+  };
+
+  const handleThumbnailChange = (file: File | null) => {
+    setThumbnail(file);
+    if (file) { setExistingThumbnail(null); }
+  };
+
+  const handleDeleteExistingThumbnail = () => {
+    setExistingThumbnail(null);
+  };
+console.log("existingThumbnail:", existingThumbnail);
+console.log("thumbnail:", thumbnail);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -45,6 +72,19 @@ const AdminBannerEditPage = () => {
         "request",
         new Blob([JSON.stringify(json)], { type: "application/json" })
       );
+
+      if (attachmentIdsToDelete.length > 0) {
+        formData.append(
+          "attachmentIdsToDelete",
+          new Blob([JSON.stringify(attachmentIdsToDelete)], {
+            type: "application/json",
+          })
+        );
+      }
+
+      if (thumbnail) {
+        formData.append("thumbnail", thumbnail);
+      }
 
       if (attachments && attachments.length > 0) {
         attachments.forEach(file => formData.append("attachments", file));
@@ -70,7 +110,11 @@ const AdminBannerEditPage = () => {
       submitText="저장하기"
       isCategoryEditable={false}
       thumbnail={thumbnail}
-      onThumbnailChange={setThumbnail}
+      onThumbnailChange={handleThumbnailChange}
+      existingAttachments={existingAttachments}
+      onDeleteExistingAttachment={handleDeleteExistingAttachment}
+      existingThumbnail={existingThumbnail}
+      onDeleteExistingThumbnail={handleDeleteExistingThumbnail}
     />
   );
 };

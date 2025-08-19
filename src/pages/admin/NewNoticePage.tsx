@@ -27,7 +27,7 @@ const NewNoticePage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!form.title || !form.category || !form.content) {
+    if (!form.title || !form.category) {
       alert("모든 항목을 입력해주세요.");
       return;
     }

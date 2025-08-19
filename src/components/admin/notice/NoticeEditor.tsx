@@ -1,4 +1,4 @@
-import type { Attachments } from "../../../types/mypage";
+import type { Attachments, Thumbnail } from "../../../types/mypage";
 import TopHeader from "../../TopHeader";
 import DragDrop from "./DragDrop";
 import DragDropThumbnail from "./DragDropThumbnail";
@@ -16,8 +16,9 @@ interface NoticeEditorProps {
   existingAttachments?: Attachments[];
   onDeleteExistingAttachment?: (attachmentId: number) => void;
   thumbnail?: File | null;
-  existingThumbnail?: string;
+  existingThumbnail?: Thumbnail | null;
   onThumbnailChange?: (file: File | null) => void;
+  onDeleteExistingThumbnail?: () => void;
 }
 
 const NoticeEditor = ({
@@ -34,6 +35,7 @@ const NoticeEditor = ({
   thumbnail,
   existingThumbnail,
   onThumbnailChange,
+  onDeleteExistingThumbnail,
 }: NoticeEditorProps) => {
 
   return (
@@ -56,6 +58,7 @@ const NoticeEditor = ({
             existingThumbnail={existingThumbnail}
             file={thumbnail ?? null}
             onFileChange={onThumbnailChange ?? (() => {})}
+            onDelete={onDeleteExistingThumbnail ?? (() => {})}
           />
         </div>
       )}
