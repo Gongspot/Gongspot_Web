@@ -72,12 +72,18 @@ export type Attachments = {
     fileName: string;
 };
 
+export type Thumbnail = {
+    thumbnailId: number;
+    url: string;
+    fileName: string;
+};
+
 export type Banner = {
     bannerId: number;
     title: string;
     content: string;
     datetime: string;
-    thumbnailUrl: string;
+    thumbnail: Thumbnail;
     attachments: Attachments[];
 };
 

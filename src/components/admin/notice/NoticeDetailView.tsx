@@ -22,6 +22,18 @@ const NoticeDetailView = ({ notice, onEditClick, onDeleteClick }: Props) => {
         <TitleSection type="일반" title={notice?.title} date={notice?.date} />
         <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
         <ContentSection content={notice?.content} />
+        {notice?.attachments
+          ?.filter((file) =>
+            /\.(jpg|jpeg|png|gif|webp)$/i.test(file.fileName)
+          )
+          .map((file) => (
+            <img
+              key={file.attachmentId}
+              src={file.url}
+              alt={file.fileName}
+              className="w-full object-contain mt-[0.5rem]"
+            />
+        ))}
       </div>
       <AttachmentSection attachments={notice?.attachments} />
       <div className="flex gap-[0.375rem] w-full px-[1.75rem] pb-[0.625rem]">

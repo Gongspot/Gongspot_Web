@@ -40,12 +40,12 @@ const AdminNoticeEditPage = () => {
 
   const handleFileChange = (files: File[] | null) => setAttachments(files);
 
-    const handleDeleteExistingAttachment = (attachmentId: number) => {
-      setExistingAttachments((prev) =>
-        prev.filter((file) => file.attachmentId !== attachmentId)
-      );
-      setAttachmentIdsToDelete((prev) => [...prev, attachmentId]);
-    };
+  const handleDeleteExistingAttachment = (attachmentId: number) => {
+    setExistingAttachments((prev) =>
+      prev.filter((file) => file.attachmentId !== attachmentId)
+    );
+    setAttachmentIdsToDelete((prev) => [...prev, attachmentId]);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
