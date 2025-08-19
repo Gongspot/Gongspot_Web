@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { axiosInstance } from "../../apis/axios";
+import { useAuth } from "../../contexts/AuthContext";
 
 const OauthKakaoCallback = () => {
   const navigate = useNavigate();
+  const { setIsAdmin } = useAuth();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -24,8 +26,8 @@ const OauthKakaoCallback = () => {
         );
 
         if (data.isSuccess) {
-          const { accessToken, refreshToken } = data.result;
-          console.log("data.result:", data.result);
+          const { accessToken, refreshToken, isAdmin } = data.result;
+          setIsAdmin(isAdmin);
 
           if (state === "local") {
             const redirectUrl = new URL("http://localhost:5182/home");
@@ -59,7 +61,7 @@ const OauthKakaoCallback = () => {
     };
 
     fetchLogin();
-  }, [navigate]);
+  }, [navigate, setIsAdmin]);
 
   return (
     <div className="flex justify-center items-center h-screen">
