@@ -1,8 +1,7 @@
 import TopHeader from "../../components/TopHeader";
 import ContentSection from "../../components/mypage/notice/ContentSection";
 import TitleSection from "../../components/admin/notice/TitleSection";
-import NextButton from "../../components/NextButton";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getBannerDetail } from "../../apis/mypage/notice";
 import type { Banner } from "../../types/mypage";
@@ -11,7 +10,6 @@ import AttachmentSection from "../../components/mypage/notice/AttachmentSection"
 const BannerDetailPage = () => {
   const { bannerId } = useParams();
   const [banner, setBanner] = useState<Banner | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBanner = async () => {
@@ -28,22 +26,25 @@ const BannerDetailPage = () => {
   }, [bannerId]);
 
   return (
-    <div className="flex flex-col h-screen w-full bg-white">
+    <div className="flex flex-col min-h-screen w-full bg-white">
       <div className="flex-1">
         <TopHeader title="공지사항" backButton={true} />
         <TitleSection type="배너" title={banner?.title} date={banner?.datetime} />
         <div className="w-full border-b-[0.063rem] border-[#CCCCCC]" />
         <ContentSection content={banner?.content} />
+        {banner?.attachments
+          ?.filter((file) =>
+            /\.(jpg|jpeg|png|gif|webp)$/i.test(file.fileName)
+          )
+          .map((file) => (
+            <img
+              key={file.attachmentId}
+              src={file.url}
+              alt={file.fileName}
+              className="w-full object-contain mt-[0.5rem]"
+            />
+        ))}
       </div>
-      <AttachmentSection attachments={banner?.attachments} />
-      <div className="mb-[1.125rem]" />
-      <NextButton
-        text="목록으로 돌아가기"
-        className="w-full leading-[2.875rem] border-[1px] border-solid border-[#CCCCCC] text-[#8F9098] text-[1rem] rounded-[0.313rem]"
-        onClick={() => {
-          navigate("/mypage/notices");
-        }}
-      />
       <AttachmentSection attachments={banner?.attachments} />
     </div>
   );
