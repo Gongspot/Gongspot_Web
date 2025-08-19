@@ -60,10 +60,14 @@ const AdminBannerEditPage = () => {
   const handleDeleteExistingThumbnail = () => {
     setExistingThumbnail(null);
   };
-console.log("existingThumbnail:", existingThumbnail);
-console.log("thumbnail:", thumbnail);
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!thumbnail && !existingThumbnail) {
+      alert("썸네일을 꼭 등록해야 합니다.");
+      return;
+    }
+    
     try {
       const formData = new FormData();
       const json = { title: form.title, content: form.content };
@@ -73,6 +77,10 @@ console.log("thumbnail:", thumbnail);
         new Blob([JSON.stringify(json)], { type: "application/json" })
       );
 
+      if (thumbnail) {
+        formData.append("thumbnailFile", thumbnail);
+      }
+
       if (attachmentIdsToDelete.length > 0) {
         formData.append(
           "attachmentIdsToDelete",
@@ -80,10 +88,6 @@ console.log("thumbnail:", thumbnail);
             type: "application/json",
           })
         );
-      }
-
-      if (thumbnail) {
-        formData.append("thumbnail", thumbnail);
       }
 
       if (attachments && attachments.length > 0) {
