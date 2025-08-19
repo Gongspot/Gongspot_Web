@@ -8,7 +8,7 @@ const AttachmentSection = ({ attachments }: AttachmentSectionProps) => {
     if (!attachments || attachments.length === 0) return null;
 
     return (
-        <div className="flex flex-col mt-[1.125rem] mb-[1rem] mx-[1.75rem] 
+        <div className="flex flex-col mt-[2rem] mb-[0.625rem] mx-[1.75rem] 
         px-[1.25rem] py-[1.5rem] bg-white border border-[#E5E7EB] rounded-[0.313rem]">
             <p className="mb-[0.75rem] text-[1rem]">첨부파일</p>
             <ul className="flex flex-wrap gap-x-[0.5rem] gap-y-[0.5rem]">
