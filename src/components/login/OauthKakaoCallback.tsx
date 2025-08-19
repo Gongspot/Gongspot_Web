@@ -22,10 +22,10 @@ const OauthKakaoCallback = () => {
         const { data } = await axiosInstance.get(
           `/auth/oauth/kakao/callback?code=${code}`
         );
-        console.log("카카오 OAuth 콜백 응답 데이터:", data);
 
         if (data.isSuccess) {
           const { accessToken, refreshToken } = data.result;
+          console.log("data.result:", data.result);
 
           if (state === "local") {
             const redirectUrl = new URL("http://localhost:5182/home");
