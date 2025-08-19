@@ -1,6 +1,7 @@
 import type { Attachments } from "../../../types/mypage";
 import TopHeader from "../../TopHeader";
 import DragDrop from "./DragDrop";
+import DragDropThumbnail from "./DragDropThumbnail";
 import NoticeForm from "./NoticeForm";
 
 interface NoticeEditorProps {
@@ -14,6 +15,9 @@ interface NoticeEditorProps {
   isCategoryEditable?: boolean;
   existingAttachments?: Attachments[];
   onDeleteExistingAttachment?: (attachmentId: number) => void;
+  thumbnail?: File | null;
+  existingThumbnail?: string;
+  onThumbnailChange?: (file: File | null) => void;
 }
 
 const NoticeEditor = ({
@@ -27,6 +31,9 @@ const NoticeEditor = ({
   isCategoryEditable = true,
   existingAttachments = [],
   onDeleteExistingAttachment,
+  thumbnail,
+  existingThumbnail,
+  onThumbnailChange,
 }: NoticeEditorProps) => {
 
   return (
@@ -41,6 +48,18 @@ const NoticeEditor = ({
         <NoticeForm form={form} onChange={onChange} isCategoryEditable={isCategoryEditable} />
       </div>
 
+      {form.category === "배너" && (
+        <div className="flex flex-col h-full mt-[1.125rem] mb-[1rem] mx-[1.25rem] 
+          px-[1.25rem] py-[1.5rem] bg-white border border-[#E5E7EB] rounded-[0.313rem]">
+          <p className="mb-[0.625rem] text-[1rem] text-black">배너 썸네일</p>
+          <DragDropThumbnail 
+            existingThumbnail={existingThumbnail}
+            file={thumbnail ?? null}
+            onFileChange={onThumbnailChange ?? (() => {})}
+          />
+        </div>
+      )}
+      
       <div className="flex flex-col h-full mt-[1.125rem] mb-[1rem] mx-[1.25rem] 
         px-[1.25rem] py-[1.5rem] bg-white border border-[#E5E7EB] rounded-[0.313rem]">
         <p className="mb-[0.625rem] text-[1rem] text-black">첨부파일</p>

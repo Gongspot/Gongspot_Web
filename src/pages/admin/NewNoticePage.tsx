@@ -18,6 +18,7 @@ const NewNoticePage = () => {
   };
   const categoryCode = categoryMap[form.category];
 
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [attachments, setAttachments] = useState<File[] | null>(null);
 
   const handleChange = (key: string, value: string) => {
@@ -43,17 +44,14 @@ const NewNoticePage = () => {
         new Blob([JSON.stringify(json)], { type: "application/json" })
       );
 
+      if (thumbnail) {
+        formData.append("thumbnailFile", thumbnail);
+      }
+
       if (attachments && attachments.length > 0) {
         Array.from(attachments).forEach(file => {
           formData.append("attachments", file);
         });
-      }
-      console.log("Attachments:", attachments);
-      for (const key of formData.keys()) {
-        console.log(key);
-      }
-      for (const value of formData.values()) {
-        console.log(value);
       }
 
       await postNotice(formData, categoryCode);
@@ -72,6 +70,8 @@ const NewNoticePage = () => {
       onChange={handleChange}
       attachments={attachments}
       onFileChange={setAttachments}
+      thumbnail={thumbnail}
+      onThumbnailChange={setThumbnail}
       onSubmit={handleSubmit}
       submitText="게시하기"
     />

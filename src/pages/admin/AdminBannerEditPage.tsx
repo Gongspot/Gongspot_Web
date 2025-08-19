@@ -7,6 +7,7 @@ import NoticeEditor from "../../components/admin/notice/NoticeEditor";
 const AdminBannerEditPage = () => {
   const { bannerId } = useParams();
   const navigate = useNavigate();
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [attachments, setAttachments] = useState<File[] | null>(null);
   const [form, setForm] = useState({ title: "", category: "", content: "" });
 
@@ -68,6 +69,8 @@ const AdminBannerEditPage = () => {
       onSubmit={handleSubmit}
       submitText="저장하기"
       isCategoryEditable={false}
+      thumbnail={thumbnail}
+      onThumbnailChange={setThumbnail}
     />
   );
 };
