@@ -49,6 +49,7 @@ import AdminBannerDetailPage from "./pages/admin/AdminBannerDetailPage";
 import BannerDetailPage from "./pages/mypage/BannerDetailPage";
 import AdminNoticeEditPage from "./pages/admin/AdminNoticeEditPage";
 import AdminBannerEditPage from "./pages/admin/AdminBannerEditPage";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -122,7 +123,9 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
