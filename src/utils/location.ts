@@ -1,4 +1,4 @@
-import { loadKakaoScript } from './kakaoMapLoader'; // 새로 만든 로더 임포트
+import { loadKakaoScript } from './kakaoMapLoader'; 
 
 declare global {
   interface Window {
@@ -8,7 +8,6 @@ declare global {
 
 // 주소를 좌표로 변환하는 함수
 export const getCoordsByAddress = async (address: string): Promise<{ lat: number; lng: number }> => {
-  // ▼▼▼ 스크립트가 반드시 로드되도록 먼저 호출합니다. ▼▼▼
   await loadKakaoScript();
 
   return new Promise((resolve, reject) => {
