@@ -66,7 +66,7 @@ console.log("FormData:", formData);
     <div className="flex flex-col h-screen w-full bg-white">
       <div className="flex-1">
         <TopHeader title="프로필 관리" backButton={true} />
-        <Profile profile={profile} onClick={() => setOverlayActive(true)} />
+        <Profile profile={profile} defaultProfile={defaultProfile} onClick={() => setOverlayActive(true)} />
         <Nickname nickname={nickname} setNickname={setNickname} />
         <input
           type="file"
