@@ -89,8 +89,8 @@ const SpaceDetailPage: React.FC = () => {
   if (!space || !reviewData) return <div>데이터를 불러오는 데 실패했습니다.</div>;
 
   return (
-    <div className="max-w-[400px] mx-auto bg-white min-h-screen flex flex-col relative pb-20">
-      {/* 상단 고정 영역: 이미지, 이름, 탭까지만 고정 */}
+    <div className="max-w-[400px] mx-auto bg-white min-h-screen flex flex-col relative">
+      {/* 상단 고정 영역 */}
       <div className="sticky top-0 left-0 z-20 bg-white shadow-sm">
         <TopHeader title="" />
         <img src={space.photoUrl} alt={space.name} className="w-full h-[180px] object-cover" />
@@ -122,12 +122,11 @@ const SpaceDetailPage: React.FC = () => {
       </div>
 
       {/* 스크롤 영역 */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pb-20 flex flex-col">
         {tab === "info" ? (
           <SpaceDetailInfo space={space} />
         ) : (
           <>
-            {/* ▼▼▼ 리뷰 통계를 스크롤 영역으로 이동시켰습니다. ▼▼▼ */}
             <SpaceDetailReviewStats
               placeId={space.placeId}
               averageRating={reviewData.averageRating}
@@ -143,7 +142,6 @@ const SpaceDetailPage: React.FC = () => {
         )}
       </div>
 
-      {/* 리뷰 작성 버튼 */}
       {tab === 'review' && (
         <button 
           className="fixed z-50 bottom-24 right-5 w-[50px] h-[50px] flex items-center justify-center rounded-full bg-white shadow-lg border" 

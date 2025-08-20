@@ -7,10 +7,24 @@ import { useSearchFilters } from "../hooks/useSearchFilters";
 import KakaoMap from "../components/mapsearch/KakaoMap";
 import SearchResultSheet from "../components/mapsearch/SearchResultSheet";
 import { useSearchMode } from "../contexts/SearchModeContext";
-import type { Space } from "../types/space";
 import PlaceSelectSheet from "../components/mapsearch/PlaceSelectSheet";
 import { searchPlaces } from "../apis/placeSearch";
 import type { PlaceItem } from "../apis/placeSearch";
+import { useNavigate } from "react-router-dom";
+
+const CACHE_KEY_RESULTS = "searchResultsCache:v1";
+const CACHE_KEY_SCROLL = "searchResultsScrollTop:v1";
+const CACHE_KEY_RESET_AT = "searchResultsResetAt:v1"; // ★ 리셋 마커
+
+export type SpaceLite = {
+  id: number;
+  name: string;
+  image: string;
+  rating: number;
+  distance: number | null;
+  tags: string[];
+  isLiked: boolean;
+};
 
 const SearchPage = () => {
   useEffect(() => {
@@ -19,6 +33,13 @@ const SearchPage = () => {
       document.body.style.overflow = "auto";
     };
   }, []);
+
+  const navigate = useNavigate();
+
+  // 리셋 마커 제거 헬퍼
+  const clearResetMarker = () => {
+    try { sessionStorage.removeItem(CACHE_KEY_RESET_AT); } catch {}
+  };
 
   const {
     isSearchMode,
@@ -71,7 +92,7 @@ const SearchPage = () => {
   const [searchInput, setSearchInput] = useState(""); 
 
   // 선택된 공간 및 시트 열림 여부
-  const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
+  const [selectedSpace, setSelectedSpace] = useState<SpaceLite | null>(null);
   const [isPlaceSelectSheetOpen, setIsPlaceSelectSheetOpen] = useState(false);
 
   useEffect(() => {
@@ -88,7 +109,15 @@ const SearchPage = () => {
     setSearchInput(""); // 검색어도 초기화
     setIsPlaceSelectSheetOpen(false);     // 장소 선택 시트 닫기
     setSelectedSpace(null);               // 선택된 공간 초기화
-    setPaidFilter(null); // 유료/무료 필터 초기화
+    setPaidFilter(null);                  // 유료/무료 필터 초기화
+
+    // ★★ 중요: 검색 결과/스크롤 캐시 삭제 + 실제 결과 상태도 비우기
+    try {
+      sessionStorage.removeItem(CACHE_KEY_RESULTS);
+      sessionStorage.removeItem(CACHE_KEY_SCROLL);
+      sessionStorage.setItem(CACHE_KEY_RESET_AT, String(Date.now())); // ★ 리셋 시각 기록
+    } catch {}
+    setPlaces([]);                        // 리스트 상태도 비워서 UI 즉시 리셋
   };
 
   const handleRecentClick = (keyword: string) => {
@@ -104,6 +133,7 @@ const SearchPage = () => {
        page: 0,
      });
      setPlaces(result);                 // 결과 반영
+     clearResetMarker(); 
      setIsSearchResultSheetOpen(true); // 시트 열기
    })();
  };
@@ -131,6 +161,19 @@ const SearchPage = () => {
   const mapRef = useRef<{ recenterToCurrentLocation: () => void }>(null);
 
   const [places, setPlaces] = useState<PlaceItem[]>([]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      // PlaceSelectSheet가 열려있는 상태에서 뒤로가기를 누르면,
+      // PlaceSelectSheet 닫고 SearchResultSheet를 연다.
+      if (isPlaceSelectSheetOpen) {
+        setIsPlaceSelectSheetOpen(false);
+        setIsSearchResultSheetOpen(true);
+      }
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [isPlaceSelectSheetOpen, setIsPlaceSelectSheetOpen, setIsSearchResultSheetOpen]);
 
 
   return (
@@ -193,9 +236,25 @@ const SearchPage = () => {
             </button>
 
             <button
-              onClick={() => {
+              onClick={async () => {
                 setIsSheetOpen(false); // 필터 바텀시트 닫기
-                setIsSearchResultSheetOpen(true); // 검색 결과 바텀시트 열기
+                try {
+                  const result = await searchPlaces({
+                    keyword: searchInput.trim() || "",
+                    purpose:    selectedFilters["이용 목적"]?.[0],
+                    type:       selectedFilters["공간 종류"]?.[0],
+                    mood:       selectedFilters["분위기"]?.[0],
+                    facilities: selectedFilters["부가시설"]?.[0],
+                    location:   selectedFilters["지역"]?.[0],
+                    page: 0,
+                  });
+                  setPlaces(result);         // 결과 반영
+                  clearResetMarker();        // ★ 리셋 마커 제거(중요)
+                  setIsSearchResultSheetOpen(true); // 시트 열기
+                } catch (e) {
+                  console.error("필터 검색 실패:", e);
+                  // 실패 시 시트를 열지 않는 편이 안전합니다.
+                }
               }}
               className="flex-1 py-2 text-sm text-white bg-[#4cb1f1] rounded-lg"
             >
@@ -247,10 +306,29 @@ const SearchPage = () => {
           space={selectedSpace}
           isOpen={isPlaceSelectSheetOpen}
           setIsOpen={setIsPlaceSelectSheetOpen}
-          onDetail={() => alert(`${selectedSpace.name} 상세 보기`)}
+          onDetail={() => {
+            if (!selectedSpace) return;
+
+            // 상세로 이동하기 직전, 검색결과 시트를 보이는 상태로 전환
+            // → 상세에서 '뒤로가기' 시 곧바로 검색결과 시트가 복원됨
+            setIsPlaceSelectSheetOpen(false);
+            setIsSearchResultSheetOpen(true);
+
+            // 상세 페이지로 이동
+            navigate(`/space/${selectedSpace.id}`);
+          }}
           onLike={() => alert(`${selectedSpace.name} 좋아요 토글`)}
+          onRequestClose={() => {
+            // 히스토리에 쌓은 한 단계를 되돌린다 → popstate에서 시트 상태 복구
+            try { window.history.back(); } catch {
+              // 백이 불가능한 환경이면 안전하게 수동 복구
+              setIsPlaceSelectSheetOpen(false);
+              setIsSearchResultSheetOpen(true);
+            }
+          }}
         />
       )}
+
     </div>
   );
 };

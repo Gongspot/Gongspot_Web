@@ -20,12 +20,34 @@ const AdminNoticePage = () => {
 
   const selectedApiValue = NOTICE_TABS.find(t => t.key === tab)?.apiValue || "ALL";
 
-  // React Query를 사용하여 탭에 따라 공지사항 데이터를 가져옵니다.
   const { data: notices, isLoading, isError } = useQuery({
     queryKey: ['adminNotices', selectedApiValue],
     queryFn: () => getNoticeAdmin(selectedApiValue),
     select: (data) => data.result.notificationBannerList,
   });
+
+  // 수정 버튼 클릭 핸들러
+  const handleEditClick = (e: React.MouseEvent, type: 'B' | 'N', id: number | null) => {
+    e.stopPropagation(); // 카드 전체 클릭 이벤트 전파 방지
+    if (!id) return;
+
+    if (type === 'B') {
+      navigate(`/admin/banners/edit/${id}`);
+    } else {
+      navigate(`/admin/notices/edit/${id}`);
+    }
+  };
+
+  // 카드 클릭 핸들러
+  const handleCardClick = (type: 'B' | 'N', id: number | null) => {
+    if (!id) return;
+
+    if (type === 'B') {
+      navigate(`/admin/banners/${id}`);
+    } else {
+      navigate(`/admin/notices/${id}`);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFBFC] pb-32">
@@ -66,19 +88,22 @@ const AdminNoticePage = () => {
             <div 
               key={`${n.type}-${n.notificationId || n.bannerId}`} 
               className="bg-white rounded-xl px-5 py-4 shadow-sm border border-[#E8E8E8] relative cursor-pointer"
-              onClick={() => n.type === 'N' && navigate(`/admin/notices/${n.notificationId}`)}
+              onClick={() => handleCardClick(n.type, n.type === 'B' ? n.bannerId : n.notificationId)}
             >
-              <div className="flex gap-2 mb-1">
+              <div className="flex gap-2 mb-2">
                 <span className="text-xs px-2 py-[2px] rounded-full font-bold border text-[#8F9098] border-[#8F9098]">
                   {n.type === "B" ? "배너" : "일반"}
                 </span>
-                <span className="flex-1 text-xs text-gray-400" />
-                {/* 수정 버튼  일단 보류  <button className="text-xs text-[#A3A3A3] px-2">수정</button>*/}
-                
               </div>
-              <div className="font-bold text-base mb-1">{n.title}</div>
-              <div className="flex items-center text-xs text-gray-400 gap-3">
+              <div className="font-bold text-base mb-2">{n.title}</div>
+              <div className="flex items-center justify-between text-xs text-gray-400">
                 <span>{n.date}</span>
+                <button 
+                  className="text-xs text-[#A3A3A3] px-2 hover:text-black"
+                  onClick={(e) => handleEditClick(e, n.type, n.type === 'B' ? n.bannerId : n.notificationId)}
+                >
+                  수정
+                </button>
               </div>
             </div>
           ))}

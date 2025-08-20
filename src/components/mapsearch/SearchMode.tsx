@@ -79,6 +79,8 @@ const SearchMode = ({
         console.log("🔍 검색 결과:", result); // 추후에 상태로 set 가능
         setPlaceResults(result);      // 검색 결과 상태 전달
 
+        try { sessionStorage.removeItem("searchResultsResetAt:v1"); } catch {}
+
         // 검색 직후 재조회하되, 새 키워드만 반영하고 기존 화면 항목만 유지(백필 차단)
         const server = await getRecentSearches();
         setRecentSearches((prev) => {

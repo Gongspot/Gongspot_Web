@@ -1,30 +1,31 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { SpaceDetail } from "../../types/space";
-import SpaceDetailMap from "./SpaceDetailMap";
+import LocationMap from "./LocationMap";
 import OperatingHours from "./OperatingHours";
 import { useLatestCongestions } from "../../hooks/useLatestCongestions";
 import { FaUserCircle } from "react-icons/fa";
-import { loadKakaoScript } from "../../utils/kakaoMapLoader"; 
+import { getCoordsByAddress } from "../../utils/location"; // 주소 변환 유틸리티
 
 const SpaceDetailInfo: React.FC<{ space: SpaceDetail }> = ({ space }) => {
   const navigate = useNavigate();
   const { data: latestCongestions, isLoading: isCongestionLoading } = useLatestCongestions(String(space.placeId));
 
-  const [isMapScriptLoaded, setIsMapScriptLoaded] = useState(false);
+  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
-    const initializeMap = async () => {
-      try {
-        await loadKakaoScript(); // 스크립트 로딩이 끝날 때까지 기다립니다.
-        setIsMapScriptLoaded(true); // 로딩이 완료되면 상태를 true로 변경합니다.
-      } catch (error) {
-        console.error("지도 스크립트 로딩에 실패했습니다:", error);
+    const fetchCoordinates = async () => {
+      if (space.locationInfo) {
+        try {
+          const coords = await getCoordsByAddress(space.locationInfo);
+          setCoordinates(coords);
+        } catch (error) {
+          console.error("주소 좌표 변환 실패:", error);
+        }
       }
     };
-
-    initializeMap();
-  }, []); // 이 컴포넌트가 처음 렌더링될 때 한 번만 실행합니다.
+    fetchCoordinates();
+  }, [space.locationInfo]);
 
   const handleCopyAddress = async () => {
     try {
@@ -33,6 +34,29 @@ const SpaceDetailInfo: React.FC<{ space: SpaceDetail }> = ({ space }) => {
     } catch (err) {
       alert("주소 복사에 실패했습니다.");
     }
+  };
+
+  const handleDirections = () => {
+    if (coordinates) {
+      const url = `https://map.kakao.com/link/to/${space.name},${coordinates.lat},${coordinates.lng}`;
+      window.open(url, '_blank');
+    } else {
+      alert("위치 좌표를 가져올 수 없어 길찾기를 실행할 수 없습니다.");
+    }
+  };
+
+  // 주소 표시를 위한 로직
+  const formatAddress = (address: string) => {
+    let formatted = address;
+    if (formatted.startsWith("대한민국 ")) {
+      formatted = formatted.substring(5); // "대한민국 " (5글자 + 공백) 제거
+    }
+    if (formatted.length > 20) {  // 20글자 이상일 경우
+      // 20글자까지만 표시하고 나머지는 '...'으로 대체
+      formatted = formatted.replace(/(\s+)/g, ' ').trim();
+      return `${formatted.substring(0, 20)}...`;
+    }
+    return formatted;
   };
 
   return (
@@ -56,22 +80,24 @@ const SpaceDetailInfo: React.FC<{ space: SpaceDetail }> = ({ space }) => {
       {/* 위치정보 */}
       <div className="mt-10">
         <div className="font-semibold mb-2">위치정보</div>
-
-        {isMapScriptLoaded ? (
-          <SpaceDetailMap address={space.locationInfo} />
-        ) : (
-          <div className="w-full h-[200px] flex items-center justify-center bg-gray-100">
-            지도 로딩 중...
-          </div>
-        )}
-        
+        <LocationMap address={space.locationInfo} />
         <div className="text-sm flex items-center gap-2 mt-2">
-          <span>{space.locationInfo}</span>
+          <span className="flex-1 truncate">
+            {/* 포맷팅 함수를 사용하여 주소 표시 */}
+            {formatAddress(space.locationInfo)}
+          </span>
           <button
             onClick={handleCopyAddress}
-            className="text-[10px] font-bold bg-gray-100 text-gray-500 rounded-lg ml-1 w-10 transition"
+            className="text-[10px] font-bold bg-gray-100 text-gray-500 rounded-lg w-10 flex-shrink-0 transition"
           >
             복사
+          </button>
+          <button
+            onClick={handleDirections}
+            disabled={!coordinates}
+            className="text-[10px] font-bold bg-yellow-400 text-black rounded-lg w-10 flex-shrink-0 transition disabled:bg-gray-300 disabled:text-gray-500"
+          >
+            길찾기
           </button>
         </div>
       </div>
