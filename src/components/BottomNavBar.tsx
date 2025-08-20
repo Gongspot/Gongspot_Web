@@ -38,9 +38,9 @@ const BottomNavBar = () => {
             to={item.path}
             className={`flex flex-col items-center justify-center gap-1 text-xs ${
               location.pathname === item.path
-                ? "text-blue-500"
+                ? "text-[#4CB1F1] font-semibold"
                 : "text-gray-500"
-            } hover:text-blue-500`}
+            } hover:text-[#4CB1F1]`}
           >
             <item.icon className="h-6 w-6" />
             <span>{item.label}</span>
