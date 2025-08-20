@@ -20,11 +20,13 @@ const HomePage: React.FC = () => {
     
     const accessToken = urlParams.get("accessToken");
     const refreshToken = urlParams.get("refreshToken");
+    const isAdminParam = urlParams.get("isAdmin");
+    const isAdminBoolean = isAdminParam === "true";
 
     if (accessToken && refreshToken) {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-
+      localStorage.setItem("isAdmin", JSON.stringify(isAdminBoolean));
       // 쿼리 파라미터 삭제
       const cleanUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);

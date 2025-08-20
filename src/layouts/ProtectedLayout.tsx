@@ -3,7 +3,8 @@ import { useAuth } from "../contexts/AuthContext";
 
 const ProtectedLayout = () => {
     const { isAdmin } = useAuth();
-
+    console.log("ProtectedLayout isAdmin:", isAdmin);
+    
     if (!isAdmin) {
         return <Navigate to="/home" replace />;
     }

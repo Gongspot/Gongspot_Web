@@ -1,4 +1,4 @@
-import { createContext, type PropsWithChildren, useContext, useState } from "react";
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from "react";
 
 interface AuthContextType {
     isAdmin: boolean;
@@ -12,7 +12,14 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+        const savedIsAdmin = localStorage.getItem("isAdmin");
+        return savedIsAdmin ? JSON.parse(savedIsAdmin) : false;
+    });
+
+    useEffect(() => {
+        localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
+    }, [isAdmin]);
 
     return (
         <AuthContext.Provider

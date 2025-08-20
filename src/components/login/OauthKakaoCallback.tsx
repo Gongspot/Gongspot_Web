@@ -34,10 +34,12 @@ const OauthKakaoCallback = () => {
             redirectUrl.searchParams.append("state", state);
             redirectUrl.searchParams.append("accessToken", accessToken);
             redirectUrl.searchParams.append("refreshToken", refreshToken);
+            redirectUrl.searchParams.append("isAdmin", isAdmin ? "true" : "false");
             window.location.href = redirectUrl.toString();
           } else {
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
             navigate("/home");
           }
         } else {
