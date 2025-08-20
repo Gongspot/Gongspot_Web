@@ -161,6 +161,16 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
     tags: p.hashtag ? [p.hashtag] : [],
     isLiked: !!p.isLike,
   });
+
+  const toSpaceLite = (p: PlaceItem) => ({
+    id: p.placeId,
+    name: p.name,
+    image: p.imageUrl,
+    rating: p.rating ?? 0,
+    distance: null as number | null, // 아직 계산 전이므로 null
+    tags: p.hashtag ? [p.hashtag] : [],
+    isLiked: !!p.isLike,
+  });
   
   const startYRef = useRef(0);
   const startHeightRef = useRef(0);
@@ -225,8 +235,21 @@ const SearchResultSheet: React.FC<SearchResultSheetProps> = ({
                     location={space.location} 
                     tags={space.tags}
                     isLiked={space.isLiked}
-                    onDetail={() => goDetail(space.id)}
-                    onLike={() => handleLike(space.id)}
+                    onDetail={() => goDetail(space.id)}           // 상세보기 버튼
+                    onLike={() => handleLike(space.id)}           // 하트 버튼
+                    onCardClick={() => {
+                      const lite = toSpaceLite(p);
+                      setSelectedSpace(lite as unknown as Space);
+
+                      // 1) SearchResultSheet 닫기
+                      setIsOpen(false);
+
+                      // 2) PlaceSelectSheet 열기
+                      setIsPlaceSelectSheetOpen(true);
+
+                      // 3) 뒤로가기로 복귀 가능하도록 히스토리에 한 단계 쌓기
+                      try { window.history.pushState({ placeSheet: true }, "", ""); } catch {}
+                    }}
                   />
                 );})}
           </div>
