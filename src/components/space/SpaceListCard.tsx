@@ -13,46 +13,29 @@ interface Props {
   isLiked: boolean;
   onDetail: () => void;
   onLike: () => void;
-  enableWholeCardClick?: boolean;
+  onCardClick?: () => void; // 카드 전체 클릭 핸들러
   buttonText?: string;
 }
 
 const isValidAddressFormat = (address: string | null | undefined): boolean => {
   if (!address) return false;
-  const keywords = [
-    "특별시",
-    "광역시",
-    "도",
-    "시",
-    "군",
-    "구",
-    "로",
-    "길",
-    "읍",
-    "면",
-    "동",
-  ];
+  const keywords = ["특별시", "광역시", "도", "시", "군", "구", "로", "길", "읍", "면", "동"];
   return (
     address.startsWith("대한민국") ||
     keywords.some((keyword) => address.includes(keyword))
   );
 };
 
-const SpaceListCard: React.FC<Props> = ({
-  name,
-  image,
-  rating,
-  distance: distanceProp,
-  location,
-  isLiked,
-  onDetail,
-  onLike,
-  buttonText,
-}) => {
-  const myLocation = useCurrentLocation();
+// 거리 계산 로직을 분리한 Custom Hook
+const useDistance = (
+  distanceProp: number | null | undefined,
+  location: string | null | undefined,
+  myLocation: ReturnType<typeof useCurrentLocation>
+) => {
   const [distanceText, setDistanceText] = useState("계산 중...");
 
   useEffect(() => {
+    // name은 거리 계산과 직접 관련이 없으므로 의존성 배열에서 제거했습니다.
     if (typeof distanceProp === "number") {
       setDistanceText(`${distanceProp.toFixed(1)}km`);
       return;
@@ -77,18 +60,29 @@ const SpaceListCard: React.FC<Props> = ({
     } else if (myLocation.loaded) {
       setDistanceText("측정불가");
     }
-  }, [distanceProp, location, myLocation.coordinates, myLocation.loaded, name]);
+  }, [distanceProp, location, myLocation.coordinates, myLocation.loaded]);
+
+  return distanceText;
+};
+
+const SpaceListCard: React.FC<Props> = ({
+  name, image, rating, distance: distanceProp, location,
+  isLiked, onDetail, onLike, onCardClick, buttonText,
+}) => {
+  const myLocation = useCurrentLocation();
+  const distanceText = useDistance(distanceProp, location, myLocation);
 
   const formatLocation = (loc: string | null | undefined) => {
     if (!loc) return '';
     if (loc.startsWith("대한민국 ")) {
-      return loc.substring(5); 
+      return loc.substring(5);
     }
     return loc;
   };
 
   return (
-    <div className="border-b border-[#CCCCCC]">
+    // onCardClick 핸들러만 추가하고 나머지 디자인은 그대로 유지합니다.
+    <div className="border-b border-[#CCCCCC]" onClick={onCardClick}>
       <div className="flex items-center relative pr-[30px] pl-[20px] py-5">
         <div className="relative w-[180px] h-[130px] flex-shrink-0 mr-4">
           <img
