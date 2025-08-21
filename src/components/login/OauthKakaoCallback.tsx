@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { axiosInstance } from "../../apis/axios";
 import { useAuth } from "../../contexts/AuthContext";
+import Symbol from "../../assets/symbol.svg?react";
 
 const OauthKakaoCallback = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const OauthKakaoCallback = () => {
           setIsAdmin(isAdmin);
 
           if (state === "local") {
-            const redirectUrl = new URL("http://localhost:5182/home");
+            const redirectUrl = new URL("http://localhost:5182/signup");
             redirectUrl.searchParams.append("state", state);
             redirectUrl.searchParams.append("accessToken", accessToken);
             redirectUrl.searchParams.append("refreshToken", refreshToken);
@@ -45,12 +46,12 @@ const OauthKakaoCallback = () => {
           }
           //로컬 테스트용
           navigate("/signup");
-          
+          /* 
           if (isNewUser) {
             navigate("/signup");
           } else {
             navigate("/home");
-          }
+          } */
         } else {
           alert(data.message || "로그인에 실패했습니다.");
           navigate("/");
@@ -75,8 +76,11 @@ const OauthKakaoCallback = () => {
   }, [navigate, setIsAdmin]);
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <span>로그인 처리 중...</span>
+    <div className="flex flex-col justify-center items-center h-screen">
+      <div className="animate-scale-bounce">
+        <Symbol className="text-[#4CB1F1]" />
+      </div>
+      <span className="mt-[1rem] text-[3rem] text-[#8F9098]">로그인 중이에요!</span>
     </div>
   );
 };
