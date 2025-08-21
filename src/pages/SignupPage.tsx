@@ -1,5 +1,5 @@
-import Nickname from "../components/signup/Nickname";
 import BasicInfo from "../components/signup/BasicInfo";
+import Nickname from "../components/signup/Nickname";
 import { useEffect, useState } from "react";
 
 const SignupPage = () => {
