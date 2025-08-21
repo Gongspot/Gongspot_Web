@@ -187,6 +187,37 @@ const SearchPage = () => {
           ref={mapRef}
           currentLocation={currentLocation}
           resetToInitialState={resetToInitialState}
+          /* 지도 마커 표시용 데이터와 상태 */
+          places={places}
+          selectedPlaceId={selectedSpace?.id ?? null}
+          onMarkerClick={(place /* PlaceItem */) => {
+            // 카드 클릭과 동일한 동작: PlaceSelectSheet 열기 + SearchResultSheet 닫기 + 히스토리 push
+            const lite = {
+              id: place.placeId,
+              name: place.name,
+              image: place.imageUrl,
+              rating: place.rating ?? 0,
+              distance: null,
+              tags: place.hashtag ? [place.hashtag] : [],
+              isLiked: !!place.isLike,
+            };
+            setSelectedSpace(lite);
+            setIsSearchResultSheetOpen(false);
+            setIsPlaceSelectSheetOpen(true);
+            try { window.history.pushState({ placeSheet: true }, "", ""); } catch {}
+          }}
+
+          // 배경 탭 동작: 시트 열렸으면 시트 닫기, 아니면 기존 reset
+          onQuickTap={() => {
+            if (isPlaceSelectSheetOpen) {
+              try { window.history.back(); } catch {
+                setIsPlaceSelectSheetOpen(false);
+                setIsSearchResultSheetOpen(true);
+              }
+            } else {
+              resetToInitialState();
+            }
+          }}
         />
 
         {/* 검색창은 항상 렌더링 */}

@@ -11,51 +11,31 @@ interface Props {
   location?: string | null;
   tags: string[];
   isLiked: boolean;
-  onDetail: () => void;        // 상세보기 버튼 전용
-  onLike: () => void;          // 하트 버튼 전용
-  onCardClick?: () => void;    // 카드의 나머지 영역 클릭 시 호출
+  onDetail: () => void;
+  onLike: () => void;
+  onCardClick?: () => void; // 카드 전체 클릭 핸들러
   buttonText?: string;
 }
 
-
 const isValidAddressFormat = (address: string | null | undefined): boolean => {
   if (!address) return false;
-  const keywords = [
-    "특별시",
-    "광역시",
-    "도",
-    "시",
-    "군",
-    "구",
-    "로",
-    "길",
-    "읍",
-    "면",
-    "동",
-  ];
+  const keywords = ["특별시", "광역시", "도", "시", "군", "구", "로", "길", "읍", "면", "동"];
   return (
     address.startsWith("대한민국") ||
     keywords.some((keyword) => address.includes(keyword))
   );
 };
 
-const SpaceListCard: React.FC<Props> = ({
-  name,
-  image,
-  rating,
-  distance: distanceProp,
-  location,
-  tags,
-  isLiked,
-  onDetail,
-  onLike,
-  onCardClick,
-  buttonText,
-}) => {
-  const myLocation = useCurrentLocation();
+// 거리 계산 로직을 분리한 Custom Hook
+const useDistance = (
+  distanceProp: number | null | undefined,
+  location: string | null | undefined,
+  myLocation: ReturnType<typeof useCurrentLocation>
+) => {
   const [distanceText, setDistanceText] = useState("계산 중...");
 
   useEffect(() => {
+    // name은 거리 계산과 직접 관련이 없으므로 의존성 배열에서 제거했습니다.
     if (typeof distanceProp === "number") {
       setDistanceText(`${distanceProp.toFixed(1)}km`);
       return;
@@ -80,23 +60,30 @@ const SpaceListCard: React.FC<Props> = ({
     } else if (myLocation.loaded) {
       setDistanceText("측정불가");
     }
-  }, [distanceProp, location, myLocation.coordinates, myLocation.loaded, name]);
+  }, [distanceProp, location, myLocation.coordinates, myLocation.loaded]);
+
+  return distanceText;
+};
+
+const SpaceListCard: React.FC<Props> = ({
+  name, image, rating, distance: distanceProp, location,
+  isLiked, onDetail, onLike, onCardClick, buttonText,
+}) => {
+  const myLocation = useCurrentLocation();
+  const distanceText = useDistance(distanceProp, location, myLocation);
+
+  const formatLocation = (loc: string | null | undefined) => {
+    if (!loc) return '';
+    if (loc.startsWith("대한민국 ")) {
+      return loc.substring(5);
+    }
+    return loc;
+  };
 
   return (
-    <div className="border-b border-[#CCCCCC]">
-      <div
-        className="flex items-center relative pr-[30px] pl-[20px] py-5"
-        onClick={onCardClick} // ★ 카드의 여백/이미지/텍스트 클릭 시
-        role={onCardClick ? "button" : undefined}
-        tabIndex={onCardClick ? 0 : undefined}
-        onKeyDown={(e) => {
-          if (!onCardClick) return;
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            onCardClick();
-          }
-        }}
-      >
+    // onCardClick 핸들러만 추가하고 나머지 디자인은 그대로 유지합니다.
+    <div className="border-b border-[#CCCCCC]" onClick={onCardClick}>
+      <div className="flex items-center relative pr-[30px] pl-[20px] py-5">
         <div className="relative w-[180px] h-[130px] flex-shrink-0 mr-4">
           <img
             src={image}
@@ -151,7 +138,7 @@ const SpaceListCard: React.FC<Props> = ({
             <span className="text-[#000000] text-[13px]">{distanceText}</span>
           </div>
           <div className="text-[13px] text-gray-500 truncate mb-2">
-            {tags.join(" ")}
+            {formatLocation(location)}
           </div>
           <button
             onClick={(e) => {
