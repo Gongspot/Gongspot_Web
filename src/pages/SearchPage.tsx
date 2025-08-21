@@ -14,14 +14,18 @@ import { useNavigate } from "react-router-dom";
 
 const CACHE_KEY_RESULTS = "searchResultsCache:v1";
 const CACHE_KEY_SCROLL = "searchResultsScrollTop:v1";
-const CACHE_KEY_RESET_AT = "searchResultsResetAt:v1"; // ★ 리셋 마커
+const CACHE_KEY_RESET_AT = "searchResultsResetAt:v1"; // 리셋 마커
+const LAST_GEO_KEY = "lastGeo:v1";   
+const PLACES_CACHE_KEY = CACHE_KEY_RESULTS;        // "searchResultsCache:v1" 재사용
+
+type ResultsCacheShape = { savedAt: number; data: PlaceItem[] };
 
 export type SpaceLite = {
   id: number;
   name: string;
   image: string;
   rating: number;
-  distance: number | null;
+  distance: number;
   tags: string[];
   isLiked: boolean;
 };
@@ -133,34 +137,60 @@ const SearchPage = () => {
        page: 0,
      });
      setPlaces(result);                 // 결과 반영
+     savePlacesCache(result);
      clearResetMarker(); 
      setIsSearchResultSheetOpen(true); // 시트 열기
    })();
  };
 
-  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
+  // 최근 위치를 초기값으로 사용 (새로고침 직후에도 곧바로 센터 맞춤)
+  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(() => {
+    try {
+      const raw = sessionStorage.getItem(LAST_GEO_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (typeof parsed?.lat === "number" && typeof parsed?.lng === "number") {
+          return parsed;
+        }
+      }
+    } catch {}
+    return null;
+  });
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCurrentLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("현위치 정보를 가져오지 못했습니다:", error);
-        }
-      );
-    } else {
+    if (!navigator.geolocation) {
       console.error("이 브라우저는 Geolocation을 지원하지 않습니다.");
+      return;
     }
+    let cancelled = false;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        if (cancelled) return;
+        const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
+        setCurrentLocation(loc);
+        try { sessionStorage.setItem(LAST_GEO_KEY, JSON.stringify(loc)); } catch {}
+      },
+      (error) => {
+        console.error("현위치 정보를 가져오지 못했습니다:", error);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+    return () => { cancelled = true; };
   }, []);
   
   const mapRef = useRef<{ recenterToCurrentLocation: () => void }>(null);
 
   const [places, setPlaces] = useState<PlaceItem[]>([]);
+
+  // 최초 1회만 현재 위치로 센터 이동
+  const didCenterRef = useRef(false);
+  useEffect(() => {
+    if (!didCenterRef.current && currentLocation) {
+      // KakaoMap이 렌더/마운트된 뒤에 호출되도록 살짝 늦춥니다.
+      setTimeout(() => mapRef.current?.recenterToCurrentLocation(), 0);
+      didCenterRef.current = true;
+    }
+  }, [currentLocation]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -175,6 +205,44 @@ const SearchPage = () => {
     return () => window.removeEventListener("popstate", onPopState);
   }, [isPlaceSelectSheetOpen, setIsPlaceSelectSheetOpen, setIsSearchResultSheetOpen]);
 
+  const savePlacesCache = (list: PlaceItem[]) => {
+    try {
+      const payload: ResultsCacheShape = { savedAt: Date.now(), data: list };
+      sessionStorage.setItem(PLACES_CACHE_KEY, JSON.stringify(payload));
+    } catch {}
+  };
+
+  const loadPlacesCache = (): PlaceItem[] => {
+    try {
+      const raw = sessionStorage.getItem(PLACES_CACHE_KEY);
+      if (!raw) return [];
+      const obj = JSON.parse(raw);
+      // 호환: {data:[]} 또는 {list:[]} 또는 [] 셋 다 허용
+      if (Array.isArray(obj)) return obj;
+      if (Array.isArray(obj?.data)) return obj.data;
+      if (Array.isArray(obj?.list)) return obj.list;
+      return [];
+    } catch {
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    if (places.length) savePlacesCache(places);
+  }, [places]);
+
+  useEffect(() => {
+    // 사용자가 지도 탭으로 리셋했다면 복원하지 않음
+    let resetAt = 0;
+    try { resetAt = Number(sessionStorage.getItem(CACHE_KEY_RESET_AT) || "0"); } catch {}
+
+    const cached = loadPlacesCache();
+    if (cached.length > 0) {
+      setPlaces(cached);                    // 지도 마커에 필요한 부모 places 복원
+      setIsSearchResultSheetOpen(true);     // 결과 시트도 같이 열어 UX 유지
+    }
+  }, []);
+
 
   return (
     <div className="w-full h-screen bg-gray-200">
@@ -184,6 +252,7 @@ const SearchPage = () => {
       {/* 지도 + 검색창 */}
       <div className="absolute top-10 left-0 right-0 bottom-0 bg-gray-200">
         <KakaoMap
+          key={`${currentLocation?.lat ?? "na"}:${currentLocation?.lng ?? "na"}`}
           ref={mapRef}
           currentLocation={currentLocation}
           resetToInitialState={resetToInitialState}
@@ -197,7 +266,7 @@ const SearchPage = () => {
               name: place.name,
               image: place.imageUrl,
               rating: place.rating ?? 0,
-              distance: null,
+              distance: 0,
               tags: place.hashtag ? [place.hashtag] : [],
               isLiked: !!place.isLike,
             };
@@ -280,7 +349,8 @@ const SearchPage = () => {
                     page: 0,
                   });
                   setPlaces(result);         // 결과 반영
-                  clearResetMarker();        // ★ 리셋 마커 제거(중요)
+                  savePlacesCache(result);
+                  clearResetMarker();        // 리셋 마커 제거(중요)
                   setIsSearchResultSheetOpen(true); // 시트 열기
                 } catch (e) {
                   console.error("필터 검색 실패:", e);
