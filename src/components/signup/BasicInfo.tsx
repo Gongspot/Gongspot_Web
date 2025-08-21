@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BasicInfoSection from "./BasicInfoSection";
 import NextButton from "../NextButton";
 import { reducer, MAX_SELECT, PLACE_OPTIONS, PURPOSE_OPTIONS, REGION_OPTIONS } from "../../constants/basicInfoConfig";
+import { postNickname, postPrefer } from "../../apis/home";
 
 interface BasicInfoProps {
   nickname: string;
@@ -17,15 +18,28 @@ const BasicInfo = ({ nickname }: BasicInfoProps) => {
     regions: [],
   });
 
+  const removeSpacesAndSpecialChars = (str: string) => {
+    if (str === "성동·광진권") {
+      return "성동_광진권";
+    }
+    return str.replace(/[^가-힣]/g, "");
+  };
+
   const handleClick = async () => {
     try {
-      const requestBody = {
-        nickname,
-        places: state.places,
-        purposes: state.purposes,
-        regions: state.regions,
+      const nicknameRequestBody = {
+        nickname: nickname,
       };
-      console.log("Request Body:", requestBody);
+      await postNickname(nicknameRequestBody);
+
+      const preferRequestBody = {
+        preferPlace: state.places.map(removeSpacesAndSpecialChars),
+        purpose: state.purposes.map(removeSpacesAndSpecialChars),
+        location: state.regions.map(removeSpacesAndSpecialChars),
+      };
+      await postPrefer(preferRequestBody);
+
+      navigate("/home");
     } catch (error) {
       alert("오류가 발생했습니다.");
       console.error(error);
