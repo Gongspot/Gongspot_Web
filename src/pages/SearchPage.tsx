@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import TopHeader from "../components/TopHeader";
 import SearchControls from "../components/mapsearch/SearchControls";
 import BottomSheet from "../components/mapsearch/BottomSheet";
@@ -17,6 +17,9 @@ const CACHE_KEY_SCROLL = "searchResultsScrollTop:v1";
 const CACHE_KEY_RESET_AT = "searchResultsResetAt:v1"; // 리셋 마커
 const LAST_GEO_KEY = "lastGeo:v1";   
 const PLACES_CACHE_KEY = CACHE_KEY_RESULTS;        // "searchResultsCache:v1" 재사용
+const FREE_TYPES = ["도서관", "공공학습공간"];
+const PAID_TYPES = ["카페", "민간학습공간", "교내학습공간"];
+
 
 type ResultsCacheShape = { savedAt: number; data: PlaceItem[] };
 
@@ -37,6 +40,18 @@ const SearchPage = () => {
       document.body.style.overflow = "auto";
     };
   }, []);
+
+  const dedupeByPlaceId = (list: PlaceItem[]) => {
+    const seen = new Set<number>();
+    const out: PlaceItem[] = [];
+    for (const p of list) {
+      if (!seen.has(p.placeId)) {
+        seen.add(p.placeId);
+        out.push(p);
+      }
+    }
+    return out;
+  };
 
   const navigate = useNavigate();
 
@@ -125,23 +140,9 @@ const SearchPage = () => {
   };
 
   const handleRecentClick = (keyword: string) => {
-    setSearchInput(keyword); // 입력창 반영
-    void (async () => {
-     const result = await searchPlaces({
-       keyword,
-       purpose: selectedFilters["이용 목적"]?.[0],
-       type: selectedFilters["공간 종류"]?.[0],
-       mood: selectedFilters["분위기"]?.[0],
-       facilities: selectedFilters["부가시설"]?.[0],
-       location: selectedFilters["지역"]?.[0],
-       page: 0,
-     });
-     setPlaces(result);                 // 결과 반영
-     savePlacesCache(result);
-     clearResetMarker(); 
-     setIsSearchResultSheetOpen(true); // 시트 열기
-   })();
- };
+    setSearchInput(keyword);
+    void runSearch(keyword);
+  };
 
   // 최근 위치를 초기값으로 사용 (새로고침 직후에도 곧바로 센터 맞춤)
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(() => {
@@ -243,6 +244,107 @@ const SearchPage = () => {
     }
   }, []);
 
+  // 무료 판정(타입 정규화 + 이름/태그 보조 판정)
+  const normalize = (v?: string) =>
+    String(v ?? "").replace(/\s+/g, "").toLowerCase();
+
+  const FREE_KEYS = ["도서관", "공공학습공간", "library", "publicstudyspace"].map(normalize);
+
+  const getPlaceTypeRaw = (p: PlaceItem): string =>
+    (p as any).type ??
+    (p as any).spaceType ??
+    (p as any).category ??
+    (p as any).placeType ??
+    "";
+
+  const isFreePlace = (p: PlaceItem) => {
+    const t = normalize(getPlaceTypeRaw(p));
+    if (t) return FREE_KEYS.includes(t);
+
+    // 타입이 없으면 이름/태그로 보조 판정
+    const nameBlob = normalize((p as any).name);
+    const tagBlob = normalize(
+      ((p as any).hashtag ?? "") + " " + ((p as any).tags ?? []).join(" ")
+    );
+    return FREE_KEYS.some((k) => nameBlob.includes(k) || tagBlob.includes(k));
+  };
+
+  // paidFilter(무료/유료/null)에 따라 화면에 보일 목록
+  const visiblePlaces = useMemo(() => {
+    if (!paidFilter) return places;
+    return places.filter((p) => (paidFilter === "무료" ? isFreePlace(p) : !isFreePlace(p)));
+  }, [places, paidFilter]);
+
+  useEffect(() => {
+    if (selectedSpace && !visiblePlaces.some(p => p.placeId === selectedSpace.id)) {
+      setSelectedSpace(null);
+      setIsPlaceSelectSheetOpen(false);
+    }
+  }, [visiblePlaces, selectedSpace]);
+
+  // 마지막으로 사용한 검색어와 필터를 기억 → paidFilter가 바뀔 때 재검색
+  const lastKeywordRef = useRef<string>("");
+  const hasSearchedRef = useRef(false);
+
+  // 현재 selectedFilters에서 서버로 보낼 기본 파라미터 구성
+  const buildBaseParams = (keyword: string) => ({
+    keyword,
+    purpose:    selectedFilters["이용 목적"]?.[0],
+    type:       undefined as string | undefined, // 여긴 비워두고 아래에서 타입을 넣어줌
+    mood:       selectedFilters["분위기"]?.[0],
+    facilities: selectedFilters["부가시설"]?.[0],
+    location:   selectedFilters["지역"]?.[0],
+    page: 0,
+  });
+
+  // 사용자가 "공간 종류" 탭에서 이미 특정 타입을 골랐다면 유료/무료 타입들과 교집합만 검색
+  const intersectTypes = (types: string[]) => {
+    const picked = selectedFilters["공간 종류"] || [];
+    if (!picked.length) return types;
+    return types.filter(t => picked.includes(t));
+  };
+
+  const fetchByPaidFilter = async (keyword: string) => {
+    const base = buildBaseParams(keyword);
+
+    // 버튼 상태에 따라 검색할 타입 묶음을 정함
+    let targetTypes: string[] | null = null;
+    if (paidFilter === "무료") targetTypes = intersectTypes(FREE_TYPES);
+    else if (paidFilter === "유료") targetTypes = intersectTypes(PAID_TYPES);
+
+    // 타입 제한이 없으면(버튼 미선택) 1회 호출
+    if (!targetTypes) {
+      const one = await searchPlaces(base);
+      return one;
+    }
+
+    // 교집합이 비었으면 결과 없음
+    if (targetTypes.length === 0) return [];
+
+    // 서버가 type을 하나만 받는다고 가정 → 타입별로 호출 후 합치기
+    const pages = await Promise.all(
+      targetTypes.map(type => searchPlaces({ ...base, type }))
+    );
+    return dedupeByPlaceId(pages.flat());
+  };
+
+  const runSearch = async (keyword: string) => {
+    lastKeywordRef.current = keyword;
+    const result = await fetchByPaidFilter(keyword);
+    setPlaces(result);
+    savePlacesCache(result);
+    clearResetMarker();
+    setIsSearchResultSheetOpen(true);
+    hasSearchedRef.current = true;
+  };
+
+  useEffect(() => {
+    // 최초 진입 후 아직 검색 안 했으면 건너뛰기
+    if (!hasSearchedRef.current) return;
+    void runSearch(lastKeywordRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paidFilter]);
+
 
   return (
     <div className="w-full h-screen bg-gray-200">
@@ -257,7 +359,7 @@ const SearchPage = () => {
           currentLocation={currentLocation}
           resetToInitialState={resetToInitialState}
           /* 지도 마커 표시용 데이터와 상태 */
-          places={places}
+          places={visiblePlaces}
           selectedPlaceId={selectedSpace?.id ?? null}
           onMarkerClick={(place /* PlaceItem */) => {
             // 카드 클릭과 동일한 동작: PlaceSelectSheet 열기 + SearchResultSheet 닫기 + 히스토리 push
@@ -296,7 +398,7 @@ const SearchPage = () => {
           openSearchResultSheet={() => {
             setIsSearchResultSheetOpen(true);
           }}
-          setPlaceResults={setPlaces}
+          performSearch={runSearch}
           isSearchMode={isSearchMode}
           isSearchResultSheetOpen={isSearchResultSheetOpen}
           enterSearchMode={enterSearchMode}
@@ -339,19 +441,8 @@ const SearchPage = () => {
               onClick={async () => {
                 setIsSheetOpen(false); // 필터 바텀시트 닫기
                 try {
-                  const result = await searchPlaces({
-                    keyword: searchInput.trim() || "",
-                    purpose:    selectedFilters["이용 목적"]?.[0],
-                    type:       selectedFilters["공간 종류"]?.[0],
-                    mood:       selectedFilters["분위기"]?.[0],
-                    facilities: selectedFilters["부가시설"]?.[0],
-                    location:   selectedFilters["지역"]?.[0],
-                    page: 0,
-                  });
-                  setPlaces(result);         // 결과 반영
-                  savePlacesCache(result);
-                  clearResetMarker();        // 리셋 마커 제거(중요)
-                  setIsSearchResultSheetOpen(true); // 시트 열기
+                  const kw = searchInput.trim() || "";
+                  await runSearch(kw);
                 } catch (e) {
                   console.error("필터 검색 실패:", e);
                   // 실패 시 시트를 열지 않는 편이 안전합니다.
@@ -399,7 +490,7 @@ const SearchPage = () => {
         selectedFilters={selectedFilters}
         setSelectedSpace={setSelectedSpace}
         setIsPlaceSelectSheetOpen={setIsPlaceSelectSheetOpen}
-        places={places}  
+        places={visiblePlaces}  
       />
 
       {isPlaceSelectSheetOpen && selectedSpace && (
