@@ -75,8 +75,8 @@ const OauthKakaoCallback = () => {
   }, [navigate, setIsAdmin]);
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <span>로그인 처리 중...</span>
+    <div className="flex flex-col justify-center items-center h-screen">
+      <span className="mt-4 text-[3rem] text-[#8F9098]">로그인 중이에요!</span>
     </div>
   );
 };
