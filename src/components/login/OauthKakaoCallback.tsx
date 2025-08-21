@@ -31,7 +31,10 @@ const OauthKakaoCallback = () => {
           setIsAdmin(isAdmin);
 
           if (state === "local") {
-            const redirectUrl = new URL("http://localhost:5182/signup");
+            const baseUrl = isNewUser
+              ? "http://localhost:5182/signup"
+              : "http://localhost:5182/home";
+            const redirectUrl = new URL(baseUrl);
             redirectUrl.searchParams.append("state", state);
             redirectUrl.searchParams.append("accessToken", accessToken);
             redirectUrl.searchParams.append("refreshToken", refreshToken);
@@ -44,14 +47,12 @@ const OauthKakaoCallback = () => {
             localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
             localStorage.setItem("isNewUser", JSON.stringify(isNewUser));
           }
-          //로컬 테스트용
-          navigate("/signup");
-          /* 
+          
           if (isNewUser) {
             navigate("/signup");
           } else {
             navigate("/home");
-          } */
+          }
         } else {
           alert(data.message || "로그인에 실패했습니다.");
           navigate("/");
