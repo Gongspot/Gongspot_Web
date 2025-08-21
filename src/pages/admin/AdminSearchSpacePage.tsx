@@ -117,7 +117,7 @@ const AdminSearchSpacePage = () => {
                 isLiked={space.isLiked}
                 onDetail={() => handleDetail(space)}
                 onLike={() => handleLike(space)}
-                enableWholeCardClick={false}
+                // enableWholeCardClick={false}
                 buttonText="수정하기"
               />
             ))}
