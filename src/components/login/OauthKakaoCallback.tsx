@@ -26,7 +26,7 @@ const OauthKakaoCallback = () => {
         );
 
         if (data.isSuccess) {
-          const { accessToken, refreshToken, isAdmin } = data.result;
+          const { accessToken, refreshToken, isAdmin, isNewUser } = data.result;
           setIsAdmin(isAdmin);
 
           if (state === "local") {
@@ -35,11 +35,20 @@ const OauthKakaoCallback = () => {
             redirectUrl.searchParams.append("accessToken", accessToken);
             redirectUrl.searchParams.append("refreshToken", refreshToken);
             redirectUrl.searchParams.append("isAdmin", isAdmin ? "true" : "false");
+            redirectUrl.searchParams.append("isNewUser", isNewUser ? "true" : "false");
             window.location.href = redirectUrl.toString();
           } else {
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
             localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
+            localStorage.setItem("isNewUser", JSON.stringify(isNewUser));
+          }
+          //로컬 테스트용
+          navigate("/signup");
+          
+          if (isNewUser) {
+            navigate("/signup");
+          } else {
             navigate("/home");
           }
         } else {
