@@ -7,14 +7,19 @@ import { searchPlaces } from "../../apis/placeSearch";
 interface SearchModeProps {
   searchInput: string;
   setSearchInput: (value: string) => void;
-  exitSearchMode: () => void;
+  exitSearchMode: () => void; // (안 쓰더라도 타입은 유지)
   openSearchResultSheet: () => void;
   isSearchMode: boolean;
   isSearchResultSheetOpen: boolean;
   enterSearchMode: () => void;
   resetToInitialState: () => void;
   onRecentClick: (keyword: string) => void;
-  setPlaceResults: (items: import("../../apis/placeSearch").PlaceItem[]) => void;
+
+  // ✅ 새 콜백: 부모에서 runSearch를 넘겨주면 유/무료 로직을 부모가 통제
+  performSearch?: (keyword: string) => Promise<void> | void;
+
+  // ⛓️‍♂️ 백워드 호환: 안 넘겨주면 내부에서 직접 검색 후 이걸로 결과 세팅
+  setPlaceResults?: (items: import("../../apis/placeSearch").PlaceItem[]) => void;
 }
 
 const SearchMode = ({
@@ -26,7 +31,8 @@ const SearchMode = ({
   enterSearchMode,
   resetToInitialState,
   onRecentClick,
-  setPlaceResults,
+  performSearch,
+  setPlaceResults, // optional (fallback)
 }: SearchModeProps) => {
   const cap3 = <T,>(arr: T[]) => arr.slice(0, 3);
 
@@ -35,9 +41,9 @@ const SearchMode = ({
 
   useEffect(() => {
     if (isSearchMode && !isSearchResultSheetOpen) {
-      inputRef.current?.focus(); // 검색 모드에서 검색창에 커서 표시
+      inputRef.current?.focus();
     } else {
-      inputRef.current?.blur(); // 그렇지 않으면 커서 제거
+      inputRef.current?.blur();
     }
   }, [isSearchMode, isSearchResultSheetOpen]);
 
@@ -47,9 +53,9 @@ const SearchMode = ({
   // 최초 로딩(최근 검색어 조회)
   useEffect(() => {
     const fetchRecent = async () => {
-      if (loadedRef.current) return; // 중복 초기로딩 방지
+      if (loadedRef.current) return;
       loadedRef.current = true;
-      
+
       const items = await getRecentSearches();
       console.log("[recent] normalized:", items);
       setRecentSearches(cap3(items));
@@ -58,48 +64,47 @@ const SearchMode = ({
   }, []);
 
   const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // 키보드 자동 반복이나 진행 중 재진입 방지
     if (e.key !== "Enter" || e.repeat || submittingRef.current) return;
+    const keyword = searchInput.trim();
+    if (!keyword) return;
 
-    if (searchInput.trim() !== "") {
-      submittingRef.current = true; // 락 걸기
-      const keyword = searchInput.trim();
-
-      try {
+    submittingRef.current = true;
+    try {
+      if (performSearch) {
+        // ✅ 부모(runSearch)에게 위임 → 유/무료/필터 로직 일관 적용
+        await performSearch(keyword);
+      } else {
+        // 🔙 백워드 호환: 옛 방식 그대로 내부에서 검색
         const result = await searchPlaces({
           keyword,
-          purpose: "",     // 필터 정보가 필요하면 props로 넘기도록 변경 필요
+          purpose: "",
           type: "",
           mood: "",
           facilities: "",
           location: "",
           page: 0,
         });
-
-        console.log("🔍 검색 결과:", result); // 추후에 상태로 set 가능
-        setPlaceResults(result);      // 검색 결과 상태 전달
-
+        setPlaceResults?.(result);
         try { sessionStorage.removeItem("searchResultsResetAt:v1"); } catch {}
-
-        // 검색 직후 재조회하되, 새 키워드만 반영하고 기존 화면 항목만 유지(백필 차단)
-        const server = await getRecentSearches();
-        setRecentSearches((prev) => {
-          const norm = (s: string) => s.trim().toLowerCase();
-          const k = norm(keyword);
-          // 서버에서 "이번에 검색한 키워드"만 뽑음
-          const newEntry = server.find((it) => norm(it.keyword) === k);
-          // 기존 화면에서 같은 키워드는 제거(최신 한 개만 위에 두기)
-          const keep = prev.filter((it) => norm(it.keyword) !== k);
-          const next = newEntry ? [newEntry, ...keep] : keep;
-          return cap3(next);
-        });
-
-        openSearchResultSheet(); // 검색 결과 시트 열기
-      } catch (err) {
-        console.error("검색 API 호출 실패:", err);
-      } finally {
-        submittingRef.current = false; // 성공/실패와 무관하게 락 해제
       }
+
+      // 최근 검색어 최신화
+      const server = await getRecentSearches();
+      setRecentSearches((prev) => {
+        const norm = (s: string) => s.trim().toLowerCase();
+        const k = norm(keyword);
+        const newEntry = server.find((it) => norm(it.keyword) === k);
+        const keep = prev.filter((it) => norm(it.keyword) !== k);
+        const next = newEntry ? [newEntry, ...keep] : keep;
+        return cap3(next);
+      });
+
+      // 시트 열기 (부모에서 이미 열어도 중복 호출 무해)
+      openSearchResultSheet();
+    } catch (err) {
+      console.error("검색 실행 실패:", err);
+    } finally {
+      submittingRef.current = false;
     }
   };
 
@@ -112,7 +117,7 @@ const SearchMode = ({
     const ok = await deleteRecentSearchById(item.id);
     if (!ok) {
       console.warn("서버에서 검색어 삭제 실패 → 롤백");
-      setRecentSearches(prev); // 실패 시 롤백
+      setRecentSearches(prev);
     }
   };
 
@@ -121,17 +126,14 @@ const SearchMode = ({
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 z-30 pointer-events-none">
-      {/* 검색창 (항상 보임) */}
+      {/* 검색창 */}
       <div className="absolute h-[38px] top-4 left-4 right-4 z-30 pointer-events-auto">
         <div
           className={`flex items-center px-3 py-2 shadow-sm bg-white
-            ${isSearchMode && !isSearchResultSheetOpen
-              ? "border border-gray-500"
-              : "border border-gray-300"}
+            ${isSearchMode && !isSearchResultSheetOpen ? "border border-gray-500" : "border border-gray-300"}
             rounded-lg
           `}
         >
-          {/* 아이콘: 원 작게, 막대기 길게 */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -162,10 +164,9 @@ const SearchMode = ({
             <X className="w-6 h-6 text-gray-500" />
           </button>
         </div>
-
       </div>
 
-      {/* 하얀 배경 + 최근 검색어는 검색모드이고 검색 결과 시트가 닫혀있을 때만 */}
+      {/* 최근 검색어 */}
       {isSearchMode && !isSearchResultSheetOpen && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-white z-20 p-4 pt-20 pointer-events-auto">
           <p className="text-sm text-black mb-2 font-semibold">최근 검색어</p>
@@ -191,14 +192,11 @@ const SearchMode = ({
                 </button>
               </div>
             ))}
-
           </div>
         </div>
       )}
     </div>
   );
-
-
 };
 
 export default SearchMode;
