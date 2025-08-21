@@ -3,12 +3,27 @@ import NextButton from "../../components/NextButton";
 import TopHeader from "../../components/TopHeader";
 import ContentSection from "../../components/mypage/account/ContentSection";
 import ConfirmButton from "../../components/mypage/account/ConfirmButton";
+import { patchQuit } from "../../apis/mypage/mypage";
+import { useNavigate } from "react-router-dom";
 
 const WithdrawalPage = () => {
   const [selected, setSelected] = useState(false);
+  const navigate = useNavigate();
 
   const disabledClass =
     "w-full py-[0.813rem] bg-white text-[#8F9098] text-[1rem] rounded-[0.313rem] border-[0.063rem] border-[#CCCCCC]";
+
+  const fetchQuit = async () => {
+    try {
+      const data = await patchQuit();
+      if (data.isSuccess) {
+        alert("회원 탈퇴가 완료되었습니다.");
+        navigate("/");
+      }
+    } catch (e) {
+      console.error("Error fetching logout:", e);
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen w-full bg-white">
@@ -28,7 +43,7 @@ const WithdrawalPage = () => {
         className={!selected ? disabledClass : undefined}
         disabled={!selected}
         onClick={() => {
-          alert("탈퇴되었습니다.");
+          fetchQuit();
         }}
       />
     </div>

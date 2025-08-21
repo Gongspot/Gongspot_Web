@@ -29,3 +29,8 @@ export const postLogout = async () => {
     const { data } = await axiosInstance.post('/auth/logout');
     return data;
 };
+
+export const patchQuit = async () => {
+    const { data } = await axiosInstance.patch('/users/quit');
+    return data;
+};
