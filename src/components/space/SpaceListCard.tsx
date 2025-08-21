@@ -11,12 +11,11 @@ interface Props {
   location?: string | null;
   tags: string[];
   isLiked: boolean;
-  onDetail: () => void;        // 상세보기 버튼 전용
-  onLike: () => void;          // 하트 버튼 전용
-  onCardClick?: () => void;    // 카드의 나머지 영역 클릭 시 호출
+  onDetail: () => void;
+  onLike: () => void;
+  enableWholeCardClick?: boolean;
   buttonText?: string;
 }
-
 
 const isValidAddressFormat = (address: string | null | undefined): boolean => {
   if (!address) return false;
@@ -49,7 +48,6 @@ const SpaceListCard: React.FC<Props> = ({
   isLiked,
   onDetail,
   onLike,
-  onCardClick,
   buttonText,
 }) => {
   const myLocation = useCurrentLocation();
@@ -82,21 +80,17 @@ const SpaceListCard: React.FC<Props> = ({
     }
   }, [distanceProp, location, myLocation.coordinates, myLocation.loaded, name]);
 
+  const formatLocation = (loc: string | null | undefined) => {
+    if (!loc) return '';
+    if (loc.startsWith("대한민국 ")) {
+      return loc.substring(5); 
+    }
+    return loc;
+  };
+
   return (
     <div className="border-b border-[#CCCCCC]">
-      <div
-        className="flex items-center relative pr-[30px] pl-[20px] py-5"
-        onClick={onCardClick} // ★ 카드의 여백/이미지/텍스트 클릭 시
-        role={onCardClick ? "button" : undefined}
-        tabIndex={onCardClick ? 0 : undefined}
-        onKeyDown={(e) => {
-          if (!onCardClick) return;
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            onCardClick();
-          }
-        }}
-      >
+      <div className="flex items-center relative pr-[30px] pl-[20px] py-5">
         <div className="relative w-[180px] h-[130px] flex-shrink-0 mr-4">
           <img
             src={image}
@@ -151,7 +145,7 @@ const SpaceListCard: React.FC<Props> = ({
             <span className="text-[#000000] text-[13px]">{distanceText}</span>
           </div>
           <div className="text-[13px] text-gray-500 truncate mb-2">
-            {tags.join(" ")}
+            {formatLocation(location)}
           </div>
           <button
             onClick={(e) => {
