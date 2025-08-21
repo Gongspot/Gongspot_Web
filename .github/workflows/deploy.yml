@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: Deploy to EC2 (with Debugging)
 
 on:
   push:
@@ -16,18 +16,41 @@ jobs:
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.EC2_HOST }}         
-          username: ${{ secrets.EC2_USER }}        
-          key: ${{ secrets.EC2_SSH_KEY }}       
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e  # ✨ 중요: 명령어가 하나라도 실패하면 즉시 스크립트를 중단합니다.
+
+            echo "--- 1. 프로젝트 폴더로 이동 ---"
             cd ~/Gongspot_Web
+            pwd
+
+            echo "--- 2. Git 저장소 초기화 및 최신 코드로 업데이트 ---"
             git reset --hard HEAD
             git clean -fd
             git pull origin main
+            echo "✅ 최신 커밋 정보:"
+            git log -n 1 --pretty=format:"%h - %an, %ar : %s"
+
+            echo "--- 3. 의존성 설치 ---"
             pnpm install
+
+            echo "--- 4. 프로젝트 빌드 ---"
             pnpm build
+
+            echo "--- 5. 빌드 결과 확인 (dist 폴더) ---"
+            ls -al dist/  # ✨ 중요: 빌드 결과물이 제대로 생성되었는지 확인합니다.
+
+            echo "--- 6. 기존 배포 파일 삭제 ---"
             sudo rm -rf /var/www/html/*
+
+            echo "--- 7. 새로운 빌드 파일 복사 ---"
             sudo cp -r dist/* /var/www/html/
+
+            echo "--- 8. 복사 결과 확인 (/var/www/html 폴더) ---"
+            ls -al /var/www/html/ # ✨ 중요: 파일이 올바르게 복사되었는지 확인합니다.
+
+            echo "--- 9. Nginx 재시작 ---"
             sudo systemctl reload nginx
-
-
+            echo "✅ 배포 완료!"

@@ -153,4 +153,3 @@ const AdminSearchSpacePage = () => {
 };
 
 export default AdminSearchSpacePage;
-

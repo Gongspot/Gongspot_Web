@@ -179,3 +179,24 @@ export interface BannersApiResponse {
     bannerList: BannerItem[];
   };
 }
+
+// 추천 API의 개별 장소 아이템 타입
+export interface RecommendedPlace {
+  place_id: number;
+  name: string;
+  address: string; 
+  is_free: boolean; 
+  type: string;
+  purpose: string[];
+  mood: string[];
+  location: string[];
+  average_rating: number | null;
+  photo_url: string;
+  isLike?: boolean; // 찜하기 상태를 클라이언트에서 관리하기 위한 옵셔널 필드
+}
+
+// 추천 API의 전체 응답 구조 타입
+export interface RecommendationApiResponse {
+  recommended_places: RecommendedPlace[];
+}
+

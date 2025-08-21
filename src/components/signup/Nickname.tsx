@@ -8,22 +8,12 @@ interface NicknameProps {
 }
 
 const Nickname = ({ onNext, nickname, setNickname }: NicknameProps) => {
-  const [message, setMessage] = useState("");
   const [isAvailable, setIsAvailable] = useState(false);
 
-  const checkNickname = () => {
-    if (nickname === "카공족") {
-      setMessage("이미 사용 중인 닉네임입니다.");
-    } else {
-      setMessage("사용 가능한 닉네임입니다.");
-      setIsAvailable(true);
-    }
-  };
-
   const buttonClass = nickname.trim()
-    ? "text-[#4CB1F1] cursor-pointer"
-    : "text-[#ADAEBC] cursor-not-allowed";
-  
+    ? "bg-[#4CB1F1] text-white cursor-pointer"
+    : "bg-[#D4D4D4] text-white cursor-not-allowed";
+
   return (
     <div className="flex flex-col min-h-screen"
       style={{
@@ -41,29 +31,23 @@ const Nickname = ({ onNext, nickname, setNickname }: NicknameProps) => {
             placeholder="사용할 이름을 입력해주세요. (2~12자)"
             value={nickname}
             onChange={(e) => {
-              setNickname(e.target.value);
-              setIsAvailable(false);
-              setMessage("");
+              const value = e.target.value;
+              setNickname(value);
+              setIsAvailable(true);
+              if (value.trim()) {
+                setIsAvailable(true);
+              } else {
+                setIsAvailable(false);
+              }
             }}
           />
-          <button
-            type="button"
-            className={`text-[0.75rem] font-medium absolute right-[1rem] ${buttonClass}`}
-            onClick={checkNickname}
-            disabled={!nickname.trim()}
-          >
-            중복확인
-          </button>
         </div>
-        {message && (
-          <div
-            className="mt-[0.5rem] px-[0.875rem] text-[0.75rem] w-full text-left text-[#4CB1F1]"
-          >
-            {message}
-          </div>
-        )}
       </div>
-      <NextButton text={"다음"} onClick={onNext} disabled={!isAvailable} />
+      <NextButton 
+        text={"다음"}
+        className={`w-full leading-[2.875rem] bg-[#4CB1F1] text-[1rem] rounded-[0.313rem] ${buttonClass}`}
+        onClick={onNext}
+        disabled={!isAvailable} />
     </div>
   );
 };

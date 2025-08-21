@@ -1,14 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const ProtectedLayout = () => {
-/*     
-    추후 관리자 계정 연결
-    const { user } = useAuth();
-
-    if (user.id !== 1) {
-        return <Navigate to={"/"} replace />;
+    const { isAdmin } = useAuth();
+    console.log("ProtectedLayout isAdmin:", isAdmin);
+    
+    if (!isAdmin) {
+        return <Navigate to="/home" replace />;
     }
- */
+ 
     return <Outlet />;
 };
 
