@@ -44,7 +44,6 @@ const SpaceListCard: React.FC<Props> = ({
   rating,
   distance: distanceProp,
   location,
-  tags,
   isLiked,
   onDetail,
   onLike,
