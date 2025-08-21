@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import TopHeader from "../../components/TopHeader";
 import SpaceListCard from "../../components/space/SpaceListCard";
-import dummySpaces from "../../constants/dummySpaces";
+import { searchPlaces } from "../../apis/placeSearch";
 
 // SpaceLite 타입 직접 선언
 interface SpaceLite {
@@ -35,34 +35,57 @@ const toLite = (s: any): SpaceLite => ({
 
 const AdminSearchSpacePage = () => {
   const [searchInput, setSearchInput] = useState("");
-  const [_, setSelectedSpace] = useState<SpaceLite | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
   const navigate = useNavigate();
+
+  const [apiSpaces, setApiSpaces] = useState<SpaceLite[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const raw = localStorage.getItem("admin:newSpaceDraft");
     if (raw) {
-      try { setDraft(JSON.parse(raw)); } catch {}
+      try {
+        setDraft(JSON.parse(raw));
+      } catch {}
     }
   }, []);
 
-  const source = [
-    ...(draft?.space ? [toLite(draft.space)] : []), // ✅ 새로 등록한 공간을 맨 위에
-    ...dummySpaces,
-  ];
+  const filteredSpaces = apiSpaces; // API 결과를 그대로 렌더
 
-  const filteredSpaces = searchInput
-    ? source.filter((s) => s.name.includes(searchInput))
-    : [];
+  const handleSearch = async () => {
+    const keyword = searchInput.trim();
+    if (!keyword) {
+      setApiSpaces([]);
+      return;
+    }
+    try {
+      setLoading(true);
+      setError(null);
 
-  const handleSearch = () => {
-    const result = dummySpaces.find((space) =>
-      space.name.includes(searchInput)
-    );
-    if (result) {
-      setSelectedSpace(result);
-    } else {
-      setSelectedSpace(null);
+      // keyword만 전송 (page 필요시 유지)
+      const result = await searchPlaces({ keyword, page: 0 });
+
+      // API → SpaceLite 매핑
+      const mapped: SpaceLite[] = result.map((p) => ({
+        id: p.placeId,
+        name: p.name,
+        image: p.imageUrl,
+        rating: p.rating ?? 0,
+        distance: 0,
+        tags: p.hashtag ? [p.hashtag] : [],
+        isLiked: !!p.isLike,
+      }));
+
+      // 초안(draft) 항목을 맨 위로 노출하고 싶으면 head로 합치기
+      const head = draft?.space ? [toLite(draft.space)] : [];
+      setApiSpaces([...head, ...mapped]);
+    } catch (e: any) {
+      setError("검색 중 오류가 발생했습니다.");
+      setApiSpaces([]);
+      console.error(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,14 +94,13 @@ const AdminSearchSpacePage = () => {
       state: {
         placeName: space.name,
         space,
-        selectedFilters: draft?.filters ?? {}, // 초기 필터도 같이 전달
+        selectedFilters: draft?.filters ?? {},
       },
     });
   };
 
   const handleLike = (space: SpaceLite) => {
     alert(`${space.name} 좋아요 토글`);
-    // 좋아요 토글 로직 추가 예정
   };
 
   return (
@@ -103,7 +125,10 @@ const AdminSearchSpacePage = () => {
       </div>
 
       {/* 검색 결과 리스트 */}
-      <div className="absolute w-[325px] h-[119px] top-[107px] left-[20px] space-y-[19px] opacity-100">
+      <div className="absolute top-[107px] left-[20px] w-[325px] space-y-[19px] opacity-100">
+        {loading && <div className="px-4 text-sm text-gray-500">검색 중…</div>}
+        {error && <div className="px-4 text-sm text-red-500">{error}</div>}
+
         {searchInput !== "" && filteredSpaces.length > 0 && (
           <div className="w-[325px]">
             {filteredSpaces.map((space) => (
@@ -117,7 +142,6 @@ const AdminSearchSpacePage = () => {
                 isLiked={space.isLiked}
                 onDetail={() => handleDetail(space)}
                 onLike={() => handleLike(space)}
-                // enableWholeCardClick={false}
                 buttonText="수정하기"
               />
             ))}
