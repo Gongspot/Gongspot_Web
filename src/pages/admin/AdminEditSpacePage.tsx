@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import FilterSection from "../../components/mapsearch/FilterSection";
 import type { TabLabel } from "../../hooks/useSearchFilters";
 import { useEffect, useMemo, useState } from "react";
-import { getPlaceDetails, updatePlace, type PlaceDetails } from "../../apis/PlaceDetails";
+import { getPlaceDetails, updatePlace, type PlaceDetails } from "../../apis/placeDetails";
 
 const emptyFilters: Record<TabLabel, string[]> = {
   "이용 목적": [],

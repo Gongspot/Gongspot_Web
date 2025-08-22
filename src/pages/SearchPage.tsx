@@ -234,8 +234,8 @@ const SearchPage = () => {
 
   useEffect(() => {
     // 사용자가 지도 탭으로 리셋했다면 복원하지 않음
-    let resetAt = 0;
-    try { resetAt = Number(sessionStorage.getItem(CACHE_KEY_RESET_AT) || "0"); } catch {}
+    //let resetAt = 0;
+    //try { resetAt = Number(sessionStorage.getItem(CACHE_KEY_RESET_AT) || "0"); } catch {}
 
     const cached = loadPlacesCache();
     if (cached.length > 0) {
