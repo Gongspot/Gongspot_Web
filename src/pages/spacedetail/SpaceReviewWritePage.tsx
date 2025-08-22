@@ -46,6 +46,11 @@ const SpaceReviewWritePage: React.FC = () => {
     const selectedPurpose = selectedTags.filter(tag => purposeList.includes(tag));
     const selectedMood = selectedTags.filter(tag => moodList.includes(tag));
 
+    if (files.length === 0) {
+      alert("사진을 1장 이상 첨부해주세요.");
+      return;
+    }
+
     if (!date || !ampm || !hour || !minute || rating === 0 || !congestion || selectedPurpose.length === 0 || selectedMood.length === 0) {
       alert("날짜, 시간, 별점, 혼잡도, 방문 목적, 분위기는 필수 입력 항목입니다.");
       return;
