@@ -1,0 +1,25 @@
+/*
+  Tailwind가 제공하지 않는 커스텀 애니메이션과 클래스를 정의합니다.
+*/
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bg-gradient-animated {
+  background: linear-gradient(-45deg, #c8eaf7,#a8d5e5);
+  
+  /* 애니메이션을 위한 배경 크기 확장 */
+  background-size: 400% 400%;
+  
+  /* 애니메이션 적용 */
+  animation: gradientShift 5s ease infinite;
+}
