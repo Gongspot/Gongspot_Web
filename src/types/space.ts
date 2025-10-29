@@ -11,6 +11,13 @@ export interface Space {
   isLiked: boolean;
 }
 
+export interface SpaceCreateApiResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: string;
+}
+
 // /places/{placeId} API 응답의 result 객체 타입
 export interface SpaceDetail {
   placeId: number;
