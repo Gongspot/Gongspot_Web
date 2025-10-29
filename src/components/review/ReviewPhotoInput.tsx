@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import heic2any from "heic2any";
 
 interface ReviewPhotoInputProps {
   files: File[];
@@ -12,18 +13,54 @@ const ReviewPhotoInput: React.FC<ReviewPhotoInputProps> = ({
   setFiles,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isConverting, setIsConverting] = useState(false);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      setIsConverting(true);
       const selected = Array.from(e.target.files);
-      const totalFiles = [...files, ...selected].slice(0, MAX_FILES);
+
+      const convertedFiles = await Promise.all(
+        selected.map(async (file) => {
+          const fileType = file.type.toLowerCase();
+          const isHeic = fileType === 'image/heic' || fileType === 'image/heif';
+
+          if (isHeic) {
+            try {
+              const jpgBlob = (await heic2any({
+                blob: file,
+                toType: "image/jpeg",
+                quality: 0.8,
+              })) as Blob;
+
+              const newFileName = file.name.replace(/\.[^/.]+$/, ".jpg");
+              const jpgFile = new File([jpgBlob], newFileName, {
+                type: "image/jpeg",
+              });
+              return jpgFile;
+            } catch (error) {
+              console.error("HEIC 파일 변환에 실패했습니다:", error);
+              return null;
+            }
+          } else {
+            return file;
+          }
+        })
+      );
+
+      const validFiles = convertedFiles.filter(file => file !== null) as File[];
+
+      const totalFiles = [...files, ...validFiles].slice(0, MAX_FILES);
       setFiles(totalFiles);
       e.target.value = "";
+      setIsConverting(false);
     }
   };
 
   const handleBoxClick = () => {
-    if (files.length < MAX_FILES) inputRef.current?.click();
+    if (files.length < MAX_FILES && !isConverting) {
+      inputRef.current?.click();
+    }
   };
 
   return (
@@ -37,17 +74,17 @@ const ReviewPhotoInput: React.FC<ReviewPhotoInputProps> = ({
           scrollbar-hide
           py-1
           "
-        style={{ WebkitOverflowScrolling: "touch" }} // iOS 스크롤 부드럽게
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
-        {/* 업로드 박스 */}
         {files.length < MAX_FILES && (
           <button
             type="button"
-            className="min-w-[100px] w-[100px] h-[100px] rounded-lg border-2 border-gray-200 bg-white flex items-center justify-center text-2xl text-gray-400 font-thin transition"
+            className="min-w-[100px] w-[100px] h-[100px] rounded-lg border-2 border-gray-200 bg-white flex items-center justify-center text-xl text-gray-400 font-thin transition disabled:opacity-50 disabled:cursor-wait"
             onClick={handleBoxClick}
+            disabled={isConverting}
             style={{ minWidth: 100, minHeight: 100 }}
           >
-            +
+            {isConverting ? "변환 중..." : "+"}
             <input
               ref={inputRef}
               type="file"
@@ -55,11 +92,11 @@ const ReviewPhotoInput: React.FC<ReviewPhotoInputProps> = ({
               multiple
               className="hidden"
               onChange={handleFileChange}
+              disabled={isConverting}
             />
           </button>
         )}
 
-        {/* 미리보기 */}
         {files.map((file, i) => {
           const url = URL.createObjectURL(file);
           const isImage = file.type.startsWith("image");
