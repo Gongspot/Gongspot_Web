@@ -1,6 +1,4 @@
-// src/pages/SpaceReviewWritePage.tsx (전체 코드)
-
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TopHeader from "../../components/TopHeader";
 import ReviewRatingInput from "../../components/review/ReviewRatingInput";
@@ -24,8 +22,6 @@ const congestionMap: { [key: string]: number } = { "낮음": 0, "보통": 1, "�
 
 const purposeList = Object.keys(purposeMap);
 const moodList = Object.keys(moodMap);
-
-// ▼▼▼ [추가됨] 날짜 포맷팅을 위한 헬퍼 함수 ▼▼▼
 const pad = (num: number) => num.toString().padStart(2, '0');
 
 const SpaceReviewWritePage: React.FC = () => {
