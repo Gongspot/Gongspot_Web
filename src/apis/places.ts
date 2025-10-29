@@ -41,21 +41,21 @@ export const postReview = async ({ placeId, reviewData, photos }: {
   reviewData: ReviewPayload;
   photos: File[];
 }) => {
-  const formData = new FormData();
-  
-  // JSON 데이터는 'review' 키로 보냅니다.
-  formData.append('review', new Blob([JSON.stringify(reviewData)], { type: 'application/json' }));
-  
-  // ▼▼▼ 사진 파일의 키를 'reviewPictures'로 수정합니다. ▼▼▼
-  photos.forEach((file) => {
-    formData.append('reviewPictures', file);
-  });
-  
-  const response = await axiosInstance.post(`/reviews/${placeId}`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  if (photos && photos.length > 0) {
+    const formData = new FormData();
+    formData.append('review', new Blob([JSON.stringify(reviewData)], { type: 'application/json' }));
+    
+    photos.forEach((file) => {
+      formData.append('reviewPictures', file);
+    });
+    
+    return axiosInstance.post(`/reviews/${placeId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
-  return response.data;
+  } else {
+    return axiosInstance.post(`/reviews/${placeId}`, reviewData);
+  }
 };

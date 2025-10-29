@@ -18,7 +18,7 @@ const AdminHomePage = () => {
   const unreviewed = data?.unapprovedProposals || [];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFBFC]">
+    <div className="min-h-screen flex flex-col bg-[#FAFBFC] pb-14">
       <TopNavBar />
 
       {/* 상단 통계 */}

@@ -44,12 +44,13 @@ import AdminSearchSpacePage from "./pages/admin/AdminSearchSpacePage";
 import AdminEditSpacePage from "./pages/admin/AdminEditSpacePage";
 import AdminNoticeDetailPage from "./pages/admin/AdminNoticeDetailPage";
 import AdminNoticeAllPage from "./pages/admin/AdminNoticeAllPage";
-import AllReviewsPage from "./pages/spacedetail/AllReviewsPage"; // AllReviewsPage 임포트 추가
+import AllReviewsPage from "./pages/spacedetail/AllReviewsPage";
 import AdminBannerDetailPage from "./pages/admin/AdminBannerDetailPage";
 import BannerDetailPage from "./pages/mypage/BannerDetailPage";
 import AdminNoticeEditPage from "./pages/admin/AdminNoticeEditPage";
 import AdminBannerEditPage from "./pages/admin/AdminBannerEditPage";
 import { AuthProvider } from "./contexts/AuthContext";
+import GlobalLoadingIndicator from "./components/common/GlobalLoadingIndicator";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -125,6 +126,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <RouterProvider router={router} />
+
+        <GlobalLoadingIndicator />
+        
       </AuthProvider>
     </QueryClientProvider>
   );
