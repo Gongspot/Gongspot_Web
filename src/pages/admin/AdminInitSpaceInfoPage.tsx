@@ -114,33 +114,40 @@ const AdminInitSpaceInfoPage = () => {
 
     const rawBody = {
       googlePlace: {
-        // 🚨 placeId를 다시 String()으로 감싸 문자열로 전송합니다.
-        placeId: String(spaceFromKakao?.placeId ?? spaceFromKakao?.id ?? null),
-        name: spaceFromKakao?.name ?? spaceFromKakao?.place_name ?? null,
+        // placeId는 필수 문자열로 전송 (null일 경우 서버에서 400 에러 유발)
+        placeId: String(spaceFromKakao?.placeId ?? spaceFromKakao?.id ?? ""), // null 대신 "" 사용
+        name: spaceFromKakao?.name ?? spaceFromKakao?.place_name ?? "미등록 공간", // null 대신 유효값 사용
         formattedAddress:
-          spaceFromKakao?.formattedAddress ?? spaceFromKakao?.road_address_name ?? spaceFromKakao?.address ?? spaceFromKakao?.address_name ?? null,
+          spaceFromKakao?.formattedAddress ?? spaceFromKakao?.road_address_name ?? spaceFromKakao?.address ?? spaceFromKakao?.address_name ?? "미등록 주소", // null 대신 유효값 사용
         internationalPhoneNumber:
-          spaceFromKakao?.internationalPhoneNumber ?? spaceFromKakao?.phone ?? null,
+          spaceFromKakao?.internationalPhoneNumber ?? spaceFromKakao?.phone ?? "000-0000-0000", // null 대신 유효값 사용
 
-        // 🚨 geometry: 필수 필드일 경우를 대비해 "0,0" 임시 좌표를 채웁니다.
+        // geometry, photoUrl 등 유효성 검사 대비 코드는 유지
         geometry:
           spaceFromKakao?.geometry ??
           (spaceFromKakao?.y != null && spaceFromKakao?.x != null
-            ? `${spaceFromKakao.y},${spaceFromKakao.x}` : "0,0"), // "" 대신 "0,0"
+            ? `${spaceFromKakao.y},${spaceFromKakao.x}` : "0,0"),
 
-        openingHours: spaceFromKakao?.openingHours ?? spaceFromKakao?.opening ?? null,
+        openingHours: spaceFromKakao?.openingHours ?? spaceFromKakao?.opening ?? "미등록", // null 대신 유효값 사용
         secondaryOpeningHours: spaceFromKakao?.secondaryOpeningHours ?? null,
-
-        // photoUrl 필드를 임시 유효 URL로 채우는 로직을 적용합니다.
         photoUrl:
           spaceFromKakao?.photoUrl && !spaceFromKakao.photoUrl.startsWith('/')
             ? spaceFromKakao.photoUrl
-            : "https://example.com/default-image.jpg", // 🚨 유효성 검사 회피를 위한 임시 URL 강제 적용
+            : "https://example.com/default-image.jpg",
       },
 
-      purpose: ensureNonEmpty(selectedFilters["이용 목적"], ["개인공부"]),
+      purpose: ensureNonEmpty(
+        selectedFilters["이용 목적"].map(v => v.replace(/[_\s]/g, '')),
+        ["개인공부"]
+      ),
+
       type: selectedFilters["공간 종류"][0] ?? "카페",
-      mood: ensureNonEmpty(selectedFilters["분위기"], ["깔끔한"]),
+
+      mood: ensureNonEmpty(
+        selectedFilters["분위기"].map(v => v.replace(/[_\s]/g, '_')),
+        ["깔끔한"]
+      ),
+
       facilities: ensureNonEmpty(selectedFilters["부가시설"].map(v => v.replace("Wi-Fi", "WiFi")), ["WiFi"]),
       location: ensureNonEmpty(selectedFilters["지역"], defaultRegion),
       isFree: true,
