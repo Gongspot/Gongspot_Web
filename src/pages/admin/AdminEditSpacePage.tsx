@@ -1,6 +1,6 @@
 import TopHeader from "../../components/TopHeader";
 import SpaceInfoSimple from "../../components/detail/SpaceInfoSimple";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FilterSection from "../../components/mapsearch/FilterSection";
 import type { TabLabel } from "../../hooks/useSearchFilters";
 import { useEffect, useMemo, useState } from "react";
@@ -44,6 +44,7 @@ const toUiLabel = (s: string) => {
 
 
 const AdminEditSpacePage = () => {
+  const navigate = useNavigate();
   const location = useLocation() as {
     state?: {
       placeName?: string;
@@ -183,9 +184,9 @@ const AdminEditSpacePage = () => {
   const spaceInfo = useMemo(() => {
     const base = location.state?.space || {};
 
-    const name    = details?.name ?? location.state?.placeName ?? base.name ?? "공간명";
+    const name = details?.name ?? location.state?.placeName ?? base.name ?? "공간명";
     const address = details?.locationInfo ?? base.locationInfo ?? base.address ?? "";
-    const tel     = details?.phoneNumber ?? base.phoneNumber ?? base.tel ?? "";
+    const tel = details?.phoneNumber ?? base.phoneNumber ?? base.tel ?? "";
 
     // ★ 영업시간은 줄바꿈 포함 텍스트 + 리스트 둘 다 제공
     const { text: hoursText, list: hoursList } =
@@ -235,28 +236,24 @@ const AdminEditSpacePage = () => {
     setSubmitting(true);
     setError(null);
 
-    // 선택값 → 서버 DTO로 매핑 (라벨 정규화)
     const dto = {
-      // 🚨 locationInfo: 빈 문자열이면 서버가 거부하지 않을 주소 정보로 임시 변경
-      locationInfo: details.locationInfo && details.locationInfo.trim() !== "" 
-                    ? details.locationInfo 
-                    : "미등록 주소", // 🚨 유효성 통과를 위한 임시 문자열
+      // String 필드: 임시값 채우기 로직은 유지
+      locationInfo: details.locationInfo && details.locationInfo.trim() !== "" ? details.locationInfo : "미등록 주소",
+      openingHours: details.openingHours && details.openingHours.trim() !== "" ? details.openingHours : "미등록",
+      phoneNumber: details.phoneNumber && details.phoneNumber.trim() !== "" ? details.phoneNumber : "000-0000-0000",
 
-      // 🚨 openingHours: 빈 문자열이면 임시 값으로 변경
-      openingHours: details.openingHours && details.openingHours.trim() !== "" 
-                    ? details.openingHours 
-                    : "미등록", // 🚨 유효성 통과를 위한 임시 문자열
+      // 🚨 필드명 복구: purpose -> purposeList
+      purposeList: (selectedFilters["이용 목적"] || []).map(v => v.replace(/\s/g, '')),
 
-      // 🚨 phoneNumber: 빈 문자열이면 임시 값으로 변경
-      phoneNumber: details.phoneNumber && details.phoneNumber.trim() !== "" 
-                  ? details.phoneNumber 
-                  : "000-0000-0000", // 🚨 유효성 통과를 위한 임시 문자열
+      type: selectedFilters["공간 종류"]?.[0] ? selectedFilters["공간 종류"][0] : details.type,
 
-      // 필터 배열 로직은 그대로 유지
-      purposeList: (selectedFilters["이용 목적"] || []).map(toServerLabel),
-      type: (selectedFilters["공간 종류"]?.[0] ? toServerLabel(selectedFilters["공간 종류"][0]) : (details.type || "")),
-      moodList: (selectedFilters["분위기"] || []).map(toServerLabel),
+      // 🚨 필드명 복구: mood -> moodList
+      moodList: (selectedFilters["분위기"] || []).map(v => v.replace(/\s/g, '_')),
+
+      // 🚨 필드명 복구: facilities -> facilityList
       facilityList: (selectedFilters["부가시설"] || []).map(toServerLabel),
+
+      // 🚨 필드명 복구: location -> locationList
       locationList: (selectedFilters["지역"] || []).map(toServerLabel),
     };
 
@@ -269,9 +266,9 @@ const AdminEditSpacePage = () => {
     }
 
     // 성공 시 목록 페이지로 복귀 (또는 토스트 후 머물기)
-    // navigate("/admin/search-space", {
-    //   state: { placeName: spaceInfo.name },
-    // });
+    navigate("/admin/search-space", {
+      state: { placeName: spaceInfo.name },
+    });
 
   };
 
@@ -325,9 +322,8 @@ const AdminEditSpacePage = () => {
         <button
           onClick={handleConfirm}
           disabled={submitting || loading}
-          className={`w-[320px] h-[46px] rounded-[5px] text-sm mx-auto block ${
-            submitting || loading ? "bg-gray-300 text-white" : "bg-[#4cb1f1] text-white"
-          }`}
+          className={`w-[320px] h-[46px] rounded-[5px] text-sm mx-auto block ${submitting || loading ? "bg-gray-300 text-white" : "bg-[#4cb1f1] text-white"
+            }`}
         >
           {submitting ? "수정 중…" : "수정하기"}
         </button>
