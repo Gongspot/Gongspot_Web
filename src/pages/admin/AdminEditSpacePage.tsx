@@ -236,26 +236,43 @@ const AdminEditSpacePage = () => {
     setSubmitting(true);
     setError(null);
 
+    const ensureArrayNotEmpty = (arr: string[], fallback: string[]) =>
+      (Array.isArray(arr) && arr.length > 0) ? arr : fallback;
+
     const dto = {
       // String 필드: 임시값 채우기 로직은 유지
       locationInfo: details.locationInfo && details.locationInfo.trim() !== "" ? details.locationInfo : "미등록 주소",
       openingHours: details.openingHours && details.openingHours.trim() !== "" ? details.openingHours : "미등록",
       phoneNumber: details.phoneNumber && details.phoneNumber.trim() !== "" ? details.phoneNumber : "000-0000-0000",
 
-      // 🚨 필드명 복구: purpose -> purposeList
-      purposeList: (selectedFilters["이용 목적"] || []).map(v => v.replace(/\s/g, '')),
+      // 🚨 purposeList: 최소 1개 보장 + 공백 제거
+      purposeList: ensureArrayNotEmpty(
+        (selectedFilters["이용 목적"] || []).map(v => v.replace(/\s/g, '')), // 공백 제거 (예: 노트북 작업 -> 노트북작업)
+        ["개인공부"] // 기본값 설정
+      ),
 
       type: selectedFilters["공간 종류"]?.[0] ? selectedFilters["공간 종류"][0] : details.type,
 
-      // 🚨 필드명 복구: mood -> moodList
-      moodList: (selectedFilters["분위기"] || []).map(v => v.replace(/\s/g, '_')),
+      // 🚨 moodList: 최소 1개 보장 + 언더바 치환
+      moodList: ensureArrayNotEmpty(
+        (selectedFilters["분위기"] || []).map(v => v.replace(/\s/g, '_')), // 언더바 치환 (예: 음악이 나오는 -> 음악이_나오는)
+        ["깔끔한"] // 기본값 설정
+      ),
 
-      // 🚨 필드명 복구: facilities -> facilityList
-      facilityList: (selectedFilters["부가시설"] || []).map(toServerLabel),
+      // 🚨 facilityList: 최소 1개 보장 + toServerLabel 정규화
+      facilityList: ensureArrayNotEmpty(
+        (selectedFilters["부가시설"] || []).map(toServerLabel),
+        ["WiFi"] // 기본값 설정
+      ),
 
-      // 🚨 필드명 복구: location -> locationList
-      locationList: (selectedFilters["지역"] || []).map(toServerLabel),
+      // 🚨 locationList: 최소 1개 보장 + toServerLabel 정규화
+      locationList: ensureArrayNotEmpty(
+        (selectedFilters["지역"] || []).map(toServerLabel),
+        ["강북권"] // 기본값 설정
+      ),
     };
+
+    console.log("FINAL PATCH DTO:", JSON.stringify(dto, null, 2));
 
     const ok = await updatePlace(placeId, dto);
     setSubmitting(false);
