@@ -39,7 +39,9 @@ const toServerLabel = (s: string) => {
 const toUiLabel = (s: string) => {
   if (s === "WiFi") return "Wi-Fi";
   if (s === "노트북작업") return "노트북 작업";
-  return s;
+
+  // 서버에서 받은 모든 언더바('_')를 띄어쓰기(' ')로 복구
+  return s.replace(/_/g, ' ');
 };
 
 
@@ -90,16 +92,7 @@ const AdminEditSpacePage = () => {
 
       setDetails(res);
 
-      // (변경) 라우터 state가 '실제로 선택값이 있을 때만' 사용
-      const fromState = location.state?.selectedFilters;
-      const hasAny =
-        !!fromState &&
-        Object.values(fromState).some((arr) => Array.isArray(arr) && arr.length > 0);
-
-      if (hasAny) {
-        setSelectedFilters(fromState as Record<TabLabel, string[]>);
-      } else {
-        // 서버 응답을 UI 라벨로 변환해 초기 선택 세팅
+      // 서버 응답을 UI 라벨로 변환해 초기 선택 세팅
         setSelectedFilters({
           "이용 목적": (res.purpose || []).map(toUiLabel),
           "공간 종류": res.type ? [toUiLabel(res.type)] : [],
@@ -107,7 +100,6 @@ const AdminEditSpacePage = () => {
           부가시설: (res.facilities || []).map(toUiLabel),
           지역: (res.location || []).map(toUiLabel),
         });
-      }
 
       setLoading(false);
     })();
