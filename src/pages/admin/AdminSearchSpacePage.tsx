@@ -94,7 +94,6 @@ const AdminSearchSpacePage = () => {
       state: {
         placeName: space.name,
         space,
-        selectedFilters: draft?.filters ?? {},
       },
     });
   };
