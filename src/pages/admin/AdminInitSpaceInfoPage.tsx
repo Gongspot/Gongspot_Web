@@ -31,7 +31,7 @@ const AdminInitSpaceInfoPage = () => {
   const spaceFromKakao = location.state?.spaceFromKakao; // AdminConfirmSpacePage에서 전달받은 데이터
   const navigate = useNavigate();
   const { placeName } = location.state || { placeName: "공간명 없음" };
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   const [selectedFilters, setSelectedFilters] = useState<Record<TabLabel, string[]>>({
     "이용 목적": [],
@@ -44,7 +44,7 @@ const AdminInitSpaceInfoPage = () => {
   const [proposalId, setProposalId] = useState<number | null>(null);
 
   const fetchProposalId = async () => {
-    setIsLoading(true); // 로딩 시작
+    // setIsLoading(true); // 로딩 시작
     console.log("--- fetching proposal ID initiated ---");
     try {
       const response = await axiosInstance.get('/request/proposal', {
@@ -82,7 +82,7 @@ const AdminInitSpaceInfoPage = () => {
     } catch (error) {
       console.error("Error fetching proposal ID:", error);
     } finally {
-      setIsLoading(false); // 로딩 종료
+      // setIsLoading(false); // 로딩 종료
       console.log("--- fetching proposal ID finished ---");
     }
   };
