@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import TopHeader from "../../components/TopHeader";
 import { useCongestions } from "../../hooks/useCongestions";
 import { FaUserCircle } from "react-icons/fa";
+import { useInView } from "react-intersection-observer"; 
 
 const SpaceCongestionDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +16,15 @@ const SpaceCongestionDetailPage: React.FC = () => {
     isFetchingNextPage,
   } = useCongestions(id);
 
+  const { ref, inView } = useInView({
+    threshold: 0, 
+    delay: 0, 
+  });
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const allCongestionGroups = data?.pages.flatMap(page => page.result.congestionList) || [];
 
@@ -39,7 +49,10 @@ const SpaceCongestionDetailPage: React.FC = () => {
                     ) : (
                       <FaUserCircle size={32} className="text-gray-300 mr-3" />
                     )}
-                    <span className="font-semibold text-gray-800 w-16 truncate">{item.nickname}</span>
+                    
+                    {/* ▼▼▼ [수정됨] 닉네임 너비를 w-16에서 w-12로 줄였습니다 ▼▼▼ */}
+                    <span className="font-semibold text-gray-800 w-12 truncate">{item.nickname}</span>
+                    
                     <span className="flex-1 text-gray-700 mx-2 truncate">{item.congestion}</span>
                     <span className="text-xs text-gray-400 whitespace-nowrap">
                       {item.daytime} {item.datetime}
@@ -51,18 +64,13 @@ const SpaceCongestionDetailPage: React.FC = () => {
           ))
         )}
 
-        {/* '더보기' 버튼 UI */}
-        <div className="mt-4">
-          {hasNextPage && (
-            <button
-              onClick={() => fetchNextPage()}
-              disabled={isFetchingNextPage}
-              className="w-full py-2.5 bg-white text-[#8F9098] border border-[#CCCCCC] rounded-lg font-semibold transition hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-200"
-            >
-              {isFetchingNextPage ? '불러오는 중...' : '더보기'}
-            </button>
-          )}
-        </div>
+        <div ref={ref} className="h-1" /> 
+        
+        {isFetchingNextPage && (
+          <div className="flex justify-center items-center py-4">
+            <span className="text-gray-500">불러오는 중...</span>
+          </div>
+        )}
       </div>
     </div>
   );

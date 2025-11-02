@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TopHeader from "../../components/TopHeader";
 import ReviewRatingInput from "../../components/review/ReviewRatingInput";
@@ -18,10 +18,12 @@ type AmpmType = "오전" | "오후" | "";
 const purposeMap: { [key: string]: number } = { "개인공부": 0, "그룹공부": 1, "노트북 작업": 2, "휴식": 3, "집중 공부": 4 };
 const moodMap: { [key: string]: number } = { "넓은": 0, "아늑한": 1, "깔끔한": 2, "조용한": 3, "음악이 나오는": 4, "이야기를 나눌 수 있는": 5 };
 const facilityMap: { [key: string]: number } = { "Wi-Fi": 0, "콘센트": 1, "넓은 좌석": 2, "음료": 3 };
-const congestionMap: { [key: string]: number } = { "낮음": 0, "보통": 1, "높음": 2 };
+const congestionMap: { [key: string]: number } = { "낮음": 2, "보통": 1, "높음": 0 };
 
 const purposeList = Object.keys(purposeMap);
 const moodList = Object.keys(moodMap);
+
+const pad = (num: number) => num.toString().padStart(2, '0');
 
 const SpaceReviewWritePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -42,31 +44,78 @@ const SpaceReviewWritePage: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [isLike, setIsLike] = useState(false);
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    const validate = () => {
+      if (date) {
+        const now = new Date();
+        let h = parseInt(hour, 10);
+        if (ampm === '오후' && h !== 12) h += 12;
+        if (ampm === '오전' && h === 12) h = 0;
+        
+        const finalDate = new Date(date);
+        finalDate.setHours(h, parseInt(minute, 10), 0, 0);
+
+        if (finalDate > now) {
+          setErrorMessage("리뷰 시간은 현재 시간보다 미래일 수 없습니다.");
+          setIsValid(false);
+          return;
+        }
+      }
+      
+      const selectedPurpose = selectedTags.filter(tag => purposeList.includes(tag));
+      const selectedMood = selectedTags.filter(tag => moodList.includes(tag));
+
+      if (!date || !ampm || !hour || !minute || rating === 0 || !congestion) {
+        setErrorMessage("날짜, 시간, 별점, 혼잡도를 모두 입력해주세요.");
+        setIsValid(false);
+        return;
+      }
+      
+      if (selectedPurpose.length === 0 || selectedMood.length === 0) {
+        setErrorMessage("방문 목적과 분위기는 1개 이상 선택해주세요.");
+        setIsValid(false);
+        return;
+      }
+
+      if (content.length < 10) {
+        setErrorMessage("리뷰를 10자 이상 작성해주세요.");
+        setIsValid(false);
+        return;
+      }
+
+      setErrorMessage(null);
+      setIsValid(true);
+    };
+
+    validate();
+  }, [date, ampm, hour, minute, rating, congestion, selectedTags, content]);
+
+
   const handleSubmit = () => {
-    const selectedPurpose = selectedTags.filter(tag => purposeList.includes(tag));
-    const selectedMood = selectedTags.filter(tag => moodList.includes(tag));
-
-    if (files.length === 0) {
-      alert("사진을 1장 이상 첨부해주세요.");
-      return;
-    }
-
-    if (!date || !ampm || !hour || !minute || rating === 0 || !congestion || selectedPurpose.length === 0 || selectedMood.length === 0) {
-      alert("날짜, 시간, 별점, 혼잡도, 방문 목적, 분위기는 필수 입력 항목입니다.");
-      return;
-    }
-    if (content.length < 10) {
-      alert("리뷰를 10자 이상 작성해주세요.");
-      return;
+    if (isPending || !isValid) {
+      return; 
     }
 
     let h = parseInt(hour, 10);
     if (ampm === '오후' && h !== 12) h += 12;
     if (ampm === '오전' && h === 12) h = 0;
-    
-    const finalDate = new Date(date);
-    finalDate.setHours(h, parseInt(minute, 10), 0);
-    const datetime = finalDate.toISOString().slice(0, 19).replace('T', ' ');
+    const finalDate = new Date(date!);
+    finalDate.setHours(h, parseInt(minute, 10), 0, 0);
+
+    const year = finalDate.getFullYear();
+    const month = pad(finalDate.getMonth() + 1);
+    const day = pad(finalDate.getDate());
+    const hours = pad(finalDate.getHours());
+    const minutes = pad(finalDate.getMinutes());
+    const seconds = pad(finalDate.getSeconds());
+
+    const datetime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+    const selectedPurpose = selectedTags.filter(tag => purposeList.includes(tag));
+    const selectedMood = selectedTags.filter(tag => moodList.includes(tag));
 
     const reviewData = {
       datetime,
@@ -79,11 +128,12 @@ const SpaceReviewWritePage: React.FC = () => {
       like: isLike,
     };
     
-    // photos: files를 함께 전달합니다.
     submitReview({ reviewData, photos: files }, {
       onSuccess: () => {
-        alert("리뷰가 등록되었습니다!");
         navigate(`/space/${id}`);
+      },
+      onError: () => {
+        setErrorMessage("리뷰 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
       }
     });
   };
@@ -136,12 +186,18 @@ const SpaceReviewWritePage: React.FC = () => {
         </div>
         
         <button
-          className="w-full mt-6 bg-sky-400 text-white rounded-lg py-3 font-semibold text-lg disabled:bg-gray-400"
+          className="w-full mt-6 bg-sky-400 text-white rounded-lg py-3 font-semibold text-lg disabled:bg-gray-300 disabled:text-gray-500"
           onClick={handleSubmit}
-          disabled={isPending}
+          disabled={isPending || !isValid}
         >
           {isPending ? '등록 중...' : '리뷰 등록하기'}
         </button>
+
+        {errorMessage && (
+          <div className="text-red-500 text-sm text-center mt-2">
+            {errorMessage}
+          </div>
+        )}
       </div>
     </div>
   );
