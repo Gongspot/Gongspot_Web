@@ -1,11 +1,11 @@
 import React from 'react';
 import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import Symbol from '../../assets/symbol.svg?react';
-import './GlobalLoadingIndicator.css';
+import './GlobalLoadingIndicator.css'; 
 
 const GlobalLoadingIndicator: React.FC = () => {
   const isFetching = useIsFetching();
-  const isMutating = useIsMutating();
+  const isMutating = useIsMutating(); 
 
   const isLoading = isFetching + isMutating > 0;
 
@@ -20,7 +20,6 @@ const GlobalLoadingIndicator: React.FC = () => {
         <span className="text-white text-xl sm:text-2xl font-bold">GongSpot</span>
         <span className="text-white text-sm sm:text-base mt-2">청년을 위한 공부지도</span>
       </div>
-
     </div>
   );
 };
