@@ -49,7 +49,10 @@ const SpaceCongestionDetailPage: React.FC = () => {
                     ) : (
                       <FaUserCircle size={32} className="text-gray-300 mr-3" />
                     )}
-                    <span className="font-semibold text-gray-800 w-16 truncate">{item.nickname}</span>
+                    
+                    {/* ▼▼▼ [수정됨] 닉네임 너비를 w-16에서 w-12로 줄였습니다 ▼▼▼ */}
+                    <span className="font-semibold text-gray-800 w-12 truncate">{item.nickname}</span>
+                    
                     <span className="flex-1 text-gray-700 mx-2 truncate">{item.congestion}</span>
                     <span className="text-xs text-gray-400 whitespace-nowrap">
                       {item.daytime} {item.datetime}

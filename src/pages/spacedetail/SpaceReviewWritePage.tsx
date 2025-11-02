@@ -18,7 +18,7 @@ type AmpmType = "오전" | "오후" | "";
 const purposeMap: { [key: string]: number } = { "개인공부": 0, "그룹공부": 1, "노트북 작업": 2, "휴식": 3, "집중 공부": 4 };
 const moodMap: { [key: string]: number } = { "넓은": 0, "아늑한": 1, "깔끔한": 2, "조용한": 3, "음악이 나오는": 4, "이야기를 나눌 수 있는": 5 };
 const facilityMap: { [key: string]: number } = { "Wi-Fi": 0, "콘센트": 1, "넓은 좌석": 2, "음료": 3 };
-const congestionMap: { [key: string]: number } = { "낮음": 0, "보통": 1, "높음": 2 };
+const congestionMap: { [key: string]: number } = { "낮음": 2, "보통": 1, "높음": 0 };
 
 const purposeList = Object.keys(purposeMap);
 const moodList = Object.keys(moodMap);
@@ -130,8 +130,6 @@ const SpaceReviewWritePage: React.FC = () => {
     
     submitReview({ reviewData, photos: files }, {
       onSuccess: () => {
-        // ▼▼▼ [수정됨] alert 팝업을 주석 처리(삭제)했습니다. ▼▼▼
-        // alert("리뷰가 등록되었습니다!"); 
         navigate(`/space/${id}`);
       },
       onError: () => {
