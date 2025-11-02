@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TopHeader from "../../components/TopHeader";
 import ReviewRatingInput from "../../components/review/ReviewRatingInput";
@@ -22,6 +22,7 @@ const congestionMap: { [key: string]: number } = { "낮음": 0, "보통": 1, "�
 
 const purposeList = Object.keys(purposeMap);
 const moodList = Object.keys(moodMap);
+
 const pad = (num: number) => num.toString().padStart(2, '0');
 
 const SpaceReviewWritePage: React.FC = () => {
@@ -64,12 +65,6 @@ const SpaceReviewWritePage: React.FC = () => {
         }
       }
       
-      if (files.length === 0) {
-        setErrorMessage("사진을 1장 이상 첨부해주세요.");
-        setIsValid(false);
-        return;
-      }
-
       const selectedPurpose = selectedTags.filter(tag => purposeList.includes(tag));
       const selectedMood = selectedTags.filter(tag => moodList.includes(tag));
 
@@ -96,7 +91,8 @@ const SpaceReviewWritePage: React.FC = () => {
     };
 
     validate();
-  }, [date, ampm, hour, minute, rating, congestion, selectedTags, content, files]);
+  }, [date, ampm, hour, minute, rating, congestion, selectedTags, content]);
+
 
   const handleSubmit = () => {
     if (isPending || !isValid) {
@@ -109,23 +105,20 @@ const SpaceReviewWritePage: React.FC = () => {
     const finalDate = new Date(date!);
     finalDate.setHours(h, parseInt(minute, 10), 0, 0);
 
-    // [수정된 부분]
-    // .toISOString() 대신 KST(로컬) 시간을 기준으로 문자열을 직접 만듭니다.
     const year = finalDate.getFullYear();
-    const month = pad(finalDate.getMonth() + 1); // getMonth()는 0부터 시작
+    const month = pad(finalDate.getMonth() + 1);
     const day = pad(finalDate.getDate());
     const hours = pad(finalDate.getHours());
     const minutes = pad(finalDate.getMinutes());
     const seconds = pad(finalDate.getSeconds());
 
-    // 백엔드가 요구하는 'YYYY-MM-DD HH:MM:SS' 형식
     const datetime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
     const selectedPurpose = selectedTags.filter(tag => purposeList.includes(tag));
     const selectedMood = selectedTags.filter(tag => moodList.includes(tag));
 
     const reviewData = {
-      datetime, // KST 시간이 담긴 문자열
+      datetime,
       rate: rating,
       congest: congestionMap[congestion],
       purpose: selectedPurpose.map(tag => purposeMap[tag]),
@@ -137,7 +130,8 @@ const SpaceReviewWritePage: React.FC = () => {
     
     submitReview({ reviewData, photos: files }, {
       onSuccess: () => {
-        alert("리뷰가 등록되었습니다!");
+        // ▼▼▼ [수정됨] alert 팝업을 주석 처리(삭제)했습니다. ▼▼▼
+        // alert("리뷰가 등록되었습니다!"); 
         navigate(`/space/${id}`);
       },
       onError: () => {
@@ -150,7 +144,6 @@ const SpaceReviewWritePage: React.FC = () => {
   if (!space) return <div>잘못된 접근이거나 공간 정보를 찾을 수 없습니다.</div>;
 
   return (
-    // ... (이하 JSX 코드는 모두 동일) ...
     <div className="max-w-[400px] mx-auto min-h-screen bg-white flex flex-col pb-14">
       <TopHeader title="리뷰 작성" />
       <div className="px-5 py-4 flex-1">

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import TopHeader from '../../components/TopHeader';
-import SpaceDetailReviewStats from '../../components/detail/SpaceDetailReviewStats';
-import ReviewCard from '../../components/review/ReviewCard';
-import { useSpaceReviews } from '../../hooks/useSpaceReviews';
-import pencilIcon from '../../assets/pencil_icon.svg';
+import React, { useState} from "react"; 
+import { useParams, useNavigate } from "react-router-dom";
+import TopHeader from "../../components/TopHeader";
+import SpaceDetailReviewStats from "../../components/detail/SpaceDetailReviewStats";
+import ReviewCard from "../../components/review/ReviewCard";
+import { useSpaceReviews } from "../../hooks/useSpaceReviews";
+import pencilIcon from "../../assets/pencil_icon.svg";
 
 const REVIEWS_PER_PAGE = 20;
 
