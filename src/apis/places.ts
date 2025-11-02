@@ -41,21 +41,19 @@ export const postReview = async ({ placeId, reviewData, photos }: {
   reviewData: ReviewPayload;
   photos: File[];
 }) => {
+  
+
+  const formData = new FormData();
+  
+  formData.append('review', new Blob([JSON.stringify(reviewData)], { 
+    type: 'application/json' 
+  }));
+  
   if (photos && photos.length > 0) {
-    const formData = new FormData();
-    formData.append('review', new Blob([JSON.stringify(reviewData)], { type: 'application/json' }));
-    
     photos.forEach((file) => {
       formData.append('reviewPictures', file);
     });
-    
-    return axiosInstance.post(`/reviews/${placeId}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-  } else {
-    return axiosInstance.post(`/reviews/${placeId}`, reviewData);
   }
+  
+  return axiosInstance.post(`/reviews/${placeId}`, formData);
 };

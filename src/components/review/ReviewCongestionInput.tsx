@@ -1,15 +1,14 @@
-// src/components/review/ReviewCongestionInput.tsx
 const icons = [
-  // "높음"
+  // "높음" (FROWN) - 찡그린 표정
   (selected: boolean) => (
     <svg width={32} height={32} viewBox="0 0 36 36" fill="none">
       <circle cx="18" cy="18" r="15" fill={selected ? "#38BDF8" : "#E5E7EB"} />
       <circle cx="13" cy="15" r="2" fill={selected ? "#fff" : "#9CA3AF"} />
-      <circle cx="23" cy="15" r="2" fill={selected ? "#fff" : "#9CA3AF"} />
+      <circle cx="23" cy="15" r="2" fill={selected ? "#fff" : "#9CA3AF"} /> 
       <path d="M24 24c-2-2-8-2-10 0" stroke={selected ? "#fff" : "#9CA3AF"} strokeWidth="2" strokeLinecap="round"/>
     </svg>
   ),
-  // "보통"
+  // "보통" (NEUTRAL)
   (selected: boolean) => (
     <svg width={32} height={32} viewBox="0 0 36 36" fill="none">
       <circle cx="18" cy="18" r="15" fill={selected ? "#38BDF8" : "#E5E7EB"} />
@@ -18,7 +17,7 @@ const icons = [
       <rect x="12" y="24" width="12" height="2" rx="1" fill={selected ? "#fff" : "#9CA3AF"} />
     </svg>
   ),
-  // "낮음"
+  // "낮음" (SMILE) - 웃는 표정
   (selected: boolean) => (
     <svg width={32} height={32} viewBox="0 0 36 36" fill="none">
       <circle cx="18" cy="18" r="15" fill={selected ? "#38BDF8" : "#E5E7EB"} />
