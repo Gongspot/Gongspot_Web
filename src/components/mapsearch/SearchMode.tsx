@@ -20,6 +20,8 @@ interface SearchModeProps {
 
   // ⛓️‍♂️ 백워드 호환: 안 넘겨주면 내부에서 직접 검색 후 이걸로 결과 세팅
   setPlaceResults?: (items: import("../../apis/placeSearch").PlaceItem[]) => void;
+
+  onXClick: () => void;
 }
 
 const SearchMode = ({
@@ -33,6 +35,7 @@ const SearchMode = ({
   onRecentClick,
   performSearch,
   setPlaceResults, // optional (fallback)
+  onXClick,
 }: SearchModeProps) => {
   const cap3 = <T,>(arr: T[]) => arr.slice(0, 3);
 
@@ -160,7 +163,7 @@ const SearchMode = ({
             onKeyDown={handleSearchSubmit}
             onFocus={enterSearchMode}
           />
-          <button onClick={resetToInitialState}>
+          <button onClick={onXClick}>
             <X className="w-6 h-6 text-gray-500" />
           </button>
         </div>
