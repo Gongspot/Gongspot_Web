@@ -141,23 +141,8 @@ const SearchPage = () => {
 
   // X 버튼 클릭 시 동작을 분리
   const handleXButtonClick = () => {
-    // 1. 검색 결과 시트가 열려있거나 (검색 결과를 보고 있을 때)
-    // 2. 검색 모드가 활성화되어 있다면 (검색어를 입력 중일 때)
-    // 3. 또는 검색창에 내용이 있다면 (검색어 지우기)
-    if (isSearchResultSheetOpen || isSearchMode || searchInput || isPlaceSelectSheetOpen) {
-      // 검색어가 있다면 검색어만 지움
-      if (searchInput) {
-        setSearchInput("");
-        // 검색 모드를 유지하고 검색어만 지울 수 있습니다.
-        // 하지만 UX상 대부분은 전체 리셋을 원하므로, 전체 리셋을 호출합니다.
-      }
-
-      // 검색 결과 시트가 열려있거나, 검색 모드일 때 X를 누르면 무조건 전체 초기화
-      resetToInitialState();
-    } else {
-      // 그 외의 경우 (이미 초기화 상태)에는 아무것도 하지 않음
-      // 이는 지도 배경 탭 동작과 유사하게 작동하도록 합니다.
-    }
+    // 모든 복잡한 조건/분기 제거, 무조건 전체 초기화 호출
+    resetToInitialState();
   };
 
   const handleRecentClick = (keyword: string) => {
@@ -317,13 +302,6 @@ const SearchPage = () => {
     };
   };
 
-  // 사용자가 "공간 종류" 탭에서 이미 특정 타입을 골랐다면 유료/무료 타입들과 교집합만 검색
-  const intersectTypes = (types: string[]) => {
-    const picked = selectedFilters["공간 종류"] || [];
-    if (!picked.length) return types;
-    return types.filter(t => picked.includes(t));
-  };
-
   const fetchByPaidFilter = async (keyword: string) => {
     // 1. 기본 검색 파라미터 (type은 undefined 상태)
     const base = buildBaseParams(keyword);
@@ -377,6 +355,9 @@ const SearchPage = () => {
     return dedupeByPlaceId(pages.flat());
   };
 
+  // 지도 bounds를 재조정해야 하는지 여부 (일반 검색/필터 적용 시 true, 유료/무료 변경 시 false)
+  const [shouldAdjustBounds, setShouldAdjustBounds] = useState(false);
+
   const runSearch = async (keyword: string) => {
     lastKeywordRef.current = keyword;
     const result = await fetchByPaidFilter(keyword);
@@ -408,12 +389,18 @@ const SearchPage = () => {
     clearResetMarker();
     setIsSearchResultSheetOpen(true);
     hasSearchedRef.current = true;
+
+    setShouldAdjustBounds(true);
   };
 
   useEffect(() => {
     // 최초 진입 후 아직 검색 안 했으면 건너뛰기
     if (!hasSearchedRef.current) return;
-    void runSearch(lastKeywordRef.current);
+
+    // 유료/무료 필터 변경 시에는 지도를 재조정하지 않도록 플래그 OFF
+    setShouldAdjustBounds(false);
+
+    // void runSearch(lastKeywordRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paidFilter]);
 
@@ -461,6 +448,7 @@ const SearchPage = () => {
               resetToInitialState();
             }
           }}
+          shouldAdjustBounds={shouldAdjustBounds}
         />
 
         {/* 검색창은 항상 렌더링 */}
@@ -475,7 +463,6 @@ const SearchPage = () => {
           isSearchResultSheetOpen={isSearchResultSheetOpen}
           enterSearchMode={enterSearchMode}
           exitSearchMode={exitSearchMode}
-          resetToInitialState={resetToInitialState}
           onRecentClick={handleRecentClick}
           onXClick={handleXButtonClick}
         />

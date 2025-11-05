@@ -12,7 +12,6 @@ interface SearchModeProps {
   isSearchMode: boolean;
   isSearchResultSheetOpen: boolean;
   enterSearchMode: () => void;
-  resetToInitialState: () => void;
   onRecentClick: (keyword: string) => void;
 
   // ✅ 새 콜백: 부모에서 runSearch를 넘겨주면 유/무료 로직을 부모가 통제
@@ -31,7 +30,6 @@ const SearchMode = ({
   isSearchMode,
   isSearchResultSheetOpen,
   enterSearchMode,
-  resetToInitialState,
   onRecentClick,
   performSearch,
   setPlaceResults, // optional (fallback)
