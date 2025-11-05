@@ -22,10 +22,11 @@ interface KakaoMapProps {
 
   // 배경(지도) ‘빠른 탭’ 시 호출
   onQuickTap?: () => void;
+  shouldAdjustBounds?: boolean;
 }
 
 const KakaoMap = forwardRef(function KakaoMap(
-  { resetToInitialState, currentLocation, places = [], selectedPlaceId = null, onMarkerClick, onQuickTap }: KakaoMapProps,
+  { resetToInitialState, currentLocation, places = [], selectedPlaceId = null, onMarkerClick, onQuickTap, shouldAdjustBounds = false }: KakaoMapProps,
   ref
 ) {
   const downTimeRef = useRef<number | null>(null);
@@ -34,7 +35,7 @@ const KakaoMap = forwardRef(function KakaoMap(
 
   // 마커/라벨/좌표 캐시
   const markerMapRef = useRef<Map<number, any>>(new Map());
-  const labelMapRef  = useRef<Map<number, any>>(new Map()); 
+  const labelMapRef = useRef<Map<number, any>>(new Map());
   const coordCacheRef = useRef<Map<number, LatLng>>(new Map());
   const geocoderRef = useRef<any>(null);
 
@@ -143,9 +144,9 @@ const KakaoMap = forwardRef(function KakaoMap(
 
     // 선택된 마커에만 안이 채워진 흰 원
     const dotCY = h * 0.34;                            // ↓ 아래로 살짝
-    const dotR  = Math.max(1, Math.round(Math.min(w, h) * 0.14)); // ↑ 약간 크게
+    const dotR = Math.max(1, Math.round(Math.min(w, h) * 0.14)); // ↑ 약간 크게
     const innerDot = selected
-      ? `<circle cx="${w/2}" cy="${dotCY}" r="${dotR}" fill="#fff" />`
+      ? `<circle cx="${w / 2}" cy="${dotCY}" r="${dotR}" fill="#fff" />`
       : "";
 
     const svg = `
@@ -304,7 +305,8 @@ const KakaoMap = forwardRef(function KakaoMap(
         upsertMarker(p, selectedPlaceId === p.placeId, pos);
         bounds.extend(new window.kakao.maps.LatLng(pos.lat, pos.lng));
       }
-      if (!cancelled && places.length > 0) {
+      // shouldAdjustBounds가 true일 때만 setBounds 호출
+      if (!cancelled && places.length > 0 && shouldAdjustBounds) {
         mapRef.current.setBounds(bounds, 40, 40, 40, 40);
       }
     };
@@ -312,7 +314,7 @@ const KakaoMap = forwardRef(function KakaoMap(
     sync();
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [places]);
+  }, [places, shouldAdjustBounds]);
 
   // --- 선택 변경 시 아이콘/라벨만 갱신 ---
   useEffect(() => {
