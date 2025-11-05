@@ -81,7 +81,6 @@ const OauthKakaoCallback = () => {
       <div className="animate-scale-bounce">
         <Symbol className="text-[#4CB1F1]" />
       </div>
-      <span className="mt-[1rem] text-[3rem] text-[#8F9098]">로그인 중이에요!</span>
     </div>
   );
 };
